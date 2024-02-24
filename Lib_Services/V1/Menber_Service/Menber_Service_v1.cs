@@ -1,6 +1,7 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using App_Models.Models_Table_CSDL;
 using Lib_Models.Models_Insert.v1;
+using Lib_Models.Models_Select.Menber;
 using Lib_Models.Status_Model;
 using Lib_Repository.V1.Menber_Repository;
 using Lib_Services.Token_Service;
@@ -28,6 +29,17 @@ namespace Lib_Services.V1.Menber_Service
             _token_Service_V1 = token_Service_V1;
             _register_Service_V1 = register_Service_V1;
         }
+
+        #region Select All Menber Async
+        public async Task<List<Menber_SclectAll_v1>> SelectAllAsync()
+        {
+            // Lấy id_school
+            int id_Manager_Menber = await _token_Service_V1.GetAccessTokenIdAccount();
+            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_Manager_Menber);
+
+            return await _menber_Repository_V1.SelectAllAsync(menberManager!.id_School);
+        }
+        #endregion
 
         #region Insert Menber Async
         public async Task<Status_Application> InsertAsync(MenberSchool_Insert_v1 request)

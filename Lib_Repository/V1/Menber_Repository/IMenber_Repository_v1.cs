@@ -1,4 +1,5 @@
 ﻿using App_Models.Models_Table_CSDL;
+using Lib_Models.Models_Select.Menber;
 using Lib_Models.Status_Model;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Lib_Repository.V1.Menber_Repository
 {
     public interface IMenber_Repository_v1
     {
+        Task<List<Menber_SclectAll_v1>> SelectAllAsync(int id_School);
         Task<Status_Application> InsertAsync(tbMenberSchool menberSchool);
     }
 }
