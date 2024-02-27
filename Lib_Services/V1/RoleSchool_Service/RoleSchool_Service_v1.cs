@@ -106,5 +106,15 @@ namespace Lib_Services.V1.RoleSchool_Service
                 return new Status_Application { StatusBool = false, StatusType = "Error: " + ex.Message };
             }
         }
+
+        public async Task<Status_Application> Update_Role_Menber(UpdateRoleSchool request)
+        {
+            // Check null value
+            if (string.IsNullOrEmpty(request.name_Role))
+            {
+                return new Status_Application { StatusBool = false, StatusType = "Chưa nhập name role" };
+            }
+            return await _roleSchool_Repository_V1.Update_Role_Menber(request);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using App_Models.Models_Table_CSDL;
+using Lib_Models.Model_Update.RoleSchool;
 using Lib_Models.Status_Model;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -37,6 +38,31 @@ namespace Lib_Repository.V1.RoleSchool_Repository
             catch (Exception ex)
             {
                 return new Status_Application { StatusBool = false, StatusType = "error: " + ex };
+            }
+        }
+
+        public async Task<Status_Application> Update_Role_Menber(UpdateRoleSchool request)
+        {
+            try
+            {
+                // Check isMenber
+                tbMenberSchool? menberSchool = await _db.tbMenberSchool.FindAsync(request.id_MenberSchool);
+                if (menberSchool!.id_MenberSchool == 0)
+                {
+                    return new Status_Application { StatusBool = false, StatusType = "Không tìm thấy menber" };
+                }
+                // Check name role
+                var roleSchool = await _db.tbRoleSchool.FirstOrDefaultAsync(x => x.name_Role!.ToLower() == request.name_Role!.ToLower());
+
+                if (menberSchool!.id_MenberSchool == 0)
+                {
+                    return new Status_Application { StatusBool = false, StatusType = "Không tìm thấy menber" };
+                }
+                return null!;
+            }
+            catch (Exception ex)
+            {
+                return new Status_Application { StatusBool = false, StatusType = "error " + ex };
             }
         }
     }

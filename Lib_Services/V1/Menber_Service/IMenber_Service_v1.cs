@@ -1,4 +1,5 @@
-﻿using Lib_Models.Models_Insert.v1;
+﻿using Lib_Models.Model_Update.School;
+using Lib_Models.Models_Insert.v1;
 using Lib_Models.Models_Select.Menber;
 using Lib_Models.Status_Model;
 using System;
@@ -13,5 +14,6 @@ namespace Lib_Services.V1.Menber_Service
     {
         Task<List<Menber_SclectAll_v1>> SelectAllAsync();
         Task<Status_Application> InsertAsync(MenberSchool_Insert_v1 request);
+        Task<Status_Application> SchoolMenberUpdateAsync(School_Menber_Update_v1 request);
     }
 }

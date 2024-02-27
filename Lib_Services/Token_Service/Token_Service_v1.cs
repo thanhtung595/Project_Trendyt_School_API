@@ -112,10 +112,10 @@ namespace Lib_Services.Token_Service
             var account = await _db.tbAccount.FindAsync(id_Account);
             var role = await _db.tbRole.FindAsync(account!.id_Role);
             var tokenDb = await _db.tbToken.FirstOrDefaultAsync(x => x.id_Account == id_Account);
-            tokenDb!.access_Token = await CreateTokenString(tokenDb.id_Token, id_Account, role!.name_Role!,1);
-            tokenDb.refresh_Token = await CreateTokenString(tokenDb.id_Token, id_Account, role.name_Role!, 7);
-            tokenDb.access_Expire_Token = DateTime.UtcNow.AddDays(1);
-            tokenDb.refresh_Expire_Token = DateTime.UtcNow.AddDays(7);
+            tokenDb!.access_Token = await CreateTokenString(tokenDb.id_Token, id_Account, role!.name_Role!,7);
+            tokenDb.refresh_Token = await CreateTokenString(tokenDb.id_Token, id_Account, role.name_Role!, 30);
+            tokenDb.access_Expire_Token = DateTime.UtcNow.AddDays(7);
+            tokenDb.refresh_Expire_Token = DateTime.UtcNow.AddDays(30);
             tokenDb.is_Active = true;
             await _db.SaveChangesAsync();
 

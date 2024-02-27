@@ -16,5 +16,6 @@ namespace Lib_Services.V1.RoleSchool_Service
         Task<List<Role_Select_v1>> SelectAllAsync();
         Task<Status_Application> InsertAsync(Role_Insert_v1 request);
         Task<Status_Application> Update_Role_Account(UpdateRoleSchool request);
+        Task<Status_Application> Update_Role_Menber(UpdateRoleSchool request);
     }
 }

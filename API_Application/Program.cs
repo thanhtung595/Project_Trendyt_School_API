@@ -88,6 +88,33 @@ builder.Services.AddAuthorization(options =>
         p.RequireClaim(IdentityData.TypeRole, IdentityData.AdminSchoolClaimName));
     #endregion
 
+    #region QuanLySchoolManager
+    options.AddPolicy(IdentityData.QuanLySchoolManager, policy =>
+    {
+        policy.RequireAssertion(context =>
+        {
+            return context.User.HasClaim(c =>
+                c.Type == IdentityData.TypeRole &&
+                (c.Value == IdentityData.AdminSchoolClaimName ||
+                    c.Value == IdentityData.IndustryClaimName ||
+                    c.Value == IdentityData.SecretaryClaimName));
+        });
+    });
+    #endregion
+
+    #region QuanLyKhoaManager
+    options.AddPolicy(IdentityData.QuanLyKhoaManager, policy =>
+    {
+        policy.RequireAssertion(context =>
+        {
+            return context.User.HasClaim(c =>
+                c.Type == IdentityData.TypeRole &&
+                (c.Value == IdentityData.IndustryClaimName ||
+                 c.Value == IdentityData.SecretaryClaimName));
+        });
+    });
+    #endregion
+
     #region Industry
     options.AddPolicy(IdentityData.IndustryPolicyName, p =>
     p.RequireClaim(IdentityData.TypeRole, IdentityData.IndustryClaimName));
@@ -102,17 +129,6 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy(IdentityData.StudentPolicyName, p =>
     p.RequireClaim(IdentityData.TypeRole, IdentityData.StudentClaimName));
     #endregion 
-    //// Manager School
-    //options.AddPolicy(IdentityData.ManagerSchoolPolicy, policy =>
-    //{
-    //    policy.RequireAssertion(context =>
-    //    {
-    //        return context.User.HasClaim(c =>
-    //            c.Type == IdentityData.TypeRole &&
-    //            (c.Value == IdentityData.AdminSchoolUserClaimName ||
-    //             c.Value == IdentityData.IndustrySchoolUserClaimName));
-    //    });
-    //});
 });
 //*******************End User Config*********************//
 

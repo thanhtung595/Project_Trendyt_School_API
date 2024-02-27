@@ -9,6 +9,8 @@ namespace TrendyT_Data.Identity
     public class IdentityData
     {
         public const string TypeRole = "typeRole";
+        public const string QuanLyKhoaManager = "QuanLyKhoaManager";
+        public const string QuanLySchoolManager = "QuanLySchoolManager";
 
         public const string AdminServerPolicyName = "admin";
         public const string AdminServerClaimName = "admin";
@@ -21,6 +23,9 @@ namespace TrendyT_Data.Identity
 
         public const string IndustryPolicyName = "industry management";
         public const string IndustryClaimName = "industry management";
+
+        public const string SecretaryPolicyName = "secretary management";
+        public const string SecretaryClaimName = "secretary management";
 
         public const string TeacherPolicyName = "teacher";
         public const string TeacherClaimName = "teacher";

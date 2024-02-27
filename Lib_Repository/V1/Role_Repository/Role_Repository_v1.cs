@@ -1,5 +1,6 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using App_Models.Models_Table_CSDL;
+using Lib_Models.Model_Update.RoleSchool;
 using Lib_Models.Status_Model;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -40,5 +41,6 @@ namespace Lib_Repository.V1.Role_Repository
                 return new Status_Application { StatusBool = false, StatusType = "error: "+ex };
             }
         }
+
     }
 }

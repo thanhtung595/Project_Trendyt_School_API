@@ -2,11 +2,11 @@
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace API_Application.Controllers_School_Api.v1
+namespace API_Application.Controllers_School_Api.v1.School
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/school/class")]
     [ApiController]
-    public class MenberSchoolController : ControllerBase
+    public class School_ClassController : ControllerBase
     {
         
     }

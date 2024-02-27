@@ -1,5 +1,6 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using App_Models.Models_Table_CSDL;
+using Lib_Models.Model_Update.School;
 using Lib_Models.Models_Insert.v1;
 using Lib_Models.Models_Select.Menber;
 using Lib_Models.Status_Model;
@@ -87,6 +88,13 @@ namespace Lib_Services.V1.Menber_Service
                 id_School = request.id_School
             };
             return await _menber_Repository_V1.InsertAsync(menberSchool);
+        }
+        #endregion
+
+        #region School Menber Update Async
+        public async Task<Status_Application> SchoolMenberUpdateAsync(School_Menber_Update_v1 request)
+        {
+            return await _menber_Repository_V1.SchoolMenberUpdateAsync(request);
         }
         #endregion
     }

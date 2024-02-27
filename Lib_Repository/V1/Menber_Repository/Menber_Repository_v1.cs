@@ -1,5 +1,6 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using App_Models.Models_Table_CSDL;
+using Lib_Models.Model_Update.School;
 using Lib_Models.Models_Select.Menber;
 using Lib_Models.Status_Model;
 using Microsoft.EntityFrameworkCore;
@@ -66,6 +67,43 @@ namespace Lib_Repository.V1.Menber_Repository
 			{
                 return new Status_Application { StatusBool = false , StatusType = $"error menber repository {ex}" };
 			}
+        }
+        #endregion
+
+        #region School Menber Update Async
+        public async Task<Status_Application> SchoolMenberUpdateAsync(School_Menber_Update_v1 request)
+        {
+            try
+            {
+                // Check is menber
+                var menber = await _db.tbMenberSchool.FindAsync(request.id_MenberSchool);
+                if (menber == null)
+                {
+                    return new Status_Application { StatusBool = false, StatusType = "Menber không tồn tại" };
+                }
+
+                // Check is khoa
+                if (request.id_KhoaSchool != 0)
+                {
+                    var khoa = await _db.tbKhoaSchool.FindAsync(request.id_KhoaSchool);
+                    if (khoa == null)
+                    {
+                        return new Status_Application { StatusBool = false, StatusType = "Khoa không tồn tại" };
+                    }
+                    menber.id_KhoaSchool = khoa.id_KhoaSchool;
+                }
+                else
+                {
+                    menber.id_KhoaSchool = 0;
+                }
+
+                await _db.SaveChangesAsync();
+                return new Status_Application { StatusBool = true , StatusType = "success" };
+            }
+            catch (Exception ex)
+            {
+                return new Status_Application { StatusBool = false , StatusType = "error "+ex.Message };
+            }
         }
         #endregion
     }

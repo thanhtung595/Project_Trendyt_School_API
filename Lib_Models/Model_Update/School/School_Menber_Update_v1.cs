@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lib_Models.Model_Update.RoleSchool
+namespace Lib_Models.Model_Update.School
 {
-    public class UpdateRoleSchool
+    public class School_Menber_Update_v1
     {
         public int id_MenberSchool { get; set; }
-        public string? user_Name { get; set; }
-        public string? name_Role { get; set; }
+        public int id_KhoaSchool { get; set; }
     }
 }
