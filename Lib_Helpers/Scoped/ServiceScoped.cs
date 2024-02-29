@@ -8,6 +8,7 @@ using Lib_Services.V1.Register_Service;
 using Lib_Services.V1.Role_Service;
 using Lib_Services.V1.RoleSchool_Service;
 using Lib_Services.V1.School_Service;
+using Lib_Services.V1.Student_Service;
 using Lib_Services.V1.Teacher_Service;
 using Lib_Services.V1.TypeAccount_Service;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +36,7 @@ namespace Lib_Helpers.Scoped
             services.AddScoped<IKhoaSchool_Service_v1, KhoaSchool_Service_v1>();
             services.AddScoped<ITeacher_Service_v1, Teacher_Service_v1>();
             services.AddScoped<IClass_Service_v1, Class_Service_v1>();
+            services.AddScoped<IStudent_Service_v1, Student_Service_v1>();
         }
     }
 }

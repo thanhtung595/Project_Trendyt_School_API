@@ -13,5 +13,6 @@ namespace Lib_Models.Models_Select.Teacher
         public string? fullName { get; set; }
         public string? name_Khoa { get; set; }
         public string? ma_Khoa { get; set; }
+        public string? image_User { get; set; }
     }
 }

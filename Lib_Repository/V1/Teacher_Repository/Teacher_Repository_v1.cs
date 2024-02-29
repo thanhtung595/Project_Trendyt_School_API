@@ -34,7 +34,8 @@ namespace Lib_Repository.V1.Teacher_Repository
                                   user_Name = a.user_Name,
                                   fullName = a.fullName,    
                                   ma_Khoa = k.ma_Khoa,
-                                  name_Khoa = k.name_Khoa
+                                  name_Khoa = k.name_Khoa,
+                                  image_User = a.image_User,
                               }).ToListAsync();
             return list;
         }

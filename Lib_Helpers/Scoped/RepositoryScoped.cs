@@ -5,6 +5,7 @@ using Lib_Repository.V1.Menber_Repository;
 using Lib_Repository.V1.Role_Repository;
 using Lib_Repository.V1.RoleSchool_Repository;
 using Lib_Repository.V1.School_Repository;
+using Lib_Repository.V1.Student_Repository;
 using Lib_Repository.V1.Teacher_Repository;
 using Lib_Repository.V1.TypeAccount_Repository;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,7 @@ namespace Lib_Helpers.Scoped
             services.AddScoped<IKhoa_Repository_v1, Khoa_Repository_v1>();
             services.AddScoped<ITeacher_Repository_v1, Teacher_Repository_v1>();
             services.AddScoped<IClass_Repository_v1, Class_Repository_v1>();
+            services.AddScoped<IStudent_Repository_v1, Student_Repository_v1>();
 
         }
     }
