@@ -10,5 +10,6 @@ namespace Lib_Services.V1.Teacher_Service
     public interface ITeacher_Service_v1
     {
         Task<List<Select_All_Teacher_v1>> Select_All_Teacher();
+        Task<Select_One_Teacher_v1> Show_One_Teacher(int id_Teacher);
     }
 }

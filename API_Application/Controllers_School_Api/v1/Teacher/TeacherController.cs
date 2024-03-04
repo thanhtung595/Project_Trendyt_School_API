@@ -5,20 +5,20 @@ using TrendyT_Data.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace API_Application.Controllers_School_Api.v1.School
+namespace API_Application.Controllers_School_Api.v1.Teacher
 {
-    [Route("api/v1/school/teacher")]
+    [Route("api/v1/teacher")]
     [ApiController]
-    public class School_TeacherController : ControllerBase
+    public class TeacherController : ControllerBase
     {
         private readonly ITeacher_Service_v1 _teacher_Service_V1;
-        public School_TeacherController(ITeacher_Service_v1 teacher_Service_V1)
+        public TeacherController(ITeacher_Service_v1 teacher_Service_V1)
         {
             _teacher_Service_V1 = teacher_Service_V1;
         }
 
         #region Get All Teacher
-        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpGet]
         public async Task<IActionResult> GetAllTeacher()
         {
@@ -27,17 +27,17 @@ namespace API_Application.Controllers_School_Api.v1.School
         #endregion
 
         #region Show One Teacher
-        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpGet]
         [Route("show")]
-        public async Task<IActionResult> ShowOneTeacher([FromQuery(Name = "id_teacher")] int id_teacher) 
+        public async Task<IActionResult> ShowOneTeacher([FromQuery(Name = "id_teacher")] int id_teacher)
         {
-            return Ok();
+            return Ok(await _teacher_Service_V1.Show_One_Teacher(id_teacher));
         }
         #endregion
 
         #region Edit Teacher
-        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpPut]
         public async Task<IActionResult> EditTeacher()
         {

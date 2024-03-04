@@ -10,5 +10,7 @@ namespace Lib_Models.Model_Update.School
     {
         public int id_MenberSchool { get; set; }
         public int id_KhoaSchool { get; set; }
+        public string? name_Role { get; set; }
+        public string? tags { get; set; }
     }
 }

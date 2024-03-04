@@ -28,9 +28,19 @@ namespace Lib_Services.V1.Teacher_Service
         public async Task<List<Select_All_Teacher_v1>> Select_All_Teacher()
         {
             int id_account = await _token_Service_v1.GetAccessTokenIdAccount();
-            var id_MenberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_account);
+            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_account);
 
-            return await _teacher_Repository_V1.Select_All_Teacher(id_MenberManager!.id_School);
+            return await _teacher_Repository_V1.Select_All_Teacher(menberManager!);
+        }
+        #endregion
+
+        #region Show_One_Teacher
+        public async Task<Select_One_Teacher_v1> Show_One_Teacher(int id_Teacher)
+        {
+            int id_account = await _token_Service_v1.GetAccessTokenIdAccount();
+            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_account);
+
+            return await _teacher_Repository_V1.Select_One_Teacher(menberManager!,id_Teacher);
         }
         #endregion
     }

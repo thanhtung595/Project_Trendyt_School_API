@@ -75,6 +75,12 @@ namespace Lib_Repository.V1.Menber_Repository
         {
             try
             {
+                // Check tag
+                if (string.IsNullOrEmpty(request.tags))
+                {
+                    request.tags = "active";
+                }
+
                 // Check is menber
                 var menber = await _db.tbMenberSchool.FindAsync(request.id_MenberSchool);
                 if (menber == null)
@@ -95,6 +101,17 @@ namespace Lib_Repository.V1.Menber_Repository
                 else
                 {
                     menber.id_KhoaSchool = 0;
+                }
+
+                // check role menber
+                var role = await _db.tbRoleSchool.FirstOrDefaultAsync(x => x.name_Role!.ToLower() == request.name_Role!.ToLower());
+                if (role == null)
+                {
+                    return new Status_Application { StatusBool = false, StatusType = "Role không tồn tại" };
+                }
+                else
+                {
+                    menber.id_RoleSchool = role.id_RoleSchool;
                 }
 
                 await _db.SaveChangesAsync();
