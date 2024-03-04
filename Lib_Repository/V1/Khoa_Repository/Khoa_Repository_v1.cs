@@ -31,7 +31,6 @@ namespace Lib_Repository.V1.Khoa_Repository
                                   ma_Khoa = k.ma_Khoa,
                                   name_Khoa = k.name_Khoa
                               }).ToListAsync();
-
             return list;
         }
         #endregion
