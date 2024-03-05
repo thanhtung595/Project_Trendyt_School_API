@@ -38,7 +38,7 @@ namespace Lib_Services.V1.Menber_Service
             int id_Manager_Menber = await _token_Service_V1.GetAccessTokenIdAccount();
             var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_Manager_Menber);
 
-            return await _menber_Repository_V1.SelectAllAsync(menberManager!.id_School);
+            return await _menber_Repository_V1.SelectAllAsync(menberManager);
         }
         #endregion
 

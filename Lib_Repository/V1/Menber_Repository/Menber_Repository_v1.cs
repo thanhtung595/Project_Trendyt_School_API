@@ -21,10 +21,16 @@ namespace Lib_Repository.V1.Menber_Repository
         }
 
         #region Select All Menber Async
-        public async Task<List<Menber_SclectAll_v1>> SelectAllAsync(int id_School)
+        public async Task<List<Menber_SclectAll_v1>> SelectAllAsync(tbMenberSchool menberManager)
         {
-            var list = await (from m in _db.tbMenberSchool
-                              where m.id_School == id_School
+            IQueryable<tbMenberSchool> query = _db.tbMenberSchool;
+            if (menberManager.id_KhoaSchool != 0)
+            {
+                query = query.Where(x => x.id_KhoaSchool == menberManager.id_KhoaSchool);
+            }
+
+            var list = await (from m in query
+                              where m.id_School == menberManager.id_School
                               join a in _db.tbAccount
                               on m.id_Account equals a.id_Account
                               join r in _db.tbRoleSchool
@@ -39,6 +45,7 @@ namespace Lib_Repository.V1.Menber_Repository
                                   fullName = a.fullName,
                                   birthday_User = a.birthday_User,
                                   sex_User = a.sex_User,
+                                  imageUser = a.image_User,
                                   email_User = a.email_User,
                                   phone_User = a.phone_User,
                                   danhGiaTb = m.danhGiaTb,

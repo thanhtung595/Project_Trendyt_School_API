@@ -49,15 +49,25 @@ namespace Lib_Repository.V1.Teacher_Repository
         #endregion
 
         #region Select_One_Teacher
-        public Task<Select_One_Teacher_v1> Select_One_Teacher(tbMenberSchool menberManager, int id_Teacher)
+        public async Task<Select_One_Teacher_v1> Select_One_Teacher(tbMenberSchool menberManager, int id_Teacher)
         {
-            IQueryable<tbMenberSchool> query = _db.tbMenberSchool;
-            if (menberManager.id_KhoaSchool != 0)
-            {
-                query = query.Where(x => x.id_KhoaSchool == menberManager.id_KhoaSchool);
-            }
-
-            return null!;
+            var teacher = await (from m in _db.tbMenberSchool
+                                 where m.id_MenberSchool == id_Teacher && m.id_School == menberManager.id_School
+                                 join k in _db.tbKhoaSchool
+                                 on m.id_KhoaSchool equals k.id_KhoaSchool
+                                 join ac in _db.tbAccount
+                                 on m.id_Account equals ac.id_Account
+                                 select new Select_One_Teacher_v1
+                                 {
+                                     id_Teacher = m.id_MenberSchool,
+                                     user_Name = ac.user_Name,
+                                     fullName = ac.fullName,
+                                     image_User = ac.image_User,
+                                     ma_Khoa = k.ma_Khoa,
+                                     name_Khoa = k.name_Khoa,
+                                     tag = m.tags
+                                 }).FirstOrDefaultAsync();
+            return teacher!;
         }
         #endregion
     }
