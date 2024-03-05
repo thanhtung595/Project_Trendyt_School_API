@@ -24,16 +24,6 @@ namespace API_Application.Controllers_School_Api.v1.School
             _db = db;
         }
 
-        // Menber school start
-        #region Get all Menber School
-        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
-        [HttpGet]
-        public async Task<IActionResult> GetAllMenberSchool()
-        {
-            return Ok(await _menber_Service_V1.SelectAllAsync());
-        }
-        #endregion
-
         #region Add Menber School
         [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
         [HttpPost]
@@ -74,20 +64,6 @@ namespace API_Application.Controllers_School_Api.v1.School
             });
 
             return result!;
-        }
-        #endregion
-
-        #region Edit Menber School
-        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
-        [HttpPut]
-        public async Task<IActionResult> EditMenberSchool(School_Menber_Update_v1 request)
-        {
-            Status_Application status = await _menber_Service_V1.SchoolMenberUpdateAsync(request);
-            if (!status.StatusBool)
-            {
-                return StatusCode(400, status.StatusType);
-            }
-            return StatusCode(204);
         }
         #endregion
 
