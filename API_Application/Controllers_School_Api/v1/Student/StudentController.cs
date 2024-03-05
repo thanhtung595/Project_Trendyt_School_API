@@ -5,14 +5,14 @@ using TrendyT_Data.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace API_Application.Controllers_School_Api.v1.Khoa
+namespace API_Application.Controllers_School_Api.v1.Student
 {
-    [Route("api/v1/khoa/student")]
+    [Route("api/v1/student")]
     [ApiController]
-    public class Khoa_StudentController : ControllerBase
+    public class StudentController : ControllerBase
     {
         private readonly IStudent_Service_v1 _student_Service_V1;
-        public Khoa_StudentController(IStudent_Service_v1 student_Service_V1)
+        public StudentController(IStudent_Service_v1 student_Service_V1)
         {
             _student_Service_V1 = student_Service_V1;
         }
@@ -24,6 +24,12 @@ namespace API_Application.Controllers_School_Api.v1.Khoa
         {
             return Ok(await _student_Service_V1.SelectAllAsync());
         }
+        #endregion
+
+        #region Edit
+        #endregion
+
+        #region Show one
         #endregion
     }
 }

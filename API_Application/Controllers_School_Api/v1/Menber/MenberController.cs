@@ -10,23 +10,23 @@ using TrendyT_Data.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace API_Application.Controllers_School_Api.v1.School
+namespace API_Application.Controllers_School_Api.v1.Menber
 {
-    [Route("api/v1/school/menber")]
+    [Route("api/v1/menber")]
     [ApiController]
-    public class School_MenberController : ControllerBase
+    public class MenberController : ControllerBase
     {
         private readonly IMenber_Service_v1 _menber_Service_V1;
         private readonly Trendyt_DbContext _db;
-        public School_MenberController(IMenber_Service_v1 menber_Service_V1, Trendyt_DbContext db)
+        public MenberController(IMenber_Service_v1 menber_Service_V1, Trendyt_DbContext db)
         {
             _menber_Service_V1 = menber_Service_V1;
             _db = db;
         }
 
         // Menber school start
-        #region Get all Menber School
-        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
+        #region Get all Menber
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpGet]
         public async Task<IActionResult> GetAllMenberSchool()
         {
@@ -34,7 +34,7 @@ namespace API_Application.Controllers_School_Api.v1.School
         }
         #endregion
 
-        #region Add Menber School
+        #region Add Menber
         [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
         [HttpPost]
         public async Task<IActionResult> AddMenberSchool(List<MenberSchool_Insert_v1> listRequest)
@@ -77,8 +77,8 @@ namespace API_Application.Controllers_School_Api.v1.School
         }
         #endregion
 
-        #region Edit Menber School
-        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
+        #region Edit Menber
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpPut]
         public async Task<IActionResult> EditMenberSchool(School_Menber_Update_v1 request)
         {
@@ -91,7 +91,10 @@ namespace API_Application.Controllers_School_Api.v1.School
         }
         #endregion
 
-        #region Delete Menber School
+        #region Profile menber
+        #endregion
+
+        #region Delete Menber
         [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
         [HttpDelete]
         public async Task<IActionResult> DeleteMenberSchool()
@@ -99,6 +102,5 @@ namespace API_Application.Controllers_School_Api.v1.School
             return Ok();
         }
         #endregion
-        // Menber school end
     }
 }

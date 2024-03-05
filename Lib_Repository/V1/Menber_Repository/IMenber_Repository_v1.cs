@@ -12,7 +12,7 @@ namespace Lib_Repository.V1.Menber_Repository
 {
     public interface IMenber_Repository_v1
     {
-        Task<List<Menber_SclectAll_v1>> SelectAllAsync(int id_School);
+        Task<List<Menber_SclectAll_v1>> SelectAllAsync(tbMenberSchool menberManager);
         Task<Status_Application> InsertAsync(tbMenberSchool menberSchool);
         Task<Status_Application> SchoolMenberUpdateAsync(School_Menber_Update_v1 request);
     }

@@ -19,5 +19,6 @@ namespace Lib_Models.Models_Select.Menber
         public string? name_RoleSchool { get; set; }
         public float danhGiaTb { get; set; }
         public string? tags { get; set; }
+        public string? imageUser { get; set; }
     }
 }

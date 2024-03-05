@@ -33,6 +33,7 @@ namespace API_Application.Controllers_School_Api.v1.School
 
         // School start
         #region Get All School
+        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
         [HttpGet]
         public async Task<IActionResult> GetAllSchool()
         {
@@ -53,28 +54,9 @@ namespace API_Application.Controllers_School_Api.v1.School
             return StatusCode(204);
         }
         #endregion
+
+        #region Delete School
+        #endregion
         // School end
-
-        // Role school start
-        #region Get All Role School
-        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
-        [HttpGet("role-school")]
-        public async Task<IActionResult> GetAllRoleSchool()
-        {
-            return Ok(await _roleSchool_Service_V1.SelectAllAsync());
-        }
-        #endregion
-
-        #region Update Role menber school
-        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
-        [HttpPut("role-school")]
-        public async Task<IActionResult> UpdateRoleMenberSchool()
-        {
-            return Ok(await _roleSchool_Service_V1.SelectAllAsync());
-        }
-        #endregion
-        // Role school end
-
-
     }
 }
