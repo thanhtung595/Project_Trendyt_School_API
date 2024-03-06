@@ -31,7 +31,6 @@ namespace Lib_Services.V1.Class_Service
         {
             // Id_Menber Manager
             int id_MenberManager = await _token_Service_V1.GetAccessTokenIdAccount();
-            //var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_MenberManager);
             var menberManager = await _db.tbMenberSchool
                                 .Include(menber => menber.tbRoleSchool)
                                 .FirstOrDefaultAsync(x => x.id_Account == id_MenberManager);
@@ -41,9 +40,15 @@ namespace Lib_Services.V1.Class_Service
         #endregion
 
         #region SelectById
-        public Task<Class_Select_v1> SelectById()
+        public async Task<Class_Select_v1> SelectById(int id)
         {
-            throw new NotImplementedException();
+            // Id_Menber Manager
+            int id_MenberManager = await _token_Service_V1.GetAccessTokenIdAccount();
+            var menberManager = await _db.tbMenberSchool
+                                .Include(menber => menber.tbRoleSchool)
+                                .FirstOrDefaultAsync(x => x.id_Account == id_MenberManager);
+
+            return await _class_Repository_V1.SelectById(menberManager!,id);
         }
         #endregion
 

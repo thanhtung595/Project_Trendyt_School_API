@@ -12,7 +12,7 @@ using TrendyT_Data.Identity;
 
 namespace API_Application.Controllers_School_Api.v1.Menber
 {
-    [Route("api/v1/menber")]
+    [Route("api/v1/member")]
     [ApiController]
     public class MenberController : ControllerBase
     {
@@ -92,14 +92,26 @@ namespace API_Application.Controllers_School_Api.v1.Menber
         #endregion
 
         #region Profile menber
+        [Authorize]
+        [HttpGet]
+        [Route("profile")]
+        public async Task<IActionResult> Profile()
+        {
+            return Ok(await _menber_Service_V1.Profile());
+        }
         #endregion
 
         #region Delete Menber
-        [Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpDelete]
-        public async Task<IActionResult> DeleteMenberSchool()
+        public async Task<IActionResult> DeleteMenberSchool([FromQuery(Name = "id_member")] int id_member)
         {
-            return Ok();
+            Status_Application status = await _menber_Service_V1.Delete(id_member);
+            if (!status.StatusBool)
+            {
+                return StatusCode(400,status.StatusType);
+            }
+            return StatusCode(204);
         }
         #endregion
     }
