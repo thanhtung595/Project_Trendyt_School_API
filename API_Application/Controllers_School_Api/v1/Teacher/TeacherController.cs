@@ -30,7 +30,7 @@ namespace API_Application.Controllers_School_Api.v1.Teacher
         [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpGet]
         [Route("show")]
-        public async Task<IActionResult> ShowOneTeacher([FromQuery(Name = "id_teacher")] int id_teacher)
+        public async Task<IActionResult> ShowOneTeacher([FromQuery(Name = "id")] int id_teacher)
         {
             return Ok(await _teacher_Service_V1.Show_One_Teacher(id_teacher));
         }

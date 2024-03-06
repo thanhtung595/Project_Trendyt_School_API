@@ -1,5 +1,6 @@
 ﻿using Lib_Services.Token_Service;
 using Lib_Services.V1.Account_Service;
+using Lib_Services.V1.Class_Member_Service;
 using Lib_Services.V1.Class_Service;
 using Lib_Services.V1.KhoaSchool_Service;
 using Lib_Services.V1.Login_Service;
@@ -37,6 +38,7 @@ namespace Lib_Helpers.Scoped
             services.AddScoped<ITeacher_Service_v1, Teacher_Service_v1>();
             services.AddScoped<IClass_Service_v1, Class_Service_v1>();
             services.AddScoped<IStudent_Service_v1, Student_Service_v1>();
+            services.AddScoped<IClass_Member_Service_v1, Class_Member_Service_v1>();
         }
     }
 }

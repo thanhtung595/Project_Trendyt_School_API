@@ -1,6 +1,9 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using App_Models.Models_Table_CSDL;
 using Lib_Models.Models_Select.Class;
+using Lib_Models.Models_Select.Khoa;
+using Lib_Models.Models_Select.Student;
+using Lib_Models.Models_Select.Teacher;
 using Lib_Models.Status_Model;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,23 +25,123 @@ namespace Lib_Repository.V1.Class_Repository
         #region SelectAll
         public async Task<List<Class_Select_v1>> SelectAll(tbMenberSchool menberSchoolManager)
         {
-
-            if (menberSchoolManager.id_KhoaSchool == 0 && menberSchoolManager.tbRoleSchool!.name_Role == "school management")
+            IQueryable<tbClassSchool> query = _db.tbClassSchool;
+            if (menberSchoolManager.id_KhoaSchool == 0 && menberSchoolManager.tbRoleSchool!.name_Role != "school management")
             {
-                return await SchoolManagementSelectAll(menberSchoolManager);
+                return null!;
             }
-            else if (menberSchoolManager.id_KhoaSchool != 0)
+            if (menberSchoolManager.id_KhoaSchool != 0)
             {
-                return await KhoaManagementSelectAll(menberSchoolManager);
+                query = query.Where(x => x.id_KhoaSchool == menberSchoolManager.id_KhoaSchool);
             }
-            return null!;
+            var list = await (from cl in query
+                              join k in _db.tbKhoaSchool
+                              on cl.id_KhoaSchool equals k.id_KhoaSchool
+                              join s in _db.tbSchool
+                              on k.id_School equals s.id_School
+                              where s.id_School == menberSchoolManager.id_School
+                              select new Class_Select_v1
+                              {
+                                  id_ClassSchool = cl.id_ClassSchool,
+                                  name_ClassSchool = cl.name_ClassSchool,
+                                  khoa = new KhoaSchool_Select_v1
+                                  {
+                                      id_KhoaSchool = k.id_KhoaSchool,
+                                      ma_Khoa = k.ma_Khoa,
+                                      name_Khoa = k.name_Khoa
+                                  },
+                                  tags = cl.tags,
+                                  chu_nhiem = (from member_class in _db.tbClassSchool_Menber
+                                               where member_class.id_ClassSchool == cl.id_ClassSchool
+                                               join member in _db.tbMenberSchool
+                                               on member_class.id_MenberSchool equals member.id_MenberSchool
+                                               join r in _db.tbRoleSchool
+                                               on member.id_RoleSchool equals r.id_RoleSchool
+                                               where r.name_Role == "teacher"
+                                               join ac in _db.tbAccount
+                                               on member.id_Account equals ac.id_Account
+                                               select new Select_All_Teacher_v1
+                                               {
+                                                   id_Teacher = member.id_MenberSchool,
+                                                   fullName = ac.fullName,
+                                                   user_Name = ac.user_Name,
+                                                   image_User = ac.image_User
+                                               }).FirstOrDefault(),
+                                  count_member = _db.tbClassSchool_Menber.Where(x => x.id_ClassSchool == cl.id_ClassSchool).Count(),
+                              }).ToListAsync();
+            return list;
         }
         #endregion
         
         #region SelectById
-        public Task<Class_Select_v1> SelectById()
+        public async Task<Class_Select_v1> SelectById(tbMenberSchool menberSchoolManager, int idClass)
         {
-            throw new NotImplementedException();
+            IQueryable<tbClassSchool> query = _db.tbClassSchool;
+            if (menberSchoolManager.id_KhoaSchool == 0 && menberSchoolManager.tbRoleSchool!.name_Role != "school management")
+            {
+                return null!;
+            }
+            if (menberSchoolManager.id_KhoaSchool != 0)
+            {
+                query = query.Where(x => x.id_KhoaSchool == menberSchoolManager.id_KhoaSchool);
+            }
+            var list = await(from cl in query
+                             where cl.id_ClassSchool == idClass
+                             join k in _db.tbKhoaSchool
+                             on cl.id_KhoaSchool equals k.id_KhoaSchool
+                             where k.id_School == menberSchoolManager.id_School
+                             join s in _db.tbSchool
+                             on k.id_School equals s.id_School
+                             where s.id_School == menberSchoolManager.id_School
+                             select new Class_Select_v1
+                             {
+                                 id_ClassSchool = cl.id_ClassSchool,
+                                 name_ClassSchool = cl.name_ClassSchool,
+                                 khoa = new KhoaSchool_Select_v1
+                                 {
+                                     id_KhoaSchool = k.id_KhoaSchool,
+                                     ma_Khoa = k.ma_Khoa,
+                                     name_Khoa = k.name_Khoa
+                                 },
+                                 tags = cl.tags,
+                                 chu_nhiem = (from member_class in _db.tbClassSchool_Menber
+                                              where member_class.id_ClassSchool == cl.id_ClassSchool
+                                              join member in _db.tbMenberSchool
+                                              on member_class.id_MenberSchool equals member.id_MenberSchool
+                                              join r in _db.tbRoleSchool
+                                              on member.id_RoleSchool equals r.id_RoleSchool
+                                              where r.name_Role == "teacher"
+                                              join ac in _db.tbAccount
+                                              on member.id_Account equals ac.id_Account
+                                              select new Select_All_Teacher_v1
+                                              {
+                                                  id_Teacher = member.id_MenberSchool,
+                                                  fullName = ac.fullName,
+                                                  user_Name = ac.user_Name,
+                                                  image_User = ac.image_User
+                                              }).FirstOrDefault(),
+                                 count_member = _db.tbClassSchool_Menber.Where(x => x.id_ClassSchool == cl.id_ClassSchool).Count(),
+                                 student = (from member_class in _db.tbClassSchool_Menber
+                                            where member_class.id_ClassSchool == cl.id_ClassSchool
+                                            join member in _db.tbMenberSchool
+                                            on member_class.id_MenberSchool equals member.id_MenberSchool
+                                            join r in _db.tbRoleSchool
+                                            on member.id_RoleSchool equals r.id_RoleSchool
+                                            where r.name_Role == "student"
+                                            join ac in _db.tbAccount
+                                            on member.id_Account equals ac.id_Account 
+                                            select new Student_Select_v1
+                                            {
+                                                id_Student = member.id_MenberSchool,
+                                                fullName = ac.fullName,
+                                                email_User = ac.email_User,
+                                                phone_User = ac.phone_User,
+                                                sex_User = ac.sex_User,
+                                                user_Name = ac.user_Name,
+                                                image_User = ac.image_User,
+                                            }).ToList(),
+                             }).FirstOrDefaultAsync();
+            return list!;
         }
         #endregion
         
@@ -49,7 +152,7 @@ namespace Lib_Repository.V1.Class_Repository
             {
                 await _db.tbClassSchool.AddAsync(classSchool);
                 await _db.SaveChangesAsync();
-                return new Status_Application { StatusBool = true, StatusType = "success" };
+                return new Status_Application { StatusBool = true, StatusType = "success" ,Id_Int = classSchool.id_ClassSchool};
             }
             catch (Exception ex)
             {
@@ -62,50 +165,6 @@ namespace Lib_Repository.V1.Class_Repository
         public Task<Status_Application> UpdateAsync(tbClassSchool classSchool)
         {
             throw new NotImplementedException();
-        }
-        #endregion
-
-        #region School Management Select All
-        public async Task<List<Class_Select_v1>> SchoolManagementSelectAll(tbMenberSchool menberSchoolManager)
-        {
-
-            var list = await (from cl in _db.tbClassSchool
-                              join k in _db.tbKhoaSchool
-                              on cl.id_KhoaSchool equals k.id_KhoaSchool
-                              join s in _db.tbSchool
-                              on k.id_School equals s.id_School
-                              where s.id_School == menberSchoolManager.id_School
-                              select new Class_Select_v1
-                              {
-                                  id_ClassSchool = cl.id_ClassSchool,
-                                  name_ClassSchool = cl.name_ClassSchool,
-                                  ma_Khoa = k.ma_Khoa,
-                                  name_Khoa = k.name_Khoa,
-                                  tags = cl.tags
-                              }).ToListAsync();
-            return list;
-        }
-        #endregion
-
-        #region Khoa Management Select All
-        public async Task<List<Class_Select_v1>> KhoaManagementSelectAll(tbMenberSchool menberSchoolManager)
-        {
-            var list = await (from cl in _db.tbClassSchool
-                              join k in _db.tbKhoaSchool
-                              on cl.id_KhoaSchool equals k.id_KhoaSchool
-                              where k.id_KhoaSchool == menberSchoolManager.id_KhoaSchool
-                              join s in _db.tbSchool
-                              on k.id_School equals s.id_School
-                              where s.id_School == menberSchoolManager.id_School
-                              select new Class_Select_v1
-                              {
-                                  id_ClassSchool = cl.id_ClassSchool,
-                                  name_ClassSchool = cl.name_ClassSchool,
-                                  ma_Khoa = k.ma_Khoa,
-                                  name_Khoa = k.name_Khoa,
-                                  tags = cl.tags
-                              }).ToListAsync();
-            return list;
         }
         #endregion
     }

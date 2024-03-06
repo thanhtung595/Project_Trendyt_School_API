@@ -15,5 +15,7 @@ namespace Lib_Repository.V1.Menber_Repository
         Task<List<Menber_SclectAll_v1>> SelectAllAsync(tbMenberSchool menberManager);
         Task<Status_Application> InsertAsync(tbMenberSchool menberSchool);
         Task<Status_Application> SchoolMenberUpdateAsync(School_Menber_Update_v1 request);
+        Task<Member_Profile_v1> Profile(int id_Member);
+        Task<Status_Application> Delete(tbMenberSchool menberSchool);
     }
 }

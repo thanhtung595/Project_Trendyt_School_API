@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Lib_Repository.V1.Menber_Repository
 {
@@ -111,7 +112,7 @@ namespace Lib_Repository.V1.Menber_Repository
                 }
 
                 // check role menber
-                var role = await _db.tbRoleSchool.FirstOrDefaultAsync(x => x.name_Role!.ToLower() == request.name_Role!.ToLower());
+                var role = await _db.tbRoleSchool.FirstOrDefaultAsync(x => x.name_Role!.ToLower() == request.chuc_vu!.ToLower());
                 if (role == null)
                 {
                     return new Status_Application { StatusBool = false, StatusType = "Role không tồn tại" };
@@ -127,6 +128,62 @@ namespace Lib_Repository.V1.Menber_Repository
             catch (Exception ex)
             {
                 return new Status_Application { StatusBool = false , StatusType = "error "+ex.Message };
+            }
+        }
+
+        #endregion
+
+        #region Profile
+        public async Task<Member_Profile_v1> Profile(int id_Member)
+        {
+            var member = await (from m in _db.tbMenberSchool
+                                where m.id_Account == id_Member
+                                join a in _db.tbAccount
+                                on m.id_Account equals a.id_Account
+                                join r in _db.tbRoleSchool
+                                on m.id_RoleSchool equals r.id_RoleSchool
+                                join s in _db.tbSchool
+                                on m.id_School equals s.id_School
+                                join k in _db.tbKhoaSchool
+                                on m.id_KhoaSchool equals k.id_KhoaSchool into kj
+                                from k in kj.DefaultIfEmpty() // Sử dụng DefaultIfEmpty để xử lý trường hợp null
+                                select new Member_Profile_v1
+                                {
+                                    id_MenberSchool = m.id_MenberSchool,
+                                    user_Name = a.user_Name,
+                                    fullName = a.fullName,
+                                    birthday_User = a.birthday_User,
+                                    sex_User = a.sex_User,
+                                    imageUser = a.image_User,
+                                    email_User = a.email_User,
+                                    phone_User = a.phone_User,
+                                    danhGiaTb = m.danhGiaTb,
+                                    tags = m.tags,
+                                    chuc_vu = r.name_Role,
+                                    school = s.name_School,
+                                    name_KhoaSchool = k != null ? k.name_Khoa : "" // Sử dụng điều kiện để kiểm tra null
+                                }).FirstOrDefaultAsync();
+            
+            return member!;
+        }
+        #endregion
+
+        #region Delete
+        public async Task<Status_Application> Delete(tbMenberSchool menberSchool)
+        {
+            try
+            {
+                menberSchool.tags = "delete";
+                await _db.SaveChangesAsync();
+                return new Status_Application
+                {
+                    StatusBool = true,
+                    StatusType = "success"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Status_Application { StatusBool = false, StatusType = "error " + ex.Message };
             }
         }
         #endregion
