@@ -15,5 +15,8 @@ namespace Lib_Services.V1.Menber_Service
         Task<List<Menber_SclectAll_v1>> SelectAllAsync();
         Task<Status_Application> InsertAsync(MenberSchool_Insert_v1 request);
         Task<Status_Application> SchoolMenberUpdateAsync(School_Menber_Update_v1 request);
+        Task<Member_Profile_v1> Profile();
+        Task<Status_Application> Delete(int id_member);
+
     }
 }

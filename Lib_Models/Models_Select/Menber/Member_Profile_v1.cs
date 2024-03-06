@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lib_Models.Models_Select.Menber
+{
+    public class Member_Profile_v1
+    {
+        public int id_MenberSchool { get; set; }
+        public string? user_Name { get; set; }
+        public string? fullName { get; set; }
+        public DateTime birthday_User { get; set; }
+        public string? sex_User { get; set; }
+        public string? email_User { get; set; }
+        public string? phone_User { get; set; }
+        public string? school { get; set; }
+        public string? name_KhoaSchool { get; set; }
+        public string? chuc_vu { get; set; }
+        public float danhGiaTb { get; set; }
+        public string? tags { get; set; }
+        public string? imageUser { get; set; }
+    }
+}

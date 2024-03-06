@@ -38,7 +38,7 @@ namespace Lib_Services.V1.Menber_Service
             int id_Manager_Menber = await _token_Service_V1.GetAccessTokenIdAccount();
             var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_Manager_Menber);
 
-            return await _menber_Repository_V1.SelectAllAsync(menberManager);
+            return await _menber_Repository_V1.SelectAllAsync(menberManager!);
         }
         #endregion
 
@@ -95,6 +95,34 @@ namespace Lib_Services.V1.Menber_Service
         public async Task<Status_Application> SchoolMenberUpdateAsync(School_Menber_Update_v1 request)
         {
             return await _menber_Repository_V1.SchoolMenberUpdateAsync(request);
+        }
+
+        #endregion
+
+        #region Profile
+        public async Task<Member_Profile_v1> Profile()
+        {
+            int id_Account = await _token_Service_V1.GetAccessTokenIdAccount();
+            return await _menber_Repository_V1.Profile(id_Account);
+        }
+        #endregion
+
+        #region Delete
+        public async Task<Status_Application> Delete(int id_member)
+        {
+            // Lấy id_school
+            int id_Manager_Menber = await _token_Service_V1.GetAccessTokenIdAccount();
+            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_Manager_Menber);
+
+            // Menber school
+
+            var menber = await _db.tbMenberSchool.FindAsync(id_member);
+            if (menber == null && menber!.id_School != menberManager!.id_School)
+            {
+                return new Status_Application { StatusBool = false, StatusType = "Member delete không hợp lệ" };
+            }
+
+            return await _menber_Repository_V1.Delete(menber);
         }
         #endregion
     }
