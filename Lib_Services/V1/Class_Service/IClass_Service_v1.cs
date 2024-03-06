@@ -11,7 +11,7 @@ namespace Lib_Services.V1.Class_Service
     public interface IClass_Service_v1
     {
         Task<List<Class_Select_v1>> SelectAll();
-        Task<Class_Select_v1> SelectById();
+        Task<Class_Select_v1> SelectById(int id);
         Task<Status_Application> InsertAsync(string name_ClassSchool);
         Task<Status_Application> UpdateAsync(string name_ClassSchool);
     }
