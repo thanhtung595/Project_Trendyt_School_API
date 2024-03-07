@@ -3,6 +3,7 @@ using App_Models.Models_Table_CSDL;
 using Lib_Models.Models_Insert.v1.Class_School;
 using Lib_Models.Status_Model;
 using Lib_Repository.V1.Class_Member_Repository;
+using Lib_Services.Token_Service;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,40 @@ namespace Lib_Services.V1.Class_Member_Service
     {
         private readonly Trendyt_DbContext _db;
         private readonly IClass_Member_Repository_v1 _class_Member_Repository_V1;
-        public Class_Member_Service_v1(Trendyt_DbContext db, IClass_Member_Repository_v1 class_Member_Repository_V1)
+        private readonly IToken_Service_v1 _token_Service_V1;
+        public Class_Member_Service_v1(Trendyt_DbContext db, IClass_Member_Repository_v1 class_Member_Repository_V1,
+            IToken_Service_v1 token_Service_V1)
         {
             _db = db;
             _class_Member_Repository_V1 = class_Member_Repository_V1;
+            _token_Service_V1 = token_Service_V1;
         }
 
+        public async Task<Status_Application> Delete(int id_ClassSchool, int id_Student)
+        {
+            var member = await (from cl in _db.tbClassSchool
+                                where cl.id_ClassSchool == id_ClassSchool
+                                join mc in _db.tbClassSchool_Menber
+                                on cl.id_ClassSchool equals mc.id_ClassSchool
+                                where mc.id_MenberSchool == id_Student
+                                join m in _db.tbMenberSchool
+                                on mc.id_MenberSchool equals m.id_MenberSchool
+                                select new { Class = cl, StudentClass = mc, MemberSchool = m }).FirstOrDefaultAsync();
+
+            if (member == null)
+            {
+                return new Status_Application { StatusBool = false, StatusType = $"Student id {id_Student} không tồn tại hoặc không tồn tại trong lớp id {id_ClassSchool}" };
+            }
+            // Kiểm tra student có cùng khoa với memberManager
+            int idMemnerManager = await _token_Service_V1.GetAccessTokenIdAccount();
+            var memberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == idMemnerManager);
+            if (memberManager!.id_KhoaSchool != member.MemberSchool.id_KhoaSchool)
+            {
+                return new Status_Application { StatusBool = false, StatusType = $"Student với id {id_Student} không thuộc khoa mình" };
+            }
+
+            return await _class_Member_Repository_V1.Delete(member.StudentClass!);
+        }
 
         public async Task<Status_Application> Insert(Class_Member_Insert_v1 request)
         {
