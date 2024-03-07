@@ -11,5 +11,6 @@ namespace Lib_Services.V1.Class_Member_Service
     public interface IClass_Member_Service_v1
     {
         Task<Status_Application> Insert(Class_Member_Insert_v1 request);
+        Task<Status_Application> Delete(int id_ClassSchool,int id_Student);
     }
 }
