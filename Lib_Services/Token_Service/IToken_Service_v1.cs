@@ -13,7 +13,7 @@ namespace Lib_Services.Token_Service
     {
         public Task CreateToken(int id_Account);
         public Task<TokenModel> RefeshToken(int id_Account);
-        public Task<Token_Refesh_Model> RefeshToken(string access_Token);
+        public Task<Token_Refesh_Model> RefeshToken();
         public Task DeleteToken();
         public Task<string> GetAccessTokenAccount();
         public Task<string> GetRefeshTokenAccount();
