@@ -130,14 +130,12 @@ namespace Lib_Services.Token_Service
             token.is_Active = false;
             await _db.SaveChangesAsync();
         }
-        public async Task<Token_Refesh_Model> RefeshToken(string access_Token)
+        public async Task<Token_Refesh_Model> RefeshToken()
         {
             int id_AccountToken = await GetRefeshTokenIdAccount();
             string rfToken = await GetRefeshTokenAccount();
-            string acToken = access_Token;
 
-            var token = await _db.tbToken.FirstOrDefaultAsync(x =>
-                x.access_Token == access_Token && x.refresh_Token == rfToken 
+            var token = await _db.tbToken.FirstOrDefaultAsync(x => x.refresh_Token == rfToken 
                 && x.id_Account == id_AccountToken && x.is_Active == true);
 
             if (token == null)

@@ -21,15 +21,10 @@ namespace API_Application.Controllers_Public_Api.v1
             - Gửi access_Token
             - Nhận {access_Token , refesh_Token}
          */
-        [HttpPost("refesh-token"),Authorize]
-        public async Task<IActionResult> RefshToken([FromBody] string access_Token)
+        [HttpPut("refesh-token"),Authorize]
+        public async Task<IActionResult> RefshToken()
         {
-            if (string.IsNullOrEmpty(access_Token))
-            {
-                return StatusCode(400, new {error = "Chưa nhập access token." });
-            }
-
-            Token_Refesh_Model token_Refesh = await _tokenService_V1.RefeshToken(access_Token);
+            Token_Refesh_Model token_Refesh = await _tokenService_V1.RefeshToken();
             if (token_Refesh == null)
             {
                 return StatusCode(400, new { error = "access token, refresh token hoặc is active không hợp lệ. Vui lòng đăng nhập lại." });
