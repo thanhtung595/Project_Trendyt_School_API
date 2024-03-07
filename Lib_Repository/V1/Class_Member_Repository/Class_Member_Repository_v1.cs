@@ -16,6 +16,21 @@ namespace Lib_Repository.V1.Class_Member_Repository
         {
             _db = db;
         }
+
+        public async Task<Status_Application> Delete(tbClassSchool_Menber classMember)
+        {
+            try
+            {
+                _db.tbClassSchool_Menber.Remove(classMember);
+                await _db.SaveChangesAsync();
+                return new Status_Application { StatusBool = true, StatusType = "success" };
+            }
+            catch (Exception ex)
+            {
+                return new Status_Application { StatusBool = false, StatusType = "error" + ex.Message };
+            }
+        }
+
         public async Task<Status_Application> Insert(tbClassSchool_Menber classMember)
         {
             try
