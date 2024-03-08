@@ -48,7 +48,6 @@ namespace Lib_Services.V1.Class_Member_Service
             {
                 return new Status_Application { StatusBool = false, StatusType = $"Student với id {id_Student} không thuộc khoa mình" };
             }
-
             return await _class_Member_Repository_V1.Delete(member.StudentClass!);
         }
 
