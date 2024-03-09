@@ -1,4 +1,5 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
+using Lib_Models.Model_Update.Class;
 using Lib_Models.Models_Insert.v1.Class_School;
 using Lib_Models.Status_Model;
 using Lib_Services.V1.Class_Member_Service;
@@ -118,9 +119,9 @@ namespace API_Application.Controllers_School_Api.v1.Class_School
         #region Editclass
         [Authorize(Policy = IdentityData.QuanLyKhoaManager)]
         [HttpPut]
-        public async Task<IActionResult> EditClas([FromBody] string name_ClassSchool)
+        public async Task<IActionResult> EditClas(Class_Update_v1 request)
         {
-            Status_Application status = await _class_Service_V1.InsertAsync(name_ClassSchool);
+            Status_Application status = await _class_Service_V1.UpdateAsync(request);
             if (!status.StatusBool)
             {
                 return StatusCode(400, status.StatusType);
