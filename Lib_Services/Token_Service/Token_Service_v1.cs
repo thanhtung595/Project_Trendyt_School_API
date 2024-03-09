@@ -42,7 +42,6 @@ namespace Lib_Services.Token_Service
             }
             return null!;
         }
-
         public async Task<string> GetRefeshTokenAccount()
         {
             if (_httpContextAccessor.HttpContext!.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
@@ -57,7 +56,6 @@ namespace Lib_Services.Token_Service
             }
             return null!;
         }
-
         public async Task<int> GetAccessTokenIdAccount()
         {
             if (_httpContextAccessor.HttpContext!.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
@@ -86,7 +84,6 @@ namespace Lib_Services.Token_Service
             }
             return 0;
         }
-        
         public async Task CreateToken(int id_Account)
         {
             try
@@ -112,9 +109,9 @@ namespace Lib_Services.Token_Service
             var account = await _db.tbAccount.FindAsync(id_Account);
             var role = await _db.tbRole.FindAsync(account!.id_Role);
             var tokenDb = await _db.tbToken.FirstOrDefaultAsync(x => x.id_Account == id_Account);
-            tokenDb!.access_Token = await CreateTokenString(tokenDb.id_Token, id_Account, role!.name_Role!,7);
+            tokenDb!.access_Token = await CreateTokenString(tokenDb.id_Token, id_Account, role!.name_Role!,12);
             tokenDb.refresh_Token = await CreateTokenString(tokenDb.id_Token, id_Account, role.name_Role!, 30);
-            tokenDb.access_Expire_Token = DateTime.UtcNow.AddDays(7);
+            tokenDb.access_Expire_Token = DateTime.UtcNow.AddHours(12);
             tokenDb.refresh_Expire_Token = DateTime.UtcNow.AddDays(30);
             tokenDb.is_Active = true;
             await _db.SaveChangesAsync();
@@ -149,8 +146,6 @@ namespace Lib_Services.Token_Service
             {
                 access_Token = tokenModel.access_Token,
                 refresh_Token = tokenModel.refresh_Token,
-                access_Expire_Token = tokenModel.access_Expire_Token,
-                refresh_Expire_Token = tokenModel.refresh_Expire_Token,
             };
         }
         private async Task<string> CreateTokenString(Guid id_Token, int id_Account, string name_Role,int day_Expires)
@@ -174,7 +169,7 @@ namespace Lib_Services.Token_Service
                         new Claim("id", id_TokenString),
                         new Claim("typeRole", name_Role!),
                     }),
-                Expires = DateTime.UtcNow.AddDays(day_Expires), // Thời gian sống của JWT
+                Expires = DateTime.UtcNow.AddHours(day_Expires), // Thời gian sống của JWT
                 Issuer = issuer,
                 Audience = audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
@@ -183,7 +178,6 @@ namespace Lib_Services.Token_Service
             var tokenString = tokenHandler.WriteToken(token);
             return await Task.FromResult(tokenString);
         }
-
         public async Task<tbMenberSchool> Get_Menber_Token()
         {
             try
