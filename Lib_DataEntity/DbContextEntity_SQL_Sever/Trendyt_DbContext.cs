@@ -1,4 +1,5 @@
 ﻿using App_Models.Models_Table_CSDL;
+using Lib_Models.Models_Table_Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,11 +31,9 @@ namespace App_DataBaseEntity.DbContextEntity_SQL_Sever
         public DbSet<tbKhoaSchool> tbKhoaSchool { get; set; }
         public DbSet<tbClassSchool> tbClassSchool { get; set; }
         public DbSet<tbMenberSchool> tbMenberSchool { get; set; }
-        public DbSet<tbMonHoc> tbMonHoc { get; set; }
-        public DbSet<tbClassSchool_MonHoc> tbClassSchool_MonHoc { get; set; }
-        public DbSet<tbBuoiHoc> tbBuoiHoc { get; set; }
-        public DbSet<tbBuoiHoc_MonHoc> tbBuoiHoc_MonHoc { get; set; }
         public DbSet<tbClassSchool_Menber> tbClassSchool_Menber { get; set; }
+        public DbSet<tbMonHoc> tbMonHoc { get; set; }
         public DbSet<tbMonHocClass_Student> tbMonHocClass_Student { get; set; }
+        public DbSet<tbBuoiHoc> tbBuoiHoc { get; set; }
     }
 }
