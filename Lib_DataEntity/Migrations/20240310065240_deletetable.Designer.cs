@@ -4,6 +4,7 @@ using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lib_DataEntity.Migrations
 {
     [DbContext(typeof(Trendyt_DbContext))]
-    partial class Trendyt_DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240310065240_deletetable")]
+    partial class deletetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -292,89 +295,6 @@ namespace Lib_DataEntity.Migrations
                     b.ToTable("tbTypeAccount");
                 });
 
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbBuoiHoc", b =>
-                {
-                    b.Property<int>("id_BuoiHoc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_BuoiHoc"));
-
-                    b.Property<int>("id_MonHoc")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("thoiGianBatDau")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("thoiGianKetThuc")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("id_BuoiHoc");
-
-                    b.HasIndex("id_MonHoc");
-
-                    b.ToTable("tbBuoiHoc");
-                });
-
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMonHoc", b =>
-                {
-                    b.Property<int>("id_MonHoc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_MonHoc"));
-
-                    b.Property<int>("_SoBuoiNghi")
-                        .HasColumnType("int");
-
-                    b.Property<float>("_danhGiaTrungBinh")
-                        .HasColumnType("real");
-
-                    b.Property<int>("id_School")
-                        .HasColumnType("int");
-
-                    b.Property<string>("name_MonHoc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ngayBatDau")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ngayKetThuc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("tags")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id_MonHoc");
-
-                    b.HasIndex("id_School");
-
-                    b.ToTable("tbMonHoc");
-                });
-
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMonHocClass_Student", b =>
-                {
-                    b.Property<int>("id_MonHocClass_Student")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_MonHocClass_Student"));
-
-                    b.Property<int>("id_MenberSchool")
-                        .HasColumnType("int");
-
-                    b.Property<int>("id_MonHoc")
-                        .HasColumnType("int");
-
-                    b.HasKey("id_MonHocClass_Student");
-
-                    b.HasIndex("id_MenberSchool");
-
-                    b.HasIndex("id_MonHoc");
-
-                    b.ToTable("tbMonHocClass_Student");
-                });
-
             modelBuilder.Entity("App_Models.Models_Table_CSDL.tbAccount", b =>
                 {
                     b.HasOne("App_Models.Models_Table_CSDL.tbRole", "tbRole")
@@ -482,47 +402,6 @@ namespace Lib_DataEntity.Migrations
                         .IsRequired();
 
                     b.Navigation("tbAccount");
-                });
-
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbBuoiHoc", b =>
-                {
-                    b.HasOne("Lib_Models.Models_Table_Entity.tbMonHoc", "tbMonHoc")
-                        .WithMany()
-                        .HasForeignKey("id_MonHoc")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("tbMonHoc");
-                });
-
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMonHoc", b =>
-                {
-                    b.HasOne("App_Models.Models_Table_CSDL.tbSchool", "tbSchool")
-                        .WithMany()
-                        .HasForeignKey("id_School")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("tbSchool");
-                });
-
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMonHocClass_Student", b =>
-                {
-                    b.HasOne("App_Models.Models_Table_CSDL.tbMenberSchool", "tbMenberSchool")
-                        .WithMany()
-                        .HasForeignKey("id_MenberSchool")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Lib_Models.Models_Table_Entity.tbMonHoc", "tbMonHoc")
-                        .WithMany()
-                        .HasForeignKey("id_MonHoc")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("tbMenberSchool");
-
-                    b.Navigation("tbMonHoc");
                 });
 #pragma warning restore 612, 618
         }
