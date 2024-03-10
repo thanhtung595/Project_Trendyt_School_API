@@ -10,7 +10,5 @@ namespace Lib_Models.Models_Table_Class.Token
     {
         public string? access_Token { get; set; }
         public string? refresh_Token { get; set; }
-        public DateTime access_Expire_Token { get; set; }
-        public DateTime refresh_Expire_Token { get; set; }
     }
 }
