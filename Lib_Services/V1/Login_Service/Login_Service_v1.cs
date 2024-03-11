@@ -79,6 +79,8 @@ namespace Lib_Services.V1.Login_Service
             Account_Login_Select_v1 loginRpo = await _account_Service_V1.SelectByAccount(account.id_Account);
             loginRpo.access_Token = rfToken.access_Token;
             loginRpo.refesh_Token = rfToken.refresh_Token;
+            loginRpo.access_Expire_Token = rfToken.access_Expire_Token;
+            loginRpo.refresh_Expire_Token = rfToken.refresh_Expire_Token;
             return loginRpo;
         }
         #endregion
