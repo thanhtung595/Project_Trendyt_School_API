@@ -146,6 +146,8 @@ namespace Lib_Services.Token_Service
             {
                 access_Token = tokenModel.access_Token,
                 refresh_Token = tokenModel.refresh_Token,
+                access_Expire_Token = tokenModel.access_Expire_Token,
+                refresh_Expire_Token = tokenModel.refresh_Expire_Token
             };
         }
         private async Task<string> CreateTokenString(Guid id_Token, int id_Account, string name_Role,int day_Expires)
