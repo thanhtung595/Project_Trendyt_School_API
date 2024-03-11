@@ -3,6 +3,9 @@ using Lib_Repository.V1.Class_Member_Repository;
 using Lib_Repository.V1.Class_Repository;
 using Lib_Repository.V1.Khoa_Repository;
 using Lib_Repository.V1.Menber_Repository;
+using Lib_Repository.V1.MonHoc;
+using Lib_Repository.V1.MonHoc_Repository;
+using Lib_Repository.V1.MonHoc_Student_Repository;
 using Lib_Repository.V1.Role_Repository;
 using Lib_Repository.V1.RoleSchool_Repository;
 using Lib_Repository.V1.School_Repository;
@@ -33,6 +36,8 @@ namespace Lib_Helpers.Scoped
             services.AddScoped<IClass_Repository_v1, Class_Repository_v1>();
             services.AddScoped<IStudent_Repository_v1, Student_Repository_v1>();
             services.AddScoped<IClass_Member_Repository_v1, Class_Member_Repository_v1>();
+            services.AddScoped<IMonHoc_Repository_v1, MonHoc_Repository_v1>();
+            services.AddScoped<IMonHoc_Student_Repository_v1, MonHoc_Student_Repository_v1>();
 
         }
     }
