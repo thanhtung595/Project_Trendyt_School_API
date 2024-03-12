@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lib_Models.Models_Insert.v1.Class_School;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,6 @@ namespace Lib_Models.Models_Insert.v1.MonHoc
         public int _SoBuoiNghi { get; set; }
         public int id_Teacher { get; set; }
 
-        public List<int>? student { get; set; }
+        public List<Class_Member_Insert_v1>? student { get; set; }
     }
 }
