@@ -77,20 +77,24 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
                             result = StatusCode(400, statusAddTeacher.StatusType);
                             return;
                         }
-                        // Add student
-                        foreach (var st in request.student!)
+                        if (request.student!.Count() != 0)
                         {
                             MonHocClass_Student_Insert_v1 addStudent = new MonHocClass_Student_Insert_v1
                             {
                                 id_MonHoc = statusAddMonHoc.Id_Int,
-                                id_Student = st
+                                
                             };
-                            Status_Application statusAddStudent = await _monHoc_Student_Service_V1.Insert(addStudent);
-                            if (!statusAddStudent.StatusBool)
+                            // Add student
+                            foreach (var st in request.student!)
                             {
-                                dbContextTransaction.Rollback();
-                                result = StatusCode(400, statusAddStudent.StatusType);
-                                return;
+                                addStudent.id_Student = st.id_Student;
+                                Status_Application statusAddStudent = await _monHoc_Student_Service_V1.Insert(addStudent);
+                                if (!statusAddStudent.StatusBool)
+                                {
+                                    dbContextTransaction.Rollback();
+                                    result = StatusCode(400, statusAddStudent.StatusType);
+                                    return;
+                                }
                             }
                         }
                         dbContextTransaction.Commit();

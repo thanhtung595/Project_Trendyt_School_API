@@ -85,19 +85,22 @@ namespace API_Application.Controllers_School_Api.v1.Class_School
                             return;
                         }
 
-                        Class_Member_Insert_v1 addStudent = new Class_Member_Insert_v1
+                        if (request.student!.Count() != 0)
                         {
-                            id_ClassSchool = status.Id_Int,
-                        };
-                        foreach (var item in request.student!)
-                        {
-                            addStudent.id_Student = item.id_Student;
-                            Status_Application statusStudent = await _class_Member_Service_V1.Insert(addStudent);
-                            if (!statusStudent.StatusBool)
+                            Class_Member_Insert_v1 addStudent = new Class_Member_Insert_v1
                             {
-                                dbConnectTration.Rollback();
-                                result = StatusCode(400, statusStudent.StatusType);
-                                return;
+                                id_ClassSchool = status.Id_Int,
+                            };
+                            foreach (var item in request.student!)
+                            {
+                                addStudent.id_Student = item.id_Student;
+                                Status_Application statusStudent = await _class_Member_Service_V1.Insert(addStudent);
+                                if (!statusStudent.StatusBool)
+                                {
+                                    dbConnectTration.Rollback();
+                                    result = StatusCode(400, statusStudent.StatusType);
+                                    return;
+                                }
                             }
                         }
                         // Nếu mọi thứ thành công, commit giao dịch
