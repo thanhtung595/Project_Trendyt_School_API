@@ -1,4 +1,5 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
+using Lib_Models.Model_Update.MonHoc;
 using Lib_Models.Models_Insert.v1.MonHoc;
 using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
@@ -27,6 +28,7 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
             _monHoc_Student_Service_V1 = monHoc_Student_Service_V1;
         }
 
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -103,6 +105,26 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
                 }
             });
             return result;
+        }
+
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
+        [HttpGet]
+        [Route("by-id")]
+        public async Task<IActionResult> GetById([FromQuery(Name = "id")] int id)
+        {
+            return Ok(await _monHoc_Service_V1.GetById(id));
+        }
+
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
+        [HttpPut]
+        public async Task<IActionResult> Edit(MonHoc_Update_v1 request)
+        {
+            Status_Application status = await _monHoc_Service_V1.Edit(request);
+            if (!status.StatusBool)
+            {
+                return StatusCode(400, status.StatusType); 
+            }
+            return StatusCode(204);
         }
     }
 }
