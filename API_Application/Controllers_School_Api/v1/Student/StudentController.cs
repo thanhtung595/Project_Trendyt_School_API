@@ -18,7 +18,7 @@ namespace API_Application.Controllers_School_Api.v1.Student
         }
 
         #region SelectAll
-        [Authorize(Policy = IdentityData.QuanLyKhoaManager)]
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpGet]
         public async Task<IActionResult> SelectAll()
         {
