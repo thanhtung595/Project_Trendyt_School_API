@@ -1,4 +1,5 @@
-﻿using Lib_Models.Models_Select.MonHoc;
+﻿using App_Models.Models_Table_CSDL;
+using Lib_Models.Models_Select.MonHoc;
 using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
 using System;
@@ -13,5 +14,6 @@ namespace Lib_Repository.V1.MonHoc_Repository
     {
         Task<List<MonHoc_SelectAll_v1>> GetAll(int idSchool);
         Task<Status_Application> Insert(tbMonHoc monHoc);
+        Task<MonHocSelectById_v1> GetById(int idSchool, int id_MonHoc);
     }
 }

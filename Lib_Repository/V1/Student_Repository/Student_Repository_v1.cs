@@ -19,7 +19,15 @@ namespace Lib_Repository.V1.Student_Repository
         }
         public async Task<List<Student_Select_v1>> SelectAllAsync(tbMenberSchool menberKhoaManager)
         {
-            var list = await (from m in _db.tbMenberSchool
+            IQueryable<tbMenberSchool> query = _db.tbMenberSchool;
+
+            if (menberKhoaManager.id_KhoaSchool != 0)
+            {
+                query = query.Where(x => x.id_KhoaSchool == menberKhoaManager.id_KhoaSchool);
+            }
+
+
+            var list = await (from m in query
                               where m.id_KhoaSchool == menberKhoaManager.id_KhoaSchool
                               join k in _db.tbKhoaSchool
                               on m.id_KhoaSchool equals k.id_KhoaSchool
