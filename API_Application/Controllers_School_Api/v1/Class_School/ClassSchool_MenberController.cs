@@ -72,7 +72,7 @@ namespace API_Application.Controllers_School_Api.v1.Class_School
         #region Delete
         [Authorize(Policy = IdentityData.QuanLyKhoaManager)]
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery(Name = "id_ClassSchool")] int id_ClassSchool, [FromBody]List<int> id_Student)
+        public async Task<IActionResult> Delete([FromQuery(Name = "id_ClassSchool")] int id_ClassSchool, [FromBody]List<Class_Member_Insert_v1> id_Student)
         {
             var executionStrategy = _db.Database.CreateExecutionStrategy();
             IActionResult result = null!;
@@ -85,7 +85,7 @@ namespace API_Application.Controllers_School_Api.v1.Class_School
                     {
                         foreach (var item in id_Student)
                         {
-                            Status_Application status = await _class_member_service_V1.Delete(id_ClassSchool, item);
+                            Status_Application status = await _class_member_service_V1.Delete(id_ClassSchool, item.id_Student);
                             if (!status.StatusBool)
                             {
                                 db.Rollback();
