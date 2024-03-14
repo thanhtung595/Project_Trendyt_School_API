@@ -18,12 +18,14 @@ namespace Lib_Services.V1.Class_Member_Service
         private readonly Trendyt_DbContext _db;
         private readonly IClass_Member_Repository_v1 _class_Member_Repository_V1;
         private readonly IToken_Service_v1 _token_Service_V1;
+        private readonly IToken_Service_v2 _token_Service_V2;
         public Class_Member_Service_v1(Trendyt_DbContext db, IClass_Member_Repository_v1 class_Member_Repository_V1,
-            IToken_Service_v1 token_Service_V1)
+            IToken_Service_v1 token_Service_V1, IToken_Service_v2 token_Service_V2)
         {
             _db = db;
             _class_Member_Repository_V1 = class_Member_Repository_V1;
             _token_Service_V1 = token_Service_V1;
+            _token_Service_V2 = token_Service_V2;
         }
 
         public async Task<Status_Application> Delete(int id_ClassSchool, int id_Student)
@@ -42,8 +44,7 @@ namespace Lib_Services.V1.Class_Member_Service
                 return new Status_Application { StatusBool = false, StatusType = $"Student id {id_Student} không tồn tại hoặc không tồn tại trong lớp id {id_ClassSchool}" };
             }
             // Kiểm tra student có cùng khoa với memberManager
-            int idMemnerManager = await _token_Service_V1.GetAccessTokenIdAccount();
-            var memberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == idMemnerManager);
+            var memberManager = await _token_Service_V2.Get_Menber_Token();
             if (memberManager!.id_KhoaSchool != member.MemberSchool.id_KhoaSchool)
             {
                 return new Status_Application { StatusBool = false, StatusType = $"Student với id {id_Student} không thuộc khoa mình" };

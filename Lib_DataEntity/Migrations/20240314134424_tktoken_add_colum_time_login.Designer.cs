@@ -4,6 +4,7 @@ using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lib_DataEntity.Migrations
 {
     [DbContext(typeof(Trendyt_DbContext))]
-    partial class Trendyt_DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314134424_tktoken_add_colum_time_login")]
+    partial class tktoken_add_colum_time_login
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,9 +262,6 @@ namespace Lib_DataEntity.Migrations
                     b.Property<string>("access_Token")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("browserName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("hostName")
                         .HasColumnType("nvarchar(max)");
 
@@ -285,6 +285,9 @@ namespace Lib_DataEntity.Migrations
 
                     b.Property<DateTime?>("time_login")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("userAgent_family")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id_Token");
 

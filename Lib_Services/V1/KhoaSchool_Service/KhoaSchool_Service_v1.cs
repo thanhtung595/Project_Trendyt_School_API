@@ -19,21 +19,22 @@ namespace Lib_Services.V1.KhoaSchool_Service
     {
         private readonly Trendyt_DbContext _db;
         private readonly IToken_Service_v1 _tokenService_V1;
+        private readonly IToken_Service_v2 _tokenService_V2;
         private readonly IKhoa_Repository_v1 _khoa_Repository_V1;
         public KhoaSchool_Service_v1(Trendyt_DbContext db, IToken_Service_v1 token_Service_V1,
-            IKhoa_Repository_v1 khoa_Repository_V1)
+            IKhoa_Repository_v1 khoa_Repository_V1, IToken_Service_v2 tokenService_V2)
         {
             _db = db;
             _tokenService_V1 = token_Service_V1;
             _khoa_Repository_V1 = khoa_Repository_V1;
+            _tokenService_V2 = tokenService_V2;
         }
 
         #region Select All 
         public async Task<List<KhoaSchool_Select_v1>> SelectAll()
         {
             // Lấy id_school
-            int id_Manager_Menber = await _tokenService_V1.GetAccessTokenIdAccount();
-            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_Manager_Menber);
+            var menberManager = await _tokenService_V2.Get_Menber_Token();
             return await _khoa_Repository_V1.SelectAll(menberManager!.id_School);
         }
         #endregion
@@ -54,8 +55,7 @@ namespace Lib_Services.V1.KhoaSchool_Service
             }
 
             // Lấy id_school
-            int id_Manager_Menber = await _tokenService_V1.GetAccessTokenIdAccount();
-            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_Manager_Menber);
+            var menberManager = await _tokenService_V2.Get_Menber_Token();
 
             // Check name khoa da ton tai
             var isNameKhoa = await _db.tbKhoaSchool.FirstOrDefaultAsync(x => x.id_School == menberManager!.id_School 
@@ -107,8 +107,7 @@ namespace Lib_Services.V1.KhoaSchool_Service
             }
 
             // Lấy id_school
-            int id_Manager_Menber = await _tokenService_V1.GetAccessTokenIdAccount();
-            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_Manager_Menber);
+            var menberManager = await _tokenService_V2.Get_Menber_Token();
 
             // Kiểm tra name khoa có trùng
             var isNameKhoa = await _db.tbKhoaSchool.AnyAsync(x => x.id_School == menberManager!.id_School 
