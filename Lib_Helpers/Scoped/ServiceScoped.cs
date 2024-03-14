@@ -32,6 +32,7 @@ namespace Lib_Helpers.Scoped
             services.AddScoped<IRegister_Service_v1, Register_Service_v1>();
             services.AddScoped<IAccount_Service_v1, Account_Service_v1>();
             services.AddScoped<IToken_Service_v1, Token_Service_v1>();
+            services.AddScoped<IToken_Service_v2, Token_Service_v2>();
             services.AddScoped<ILogin_Service_v1, Login_Service_v1>();
             services.AddScoped<IRoleSchool_Service_v1, RoleSchool_Service_v1>();
             services.AddScoped<ISchool_Service_v1, School_Service_v1>();

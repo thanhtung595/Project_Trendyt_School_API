@@ -124,13 +124,7 @@ namespace Lib_Services.V1.Register_Service
             };
 
             // Trả data về controller
-            Status_Application statusInserAccount = await _account_Service_V1.InsertAccount(account);
-            if (!statusInserAccount.StatusBool)
-            {
-                return statusInserAccount;
-            }
-            await _token_Service_V1.CreateToken(statusInserAccount.Id_Int);
-            return statusInserAccount;
+            return await _account_Service_V1.InsertAccount(account);
         }
         #endregion
 
