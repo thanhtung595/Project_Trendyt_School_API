@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using UAParser;
 
 namespace API_Application.Controllers_Public_Api.v1
 {
@@ -58,45 +59,57 @@ namespace API_Application.Controllers_Public_Api.v1
 
 
         //[Authorize]
-        //[HttpGet]
-        //public async Task<IActionResult> GiaMaToken()
-        //{
-        //    // Lấy JWT từ request header
-        //    var jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        [HttpGet]
+        public async Task<IActionResult> GiaMaToken()
+        {
+            //// Lấy JWT từ request header
+            //var jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-        //    // Giải mã JWT
-        //    var handler = new JwtSecurityTokenHandler();
-        //    var token = handler.ReadJwtToken(jwtToken);
+            //// Giải mã JWT
+            //var handler = new JwtSecurityTokenHandler();
+            //var token = handler.ReadJwtToken(jwtToken);
 
-        //    // Đọc các claims từ JWT
-        //    string userId = token.Claims.First(claim => claim.Type == "id").Value;
+            //// Đọc các claims từ JWT
+            //string userId = token.Claims.First(claim => claim.Type == "id").Value;
 
-        //    Guid idTokenGuidPasre = Guid.Parse(userId);
+            //Guid idTokenGuidPasre = Guid.Parse(userId);
 
-        //    var account = await _db.tbToken.Include(x => x.tbAccount).FirstOrDefaultAsync(x => x.id_Token == idTokenGuidPasre);
+            //var account = await _db.tbToken.Include(x => x.tbAccount).FirstOrDefaultAsync(x => x.id_Token == idTokenGuidPasre);
 
 
-        //    var httpContext = _httpContextAccessor.HttpContext;
+            var httpContext = _httpContextAccessor.HttpContext;
 
-        //    // Lấy địa chỉ IP của người dùng
-        //    var ipAddress = httpContext!.Connection.RemoteIpAddress;
+            // Lấy địa chỉ IP của người dùng
+            var ipAddress = httpContext!.Connection.RemoteIpAddress;
 
-        //    // Lấy tên máy của người dùng (nếu có)
-        //    var hostName = Dns.GetHostEntry(ipAddress!)?.HostName;
+            // Lấy tên máy của người dùng (nếu có)
+            var hostName = Dns.GetHostEntry(ipAddress!)?.HostName;
 
-        //    // Nếu địa chỉ IP là IPv4
-        //    if (ipAddress!.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-        //    {
-        //        // Xử lý IPv4
-        //        var ipv4Address = ipAddress.ToString();
-        //    }
-        //    // Nếu địa chỉ IP là IPv6
-        //    else if (ipAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
-        //    {
-        //        // Xử lý IPv6
-        //        var ipv6Address = ipAddress.ToString();
-        //    }
-        //    return Ok(hostName);
-        //}
+            // Nếu địa chỉ IP là IPv4
+            if (ipAddress!.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+            {
+                // Xử lý IPv4
+                var ipv4Address = ipAddress.ToString();
+            }
+            // Nếu địa chỉ IP là IPv6
+            else if (ipAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
+            {
+                // Xử lý IPv6
+                var ipv6Address = ipAddress.ToString();
+            }
+
+            // Lấy tên trình duyệt
+            var userAgent = httpContext.Request.Headers["User-Agent"].ToString();
+
+            var parser = Parser.GetDefault();
+            var clientInfo = parser.Parse(userAgent);
+
+            var browserName = clientInfo.UA.Family; // Tên trình duyệt
+            var browserVersion = clientInfo.UA.Major; // Phiên bản trình duyệt
+
+            DateTime now = DateTime.Now;
+            DateTime newDateTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+            return Ok(newDateTime);
+        }
     }
 }

@@ -22,14 +22,16 @@ namespace Lib_Services.V1.School_Service
         private readonly ISchool_Repository_v1 _school_Repository_v1;
         private readonly Trendyt_DbContext _db;
         private readonly IToken_Service_v1 _token_Service_v1;
+        private readonly IToken_Service_v2 _token_Service_v2;
         private readonly IMenber_Service_v1 _menber_Service_V1;
         public School_Service_v1(Trendyt_DbContext db, ISchool_Repository_v1 school_Repository_v1,
-            IToken_Service_v1 token_Service_V1 , IMenber_Service_v1 menber_Service_V1)
+            IToken_Service_v1 token_Service_V1 , IMenber_Service_v1 menber_Service_V1, IToken_Service_v2 token_Service_v2)
         {
             _db = db;
             _school_Repository_v1 = school_Repository_v1;
             _token_Service_v1 = token_Service_V1;
             _menber_Service_V1 = menber_Service_V1;
+            _token_Service_v2 = token_Service_v2;
         }
 
         #region SelectAllAsync
@@ -125,7 +127,7 @@ namespace Lib_Services.V1.School_Service
                 return new Status_Application { StatusBool = false, StatusType = "Chưa nhập địa chỉ." };
             }
 
-            int id_AccountToken = await _token_Service_v1.GetAccessTokenIdAccount();
+            int id_AccountToken = await _token_Service_v2.Get_Id_Account_Token();
             request.id_AccountToken = id_AccountToken;
 
             var menber = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account ==  id_AccountToken);

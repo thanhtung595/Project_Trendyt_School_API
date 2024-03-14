@@ -21,6 +21,8 @@ namespace App_Models.Models_Table_CSDL
         public string? ipv4 { get; set; }
         public string? ipv6 { get; set; }
         public string? hostName { get; set; }
+        public string? browserName { get; set; }
+        public DateTime? time_login { get; set; }
 
         [ForeignKey("id_Account")]
         public virtual tbAccount? tbAccount { get; set; }
