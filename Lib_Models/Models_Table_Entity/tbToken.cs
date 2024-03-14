@@ -18,6 +18,9 @@ namespace App_Models.Models_Table_CSDL
         public DateTime refresh_Expire_Token { get; set; }
         public int id_Account { get; set; }
         public bool is_Active { get; set; }
+        public string? ipv4 { get; set; }
+        public string? ipv6 { get; set; }
+        public string? hostName { get; set; }
 
         [ForeignKey("id_Account")]
         public virtual tbAccount? tbAccount { get; set; }

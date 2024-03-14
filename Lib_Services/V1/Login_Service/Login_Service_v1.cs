@@ -18,12 +18,14 @@ namespace Lib_Services.V1.Login_Service
     {
         private readonly Trendyt_DbContext _db;
         private readonly IToken_Service_v1 _token_Service_V1;
+        private readonly IToken_Service_v2 _token_Service_V2;
         private readonly IAccount_Service_v1 _account_Service_V1;
         public Login_Service_v1(Trendyt_DbContext db, IToken_Service_v1 token_Service_V1,
-            IAccount_Service_v1 account_Service_V1)
+            IToken_Service_v2 token_Service_V2, IAccount_Service_v1 account_Service_V1)
         {
             _db = db;
             _token_Service_V1 = token_Service_V1;
+            _token_Service_V2 = token_Service_V2;
             _account_Service_V1 = account_Service_V1;
         }
 
@@ -52,7 +54,7 @@ namespace Lib_Services.V1.Login_Service
             }
 
             // Kiểm tra user_Name có tồn tại
-            var account = await _db.tbAccount.FirstOrDefaultAsync(x => x.user_Name == login.user_Name);
+            var account = await _db.tbAccount.Include(x => x.tbRole).FirstOrDefaultAsync(x => x.user_Name == login.user_Name);
             if (account == null)
             {
                 return new Account_Login_Select_v1
@@ -72,15 +74,16 @@ namespace Lib_Services.V1.Login_Service
                     StatusType = "Sai mật khẩu."
                 };
             }
-            // Cấp lại bộ Token mới
-            var rfToken = await _token_Service_V1.RefeshToken(account.id_Account);
+            // Cấp bộ Token mới
+            var rfToken_v2 = await _token_Service_V2.CreateToken(account.id_Account, account.tbRole!.name_Role!);
 
             // Trả lại dữ liệu cho Controller
             Account_Login_Select_v1 loginRpo = await _account_Service_V1.SelectByAccount(account.id_Account);
-            loginRpo.access_Token = rfToken.access_Token;
-            loginRpo.refesh_Token = rfToken.refresh_Token;
-            loginRpo.access_Expire_Token = rfToken.access_Expire_Token;
-            loginRpo.refresh_Expire_Token = rfToken.refresh_Expire_Token;
+            loginRpo.access_Token = rfToken_v2.access_Token;
+            loginRpo.refesh_Token = rfToken_v2.refresh_Token;
+            loginRpo.access_Expire_Token = rfToken_v2.access_Expire_Token;
+            loginRpo.refresh_Expire_Token = rfToken_v2.refresh_Expire_Token;
+
             return loginRpo;
         }
         #endregion
