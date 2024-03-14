@@ -15,20 +15,21 @@ namespace Lib_Services.V1.Teacher_Service
     {
         private readonly ITeacher_Repository_v1 _teacher_Repository_V1;
         private readonly IToken_Service_v1 _token_Service_v1;
+        private readonly IToken_Service_v2 _token_Service_v2;
         private readonly Trendyt_DbContext _db;
         public Teacher_Service_v1(ITeacher_Repository_v1 teacher_Repository_V1 , IToken_Service_v1 token_Service_V1,
-            Trendyt_DbContext db)
+            Trendyt_DbContext db, IToken_Service_v2 token_Service_v2)
         {
             _teacher_Repository_V1 = teacher_Repository_V1;
             _token_Service_v1 = token_Service_V1;
             _db = db;
+            _token_Service_v2 = token_Service_v2;
         }
 
         #region Select_All_Teacher
         public async Task<List<Select_All_Teacher_v1>> Select_All_Teacher()
         {
-            int id_account = await _token_Service_v1.GetAccessTokenIdAccount();
-            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_account);
+            var menberManager = await _token_Service_v2.Get_Menber_Token();
 
             return await _teacher_Repository_V1.Select_All_Teacher(menberManager!);
         }
@@ -37,8 +38,7 @@ namespace Lib_Services.V1.Teacher_Service
         #region Show_One_Teacher
         public async Task<Select_One_Teacher_v1> Show_One_Teacher(int id_Teacher)
         {
-            int id_account = await _token_Service_v1.GetAccessTokenIdAccount();
-            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_account);
+            var menberManager = await _token_Service_v2.Get_Menber_Token();
 
             return await _teacher_Repository_V1.Select_One_Teacher(menberManager!,id_Teacher);
         }

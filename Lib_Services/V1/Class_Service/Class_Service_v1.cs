@@ -21,24 +21,24 @@ namespace Lib_Services.V1.Class_Service
         private readonly Trendyt_DbContext _db;
         private readonly IClass_Repository_v1 _class_Repository_V1;
         private readonly IToken_Service_v1 _token_Service_V1;
+        private readonly IToken_Service_v2 _token_Service_V2;
         private readonly IClass_Member_Service_v1 _class_Member_Service_V1;
         public Class_Service_v1(Trendyt_DbContext db , IClass_Repository_v1 class_Repository_V1,
-            IToken_Service_v1 token_Service_V1, IClass_Member_Service_v1 class_Member_Service_V1)
+            IToken_Service_v1 token_Service_V1, IClass_Member_Service_v1 class_Member_Service_V1, 
+            IToken_Service_v2 token_Service_V2)
         {
             _db = db;
             _class_Repository_V1 = class_Repository_V1;
             _token_Service_V1 = token_Service_V1;
             _class_Member_Service_V1 = class_Member_Service_V1;
+            _token_Service_V2 = token_Service_V2;
         }
 
         #region SelectAll
         public async Task<List<Class_Select_v1>> SelectAll()
         {
             // Id_Menber Manager
-            int id_MenberManager = await _token_Service_V1.GetAccessTokenIdAccount();
-            var menberManager = await _db.tbMenberSchool
-                                .Include(menber => menber.tbRoleSchool)
-                                .FirstOrDefaultAsync(x => x.id_Account == id_MenberManager);
+            var menberManager = await _token_Service_V2.Get_Menber_Token();
 
             return await _class_Repository_V1.SelectAll(menberManager!);
         }
@@ -48,10 +48,7 @@ namespace Lib_Services.V1.Class_Service
         public async Task<Class_Select_v1> SelectById(int id)
         {
             // Id_Menber Manager
-            int id_MenberManager = await _token_Service_V1.GetAccessTokenIdAccount();
-            var menberManager = await _db.tbMenberSchool
-                                .Include(menber => menber.tbRoleSchool)
-                                .FirstOrDefaultAsync(x => x.id_Account == id_MenberManager);
+            var menberManager = await _token_Service_V2.Get_Menber_Token();
 
             return await _class_Repository_V1.SelectById(menberManager!,id);
         }
@@ -62,9 +59,7 @@ namespace Lib_Services.V1.Class_Service
         {
             name_ClassSchool = name_ClassSchool.Trim();
             // Id_Menber Manager
-            int id_MenberManager = await _token_Service_V1.GetAccessTokenIdAccount();
-            //var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_MenberManager);
-            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_MenberManager);
+            var menberManager = await _token_Service_V2.Get_Menber_Token();
             var khoa = await _db.tbKhoaSchool.FindAsync(menberManager!.id_KhoaSchool);
             if (khoa == null)
             {
@@ -95,8 +90,7 @@ namespace Lib_Services.V1.Class_Service
                 request.tag = "active";
             }
 
-            int id_AccountManager = await _token_Service_V1.GetAccessTokenIdAccount();
-            var memberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_AccountManager);
+            var memberManager = await _token_Service_V2.Get_Menber_Token();
             // Kiểm tra class có tồn tại và name class không tồn tại
 
             var isIdClass = await _db.tbClassSchool.FindAsync(request.id_ClassSchool);

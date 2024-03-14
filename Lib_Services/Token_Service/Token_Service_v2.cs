@@ -17,6 +17,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using UAParser;
 
 namespace Lib_Services.Token_Service
 {
@@ -68,12 +69,25 @@ namespace Lib_Services.Token_Service
                     // Xử lý IPv6
                     ipv6Address = ipAddress.ToString();
                 }
+
+                // Lấy tên trình duyệt
+                var userAgent = httpContext.Request.Headers["User-Agent"].ToString();
+
+                var parser = Parser.GetDefault();
+                var clientInfo = parser.Parse(userAgent);
+
+                var browserName = clientInfo.UA.Family; // Tên trình duyệt
+
                 var tokenCheck = await _db.tbToken.FirstOrDefaultAsync(x => x.id_Account == id_Account
-                                && x.ipv4 == ipv4Addres && x.ipv6 == ipv6Address && x.hostName == hostName);
+                                && x.ipv4 == ipv4Addres && x.ipv6 == ipv6Address 
+                                && x.hostName == hostName && x.browserName == browserName);
 
                 if (tokenCheck == null)
                 {
                     Guid id_Token = Guid.NewGuid();
+                    DateTime now = DateTime.Now;
+                    DateTime newDateTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+
                     tbToken createToken = new tbToken
                     {
                         id_Token = id_Token,
@@ -86,6 +100,8 @@ namespace Lib_Services.Token_Service
                         ipv4 = ipv4Addres,
                         ipv6 = ipv6Address,
                         hostName = hostName,
+                        browserName = browserName,
+                        time_login = newDateTime
                     };
                     await _db.tbToken.AddAsync(createToken);
                     await _db.SaveChangesAsync();
@@ -243,6 +259,49 @@ namespace Lib_Services.Token_Service
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
             return await Task.FromResult(tokenString);
+        }
+        #endregion
+
+        #region Get_Id_Account_Token
+        public async Task<int> Get_Id_Account_Token()
+        {
+            if (!_httpContextAccessor.HttpContext!.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
+            {
+                return 0;
+            }
+            var tokenHeaders = authorizationHeader!.ToString().Split(' ').Last();
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(tokenHeaders);
+            var userIdClaim = token.Claims.FirstOrDefault(claim => claim.Type == "id");
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var idTokenGuidParse))
+            {
+                return 0;
+            }
+
+            var tokenDb = await _db.tbToken.FindAsync(idTokenGuidParse);
+            return tokenDb!.id_Account;
+        }
+        #endregion
+
+        #region Get_Menber_Token
+        public async Task<tbMenberSchool> Get_Menber_Token()
+        {
+            if (!_httpContextAccessor.HttpContext!.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
+            {
+                return null!; ;
+            }
+            var tokenHeaders = authorizationHeader!.ToString().Split(' ').Last();
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(tokenHeaders);
+            var userIdClaim = token.Claims.FirstOrDefault(claim => claim.Type == "id");
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var idTokenGuidParse))
+            {
+                return null!;
+            }
+
+            var tokenDb = await _db.tbToken.FindAsync(idTokenGuidParse);
+            var member = await _db.tbMenberSchool.Include(x => x.tbRoleSchool).FirstOrDefaultAsync(x => x.id_Account == tokenDb!.id_Account);
+            return member ?? null!;
         }
         #endregion
     }

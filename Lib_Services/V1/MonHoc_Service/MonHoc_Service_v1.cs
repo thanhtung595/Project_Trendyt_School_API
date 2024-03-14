@@ -21,15 +21,17 @@ namespace Lib_Services.V1.MonHoc
     {
         private readonly Trendyt_DbContext _db;
         private readonly IToken_Service_v1 _tokenService_V1;
+        private readonly IToken_Service_v2 _tokenService_V2;
         private readonly IMonHoc_Repository_v1 _monHoc_Repository_V1;
         private readonly IMonHoc_Student_Service_v1 _monHoc_Student_Service_V1;
         public MonHoc_Service_v1(Trendyt_DbContext db, IToken_Service_v1 tokenService_V1,
-            IMonHoc_Repository_v1 monHoc_Repository_V1, IMonHoc_Student_Service_v1 monHoc_Student_Service_V1)
+            IMonHoc_Repository_v1 monHoc_Repository_V1, IMonHoc_Student_Service_v1 monHoc_Student_Service_V1, IToken_Service_v2 tokenService_V2)
         {
             _db = db;
             _tokenService_V1 = tokenService_V1;
             _monHoc_Repository_V1 = monHoc_Repository_V1;
             _monHoc_Student_Service_V1 = monHoc_Student_Service_V1;
+            _tokenService_V2 = tokenService_V2;
         }
 
         public async Task<Status_Application> Edit(MonHoc_Update_v1 request)
@@ -48,7 +50,7 @@ namespace Lib_Services.V1.MonHoc
             {
                 return new Status_Application { StatusBool = false, StatusType = "Teacher không tồn tại" };
             }
-            tbMenberSchool menberManager = await _tokenService_V1.Get_Menber_Token();
+            tbMenberSchool menberManager = await _tokenService_V2.Get_Menber_Token();
             var monHoc = await _db.tbMonHoc.FindAsync(request.id_MonHoc);
             if (monHoc == null)
             {
@@ -104,19 +106,19 @@ namespace Lib_Services.V1.MonHoc
 
         public async Task<List<MonHoc_SelectAll_v1>> GetAll()
         {
-            tbMenberSchool menberManager = await _tokenService_V1.Get_Menber_Token();
+            tbMenberSchool menberManager = await _tokenService_V2.Get_Menber_Token();
             return await _monHoc_Repository_V1.GetAll(menberManager.id_School);
         }
 
         public async Task<MonHocSelectById_v1> GetById(int id_MonHoc)
         {
-            tbMenberSchool menberManager = await _tokenService_V1.Get_Menber_Token();
+            tbMenberSchool menberManager = await _tokenService_V2.Get_Menber_Token();
             return await _monHoc_Repository_V1.GetById(menberManager.id_School,id_MonHoc);
         }
 
         public async Task<Status_Application> Insert(tbMonHoc monHoc)
         {
-            tbMenberSchool menberManager = await _tokenService_V1.Get_Menber_Token();
+            tbMenberSchool menberManager = await _tokenService_V2.Get_Menber_Token();
             // Check null data
             if (string.IsNullOrEmpty(monHoc.name_MonHoc))
             {

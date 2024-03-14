@@ -23,30 +23,26 @@ namespace Lib_Repository.V1.Student_Repository
 
             if (menberKhoaManager.id_KhoaSchool != 0)
             {
-                query = query.Where(x => x.id_KhoaSchool == menberKhoaManager.id_KhoaSchool);
+                query = query.Where(m => m.id_KhoaSchool == menberKhoaManager.id_KhoaSchool);
             }
 
-
             var list = await (from m in query
-                              where m.id_KhoaSchool == menberKhoaManager.id_KhoaSchool
-                              join k in _db.tbKhoaSchool
-                              on m.id_KhoaSchool equals k.id_KhoaSchool
-                              join r in _db.tbRoleSchool
-                              on m.id_RoleSchool equals r.id_RoleSchool
+                              where m.id_School == menberKhoaManager.id_School
+                              join r in _db.tbRoleSchool on m.id_RoleSchool equals r.id_RoleSchool
                               where r.name_Role == "student"
-                              join ac in _db.tbAccount
-                              on m.id_Account equals ac.id_Account
+                              join a in _db.tbAccount on m.id_Account equals a.id_Account
+                              join k in _db.tbKhoaSchool on m.id_KhoaSchool equals k.id_KhoaSchool
                               select new Student_Select_v1
                               {
                                   id_Student = m.id_MenberSchool,
                                   ma_Khoa = k.ma_Khoa,
                                   name_Khoa = k.name_Khoa,
-                                  user_Name = ac.user_Name,
-                                  fullName = ac.fullName,
-                                  sex_User = ac.sex_User,
-                                  email_User = ac.email_User,
-                                  phone_User = ac.phone_User,
-                                  image_User = ac.image_User,
+                                  user_Name = a.user_Name,
+                                  fullName = a.fullName,
+                                  sex_User = a.sex_User,
+                                  email_User = a.email_User,
+                                  phone_User = a.phone_User,
+                                  image_User = a.image_User,
                               }).ToListAsync();
             return list;
         }

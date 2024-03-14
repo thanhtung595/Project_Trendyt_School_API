@@ -1,4 +1,5 @@
-﻿using Lib_Models.Models_Table_Class.Token;
+﻿using App_Models.Models_Table_CSDL;
+using Lib_Models.Models_Table_Class.Token;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace Lib_Services.Token_Service
         public Task<TokenModel> CreateToken(int id_Account, string name_Role);
         public Task<Token_Refesh_Model> RefeshToken();
         public Task LogoutToken();
+        public Task<int> Get_Id_Account_Token();
+        public Task<tbMenberSchool> Get_Menber_Token();
     }
 }

@@ -22,21 +22,22 @@ namespace Lib_Services.V1.Menber_Service
         private readonly IRegister_Service_v1 _register_Service_V1;
         private readonly Trendyt_DbContext _db;
         private readonly IToken_Service_v1 _token_Service_V1;
+        private readonly IToken_Service_v2 _token_Service_V2;
         public Menber_Service_v1(Trendyt_DbContext db, IMenber_Repository_v1 menber_Repository_V1,
-            IToken_Service_v1 token_Service_V1, IRegister_Service_v1 register_Service_V1)
+            IToken_Service_v1 token_Service_V1, IRegister_Service_v1 register_Service_V1, IToken_Service_v2 token_Service_V2)
         {
             _db = db;
             _menber_Repository_V1 = menber_Repository_V1;
             _token_Service_V1 = token_Service_V1;
             _register_Service_V1 = register_Service_V1;
+            _token_Service_V2 = token_Service_V2;
         }
 
         #region Select All Menber Async
         public async Task<List<Menber_SclectAll_v1>> SelectAllAsync()
         {
             // Lấy id_school
-            int id_Manager_Menber = await _token_Service_V1.GetAccessTokenIdAccount();
-            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_Manager_Menber);
+            var menberManager = await _token_Service_V2.Get_Menber_Token();
 
             return await _menber_Repository_V1.SelectAllAsync(menberManager!);
         }
@@ -65,8 +66,7 @@ namespace Lib_Services.V1.Menber_Service
                 request.id_Account = register_Account.Id_Int;
 
                 // Lấy id_school
-                int id_Manager_Menber = await _token_Service_V1.GetAccessTokenIdAccount();
-                var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_Manager_Menber);
+                var menberManager = await _token_Service_V2.Get_Menber_Token();
                 request.id_School = menberManager!.id_School;
             }
 
@@ -102,7 +102,7 @@ namespace Lib_Services.V1.Menber_Service
         #region Profile
         public async Task<Member_Profile_v1> Profile()
         {
-            int id_Account = await _token_Service_V1.GetAccessTokenIdAccount();
+            int id_Account = await _token_Service_V2.Get_Id_Account_Token();
             return await _menber_Repository_V1.Profile(id_Account);
         }
         #endregion
@@ -111,8 +111,7 @@ namespace Lib_Services.V1.Menber_Service
         public async Task<Status_Application> Delete(int id_member)
         {
             // Lấy id_school
-            int id_Manager_Menber = await _token_Service_V1.GetAccessTokenIdAccount();
-            var menberManager = await _db.tbMenberSchool.FirstOrDefaultAsync(x => x.id_Account == id_Manager_Menber);
+            var menberManager = await _token_Service_V2.Get_Menber_Token();
 
             // Menber school
 
