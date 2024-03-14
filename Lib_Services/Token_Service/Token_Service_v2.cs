@@ -52,10 +52,6 @@ namespace Lib_Services.Token_Service
                 var ipAddress = httpContext!.Connection.RemoteIpAddress;
                 string ipv4Addres = "";
                 string ipv6Address = "";
-                var hostName = "";
-
-                // Lấy tên máy của người dùng (nếu có)
-                hostName = Dns.GetHostEntry(ipAddress!)?.HostName;
 
                 // Nếu địa chỉ IP là IPv4
                 if (ipAddress!.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
@@ -80,7 +76,7 @@ namespace Lib_Services.Token_Service
 
                 var tokenCheck = await _db.tbToken.FirstOrDefaultAsync(x => x.id_Account == id_Account
                                 && x.ipv4 == ipv4Addres && x.ipv6 == ipv6Address 
-                                && x.hostName == hostName && x.browserName == browserName);
+                                && x.browserName == browserName);
 
                 if (tokenCheck == null)
                 {
@@ -99,7 +95,7 @@ namespace Lib_Services.Token_Service
                         is_Active = true,
                         ipv4 = ipv4Addres,
                         ipv6 = ipv6Address,
-                        hostName = hostName,
+                        hostName = "",
                         browserName = browserName,
                         time_login = newDateTime
                     };
