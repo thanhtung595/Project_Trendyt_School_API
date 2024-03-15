@@ -37,7 +37,7 @@ namespace Lib_Services.Token_Service
         }
 
         #region CreateToken
-        public async Task<TokenModel> CreateToken(int id_Account, string name_Role)
+        public async Task<TokenModel> CreateToken(int id_Account, string name_Role, string hostName)
         {
             /*
              * Kiểm tra nếu token đã tồn tại thì cấp access mới
@@ -95,7 +95,7 @@ namespace Lib_Services.Token_Service
                         is_Active = true,
                         ipv4 = ipv4Addres,
                         ipv6 = ipv6Address,
-                        hostName = "",
+                        hostName = hostName,
                         browserName = browserName,
                         time_login = newDateTime
                     };
@@ -134,7 +134,7 @@ namespace Lib_Services.Token_Service
         #endregion
 
         #region RefeshToken
-        public async Task<Token_Refesh_Model> RefeshToken()
+        public async Task<Token_Refesh_Model> RefeshToken(string hostName)
         {
             try
             {
