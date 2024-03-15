@@ -10,8 +10,8 @@ namespace Lib_Services.Token_Service
 {
     public interface IToken_Service_v2
     {
-        public Task<TokenModel> CreateToken(int id_Account, string name_Role);
-        public Task<Token_Refesh_Model> RefeshToken();
+        public Task<TokenModel> CreateToken(int id_Account, string name_Role, string hostName);
+        public Task<Token_Refesh_Model> RefeshToken(string hostName);
         public Task LogoutToken();
         public Task<int> Get_Id_Account_Token();
         public Task<tbMenberSchool> Get_Menber_Token();

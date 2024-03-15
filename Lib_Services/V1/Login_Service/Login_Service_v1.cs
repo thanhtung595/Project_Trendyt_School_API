@@ -75,7 +75,7 @@ namespace Lib_Services.V1.Login_Service
                 };
             }
             // Cấp bộ Token mới
-            var rfToken_v2 = await _token_Service_V2.CreateToken(account.id_Account, account.tbRole!.name_Role!);
+            var rfToken_v2 = await _token_Service_V2.CreateToken(account.id_Account, account.tbRole!.name_Role!,login.hostName!);
 
             // Trả lại dữ liệu cho Controller
             Account_Login_Select_v1 loginRpo = await _account_Service_V1.SelectByAccount(account.id_Account);
