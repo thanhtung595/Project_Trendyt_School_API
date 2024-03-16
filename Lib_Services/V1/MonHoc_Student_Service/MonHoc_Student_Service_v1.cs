@@ -21,6 +21,28 @@ namespace Lib_Services.V1.MonHoc_Student_Service
             _db = db;
             _monHoc_Student_Repository_V1 = monHoc_Student_Repository_V1;
         }
+
+        public async Task<Status_Application> Delete(MonHocClass_Student_Insert_v1 student)
+        {
+            // kiểm tra có tồn tại
+            var studentMH = await _db.tbMonHocClass_Student.FirstOrDefaultAsync(x => x.id_MonHoc == student.id_MonHoc
+                            && x.id_MenberSchool == student.id_Student);
+            if (studentMH != null)
+            {
+                _db.tbMonHocClass_Student.Remove(studentMH);
+                await _db.SaveChangesAsync();
+                return new Status_Application { StatusBool = true, StatusType = "success" };
+            }
+            else 
+            { 
+                return new Status_Application 
+                { 
+                    StatusBool = false, 
+                    StatusType = $"error: môn hoc id {student.id_MonHoc} và student {student.id_Student} không tồn tại" 
+                }; 
+            }
+        }
+
         public async Task<Status_Application> Insert(MonHocClass_Student_Insert_v1 request)
         {
             var monhoc = await _db.tbMonHoc.FindAsync(request.id_MonHoc);

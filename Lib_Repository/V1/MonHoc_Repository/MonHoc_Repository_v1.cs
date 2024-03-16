@@ -65,7 +65,31 @@ namespace Lib_Repository.V1.MonHoc
                                                   join r in _db.tbRoleSchool
                                                   on m.id_RoleSchool equals r.id_RoleSchool
                                                   where r.name_Role == "student"
-                                                  select st).Count()
+                                                  select st).Count(),
+
+                                  student = (from st in _db.tbMonHocClass_Student
+                                             where st.id_MonHoc == mh.id_MonHoc
+                                             join m in _db.tbMenberSchool
+                                             on st.id_MenberSchool equals m.id_MenberSchool
+                                             join r in _db.tbRoleSchool
+                                             on m.id_RoleSchool equals r.id_RoleSchool
+                                             where r.name_Role == "student"
+                                             join ac in _db.tbAccount
+                                             on m.id_Account equals ac.id_Account
+                                             join k in _db.tbKhoaSchool
+                                             on m.id_KhoaSchool equals k.id_KhoaSchool
+                                             select new Student_Select_v1
+                                             {
+                                                 id_Student = m.id_MenberSchool,
+                                                 user_Name = ac.user_Name,
+                                                 fullName = ac.fullName,
+                                                 name_Khoa = k.name_Khoa,
+                                                 ma_Khoa = k.ma_Khoa,
+                                                 image_User = ac.image_User,
+                                                 email_User = ac.email_User,
+                                                 phone_User = ac.phone_User,
+                                                 sex_User = ac.sex_User
+                                             }).ToList(),
                               }).ToListAsync();
             return list;
         }
