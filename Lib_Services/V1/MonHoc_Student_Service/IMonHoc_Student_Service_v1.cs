@@ -11,5 +11,6 @@ namespace Lib_Services.V1.MonHoc_Student_Service
     public interface IMonHoc_Student_Service_v1
     {
         Task<Status_Application> Insert(MonHocClass_Student_Insert_v1 student);
+        Task<Status_Application> Delete(MonHocClass_Student_Insert_v1 student);
     }
 }

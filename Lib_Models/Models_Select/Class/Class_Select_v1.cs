@@ -16,7 +16,7 @@ namespace Lib_Models.Models_Select.Class
         public KhoaSchool_Select_v1? khoa { get; set; }
         public string? tags { get; set; }
         public Select_All_Teacher_v1? chu_nhiem { get; set; }
-        public int count_member { get; set; }
+        public int count_student { get; set; }
         public List<Student_Select_v1>? student { get; set; }
     }
 }
