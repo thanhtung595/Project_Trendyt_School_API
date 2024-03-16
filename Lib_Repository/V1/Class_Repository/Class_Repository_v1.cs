@@ -67,7 +67,35 @@ namespace Lib_Repository.V1.Class_Repository
                                                    user_Name = ac.user_Name,
                                                    image_User = ac.image_User
                                                }).FirstOrDefault(),
-                                  count_member = _db.tbClassSchool_Menber.Where(x => x.id_ClassSchool == cl.id_ClassSchool).Count(),
+                                  count_student = (from member_class in _db.tbClassSchool_Menber
+                                                   where member_class.id_ClassSchool == cl.id_ClassSchool
+                                                   join member in _db.tbMenberSchool
+                                                   on member_class.id_MenberSchool equals member.id_MenberSchool
+                                                   join r in _db.tbRoleSchool
+                                                   on member.id_RoleSchool equals r.id_RoleSchool
+                                                   where r.name_Role == "student"
+                                                   join ac in _db.tbAccount
+                                                   on member.id_Account equals ac.id_Account
+                                                   select member_class).Count(),
+                                  student = (from member_class in _db.tbClassSchool_Menber
+                                             where member_class.id_ClassSchool == cl.id_ClassSchool
+                                             join member in _db.tbMenberSchool
+                                             on member_class.id_MenberSchool equals member.id_MenberSchool
+                                             join r in _db.tbRoleSchool
+                                             on member.id_RoleSchool equals r.id_RoleSchool
+                                             where r.name_Role == "student"
+                                             join ac in _db.tbAccount
+                                             on member.id_Account equals ac.id_Account
+                                             select new Student_Select_v1
+                                             {
+                                                 id_Student = member.id_MenberSchool,
+                                                 fullName = ac.fullName,
+                                                 email_User = ac.email_User,
+                                                 phone_User = ac.phone_User,
+                                                 sex_User = ac.sex_User,
+                                                 user_Name = ac.user_Name,
+                                                 image_User = ac.image_User,
+                                             }).ToList(),
                               }).ToListAsync();
             return list;
         }
@@ -120,7 +148,16 @@ namespace Lib_Repository.V1.Class_Repository
                                                   user_Name = ac.user_Name,
                                                   image_User = ac.image_User
                                               }).FirstOrDefault(),
-                                 count_member = _db.tbClassSchool_Menber.Where(x => x.id_ClassSchool == cl.id_ClassSchool).Count(),
+                                 count_student = (from member_class in _db.tbClassSchool_Menber
+                                                  where member_class.id_ClassSchool == cl.id_ClassSchool
+                                                  join member in _db.tbMenberSchool
+                                                  on member_class.id_MenberSchool equals member.id_MenberSchool
+                                                  join r in _db.tbRoleSchool
+                                                  on member.id_RoleSchool equals r.id_RoleSchool
+                                                  where r.name_Role == "student"
+                                                  join ac in _db.tbAccount
+                                                  on member.id_Account equals ac.id_Account
+                                                  select member_class).Count(),
                                  student = (from member_class in _db.tbClassSchool_Menber
                                             where member_class.id_ClassSchool == cl.id_ClassSchool
                                             join member in _db.tbMenberSchool
