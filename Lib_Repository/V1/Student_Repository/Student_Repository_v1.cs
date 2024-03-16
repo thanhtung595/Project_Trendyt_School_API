@@ -32,6 +32,10 @@ namespace Lib_Repository.V1.Student_Repository
                               where r.name_Role == "student"
                               join a in _db.tbAccount on m.id_Account equals a.id_Account
                               join k in _db.tbKhoaSchool on m.id_KhoaSchool equals k.id_KhoaSchool
+                              join cm in _db.tbClassSchool_Menber on m.id_MenberSchool equals cm.id_MenberSchool into cmGroup
+                              from cm in cmGroup.DefaultIfEmpty()
+                              join cl in _db.tbClassSchool on cm.id_ClassSchool equals cl.id_ClassSchool  into clGroup
+                              from cl in clGroup.DefaultIfEmpty()
                               select new Student_Select_v1
                               {
                                   id_Student = m.id_MenberSchool,
@@ -43,6 +47,8 @@ namespace Lib_Repository.V1.Student_Repository
                                   email_User = a.email_User,
                                   phone_User = a.phone_User,
                                   image_User = a.image_User,
+                                  id_Class = cl != null ? cl.id_ClassSchool : 0,
+                                  name_Class = cl != null ? cl.name_ClassSchool :"Chưa vào lớp",
                               }).ToListAsync();
             return list;
         }
