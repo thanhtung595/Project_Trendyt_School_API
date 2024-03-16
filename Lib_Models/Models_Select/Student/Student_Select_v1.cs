@@ -17,5 +17,7 @@ namespace Lib_Models.Models_Select.Student
         public string? email_User { get; set; }
         public string? phone_User { get; set; }
         public string? image_User { get; set; }
+        public int id_Class { get; set; }
+        public string? name_Class { get; set; }
     }
 }
