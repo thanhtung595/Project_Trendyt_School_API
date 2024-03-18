@@ -4,6 +4,7 @@ using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lib_DataEntity.Migrations
 {
     [DbContext(typeof(Trendyt_DbContext))]
-    partial class Trendyt_DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240318101712_removetable_tbBuoiHoc")]
+    partial class removetable_tbBuoiHoc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -307,30 +310,6 @@ namespace Lib_DataEntity.Migrations
                     b.ToTable("tbTypeAccount");
                 });
 
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbLichHoc", b =>
-                {
-                    b.Property<int>("id_LichHoc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_LichHoc"));
-
-                    b.Property<int>("id_MonHoc")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("thoiGianBatDau")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("thoiGianKetThuc")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("id_LichHoc");
-
-                    b.HasIndex("id_MonHoc");
-
-                    b.ToTable("tbLichHoc");
-                });
-
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMonHoc", b =>
                 {
                     b.Property<int>("id_MonHoc")
@@ -497,17 +476,6 @@ namespace Lib_DataEntity.Migrations
                         .IsRequired();
 
                     b.Navigation("tbAccount");
-                });
-
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbLichHoc", b =>
-                {
-                    b.HasOne("Lib_Models.Models_Table_Entity.tbMonHoc", "tbMonHoc")
-                        .WithMany()
-                        .HasForeignKey("id_MonHoc")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("tbMonHoc");
                 });
 
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMonHoc", b =>
