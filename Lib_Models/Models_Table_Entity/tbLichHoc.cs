@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Lib_Models.Models_Table_Entity
 {
-    public class tbBuoiHoc
+    public class tbLichHoc
     {
         [Key] 
-        public int id_BuoiHoc { get; set; }
+        public int id_LichHoc { get; set; }
         public int id_MonHoc { get; set; }
         public DateTime thoiGianBatDau { get; set; }
         public DateTime thoiGianKetThuc { get; set; }
