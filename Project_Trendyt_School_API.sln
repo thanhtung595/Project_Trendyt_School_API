@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API_Application", "API_Application\API_Application.csproj", "{6CB3341C-1159-4A9F-BFAE-12C8D84DC051}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_Application", "API_Application\API_Application.csproj", "{6CB3341C-1159-4A9F-BFAE-12C8D84DC051}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib_Models", "Lib_Models\Lib_Models.csproj", "{2A916967-CF63-413D-A1BC-FCB2813D20B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib_Models", "Lib_Models\Lib_Models.csproj", "{2A916967-CF63-413D-A1BC-FCB2813D20B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib_DataEntity", "Lib_DataEntity\Lib_DataEntity.csproj", "{466A3491-4553-4905-961B-77A62B7E98FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib_DataEntity", "Lib_DataEntity\Lib_DataEntity.csproj", "{466A3491-4553-4905-961B-77A62B7E98FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib_Config", "Lib_Config\Lib_Config.csproj", "{EC75243C-CECD-4246-961D-83E00FB77607}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib_Config", "Lib_Config\Lib_Config.csproj", "{EC75243C-CECD-4246-961D-83E00FB77607}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib_Middlewares", "Lib_Middlewares\Lib_Middlewares.csproj", "{3BFF2CE7-50CF-46B1-91AF-776AC03611E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib_Middlewares", "Lib_Middlewares\Lib_Middlewares.csproj", "{3BFF2CE7-50CF-46B1-91AF-776AC03611E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib_Services", "Lib_Services\Lib_Services.csproj", "{D860638E-81B3-4629-9568-0F6F7F42377F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib_Services", "Lib_Services\Lib_Services.csproj", "{D860638E-81B3-4629-9568-0F6F7F42377F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib_Helpers", "Lib_Helpers\Lib_Helpers.csproj", "{96240FAF-0581-4F6F-BD62-01F28FBCC65C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib_Helpers", "Lib_Helpers\Lib_Helpers.csproj", "{96240FAF-0581-4F6F-BD62-01F28FBCC65C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib_Repository", "Lib_Repository\Lib_Repository.csproj", "{2C7A6781-2566-4E13-8C23-2E8E1E104527}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib_Repository", "Lib_Repository\Lib_Repository.csproj", "{2C7A6781-2566-4E13-8C23-2E8E1E104527}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stored_Procedures", "Stored_Procedures\Stored_Procedures.csproj", "{E098ACFC-7E10-4260-807C-AD7C1B79B528}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{2C7A6781-2566-4E13-8C23-2E8E1E104527}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C7A6781-2566-4E13-8C23-2E8E1E104527}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C7A6781-2566-4E13-8C23-2E8E1E104527}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E098ACFC-7E10-4260-807C-AD7C1B79B528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E098ACFC-7E10-4260-807C-AD7C1B79B528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E098ACFC-7E10-4260-807C-AD7C1B79B528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E098ACFC-7E10-4260-807C-AD7C1B79B528}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
