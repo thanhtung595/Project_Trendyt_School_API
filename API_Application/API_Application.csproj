@@ -41,6 +41,7 @@
     <ProjectReference Include="..\Lib_Models\Lib_Models.csproj" />
     <ProjectReference Include="..\Lib_Repository\Lib_Repository.csproj" />
     <ProjectReference Include="..\Lib_Services\Lib_Services.csproj" />
+    <ProjectReference Include="..\Stored_Procedures\Stored_Procedures.csproj" />
   </ItemGroup>
 
 </Project>
