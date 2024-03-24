@@ -1,4 +1,5 @@
-﻿using Lib_Models.Models_Select.Student;
+﻿using Lib_Models.Models_Select.LichHoc;
+using Lib_Models.Models_Select.Student;
 using Lib_Models.Models_Select.Teacher;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,6 @@ namespace Lib_Models.Models_Select.MonHoc
         public Select_One_Teacher_v1? giangvien { get; set; }
         public int coutnStudent { get; set; }
         public List<Student_Select_v1>? student { get; set; }
+        public List<LichHoc_MonHoc_Select_v1>? lichhoc { get; set; }
     }
 }
