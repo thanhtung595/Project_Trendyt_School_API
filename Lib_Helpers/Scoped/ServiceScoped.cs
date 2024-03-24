@@ -3,6 +3,7 @@ using Lib_Services.V1.Account_Service;
 using Lib_Services.V1.Class_Member_Service;
 using Lib_Services.V1.Class_Service;
 using Lib_Services.V1.KhoaSchool_Service;
+using Lib_Services.V1.LichHoc_Service;
 using Lib_Services.V1.Login_Service;
 using Lib_Services.V1.Menber_Service;
 using Lib_Services.V1.MonHoc;
@@ -44,6 +45,7 @@ namespace Lib_Helpers.Scoped
             services.AddScoped<IClass_Member_Service_v1, Class_Member_Service_v1>();
             services.AddScoped<IMonHoc_Service_v1, MonHoc_Service_v1>();
             services.AddScoped<IMonHoc_Student_Service_v1, MonHoc_Student_Service_v1>();
+            services.AddScoped<ILichHoc_Service_v1, LichHoc_Service_v1>();
         }
     }
 }

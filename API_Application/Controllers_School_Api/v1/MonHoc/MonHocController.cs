@@ -8,6 +8,7 @@ using Lib_Services.V1.MonHoc_Student_Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Stored_Procedures.PROC.MonHoc;
 using TrendyT_Data.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,20 +20,24 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
     public class MonHocController : ControllerBase
     {
         private readonly Trendyt_DbContext _db;
+        private readonly IPROC_MonHoc _pROC_MonHoc;
         private readonly IMonHoc_Service_v1 _monHoc_Service_V1;
         private readonly IMonHoc_Student_Service_v1 _monHoc_Student_Service_V1;
-        public MonHocController(Trendyt_DbContext db, IMonHoc_Service_v1 monHoc_Service_V1, IMonHoc_Student_Service_v1 monHoc_Student_Service_V1)
+        public MonHocController(Trendyt_DbContext db, IMonHoc_Service_v1 monHoc_Service_V1, IMonHoc_Student_Service_v1 monHoc_Student_Service_V1,
+            IPROC_MonHoc pROC_MonHoc)
         {
             _db = db;
             _monHoc_Service_V1 = monHoc_Service_V1;
             _monHoc_Student_Service_V1 = monHoc_Student_Service_V1;
+            _pROC_MonHoc = pROC_MonHoc;
         }
 
-        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
+        //[Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _monHoc_Service_V1.GetAll());
+            //return Ok(await _pROC_MonHoc.GetAllMonHocPROC(5));
         }
 
         [Authorize(Policy = IdentityData.QuanLySchoolManager)]

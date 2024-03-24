@@ -11,7 +11,7 @@ namespace TrendyT_Data.Identity
         public const string TypeRole = "typeRole";
         public const string QuanLyKhoaManager = "QuanLyKhoaManager";
         public const string QuanLySchoolManager = "QuanLySchoolManager";
-
+        public const string TeacherAndStudent = "TeacherStudent";
         public const string AdminServerPolicyName = "admin";
         public const string AdminServerClaimName = "admin";
 

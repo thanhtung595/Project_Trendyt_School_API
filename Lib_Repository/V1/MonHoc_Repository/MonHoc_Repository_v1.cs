@@ -1,5 +1,6 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using App_Models.Models_Table_CSDL;
+using Lib_Models.Models_Select.LichHoc;
 using Lib_Models.Models_Select.MonHoc;
 using Lib_Models.Models_Select.Student;
 using Lib_Models.Models_Select.Teacher;
@@ -90,6 +91,14 @@ namespace Lib_Repository.V1.MonHoc
                                                  phone_User = ac.phone_User,
                                                  sex_User = ac.sex_User
                                              }).ToList(),
+                                  lichhoc = (from lh in _db.tbLichHoc
+                                             where lh.id_MonHoc == mh.id_MonHoc
+                                             select new LichHoc_MonHoc_Select_v1
+                                             {
+                                                 id_LichHoc = lh.id_LichHoc,
+                                                 thoiGianBatDau = lh.thoiGianBatDau,
+                                                 thoiGianKetThuc = lh.thoiGianKetThuc
+                                             }).ToList()
                               }).ToListAsync();
             return list;
         }
