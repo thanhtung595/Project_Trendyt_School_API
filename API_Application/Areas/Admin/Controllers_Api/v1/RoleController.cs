@@ -3,6 +3,7 @@ using Lib_Models.Model_Update.Role;
 using Lib_Models.Status_Model;
 using Lib_Services.V1.Role_Service;
 using Microsoft.AspNetCore.Mvc;
+using Stored_Procedures.PROC.Role;
 
 namespace API_Application.Areas.Admin.Controllers_Api.v1
 {
@@ -11,16 +12,19 @@ namespace API_Application.Areas.Admin.Controllers_Api.v1
     public class RoleController : ControllerBase
     {
         private readonly IRole_Service_v1 _roleService_v1;
-        public RoleController(IRole_Service_v1 roleService_v1)
+        private readonly IPROC_tbRole _proc_tbRole;
+        public RoleController(IRole_Service_v1 roleService_v1, IPROC_tbRole proc_tbRole)
         {
             _roleService_v1 = roleService_v1;
+            _proc_tbRole = proc_tbRole;
         }
 
         #region SelectAll Role
         [HttpGet]
         public async Task<IActionResult> SelectAll()
         {
-            return Ok(await _roleService_v1.SelectAllAsync());
+            //return Ok(await _roleService_v1.SelectAllAsync());
+            return Ok(_proc_tbRole.Proc_GetAllRole());
         }
         #endregion
 

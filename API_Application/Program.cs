@@ -68,7 +68,7 @@ builder.Services.AddCors(options =>
 //Add scoped middlewares
 builder.Services.MyServiceScopedV1();
 builder.Services.MyRepositoryScopedV1();
-
+builder.Services.MyStoredProceduresScoped();
 //Add AutoMapper middlewares
 builder.Services.AddAutoMapper(typeof(AutoMapperV1));
 
@@ -120,6 +120,19 @@ builder.Services.AddAuthorization(options =>
     p.RequireClaim(IdentityData.TypeRole, IdentityData.IndustryClaimName));
     #endregion
 
+    #region TeacherAndStudent
+    options.AddPolicy(IdentityData.TeacherAndStudent, policy =>
+    {
+        policy.RequireAssertion(context =>
+        {
+            return context.User.HasClaim(c =>
+                c.Type == IdentityData.TypeRole &&
+                (c.Value == IdentityData.TeacherClaimName ||
+                 c.Value == IdentityData.StudentClaimName));
+        });
+    });
+    #endregion
+
     #region Teacher
     options.AddPolicy(IdentityData.TeacherPolicyName, p =>
     p.RequireClaim(IdentityData.TypeRole, IdentityData.TeacherClaimName));
@@ -129,6 +142,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy(IdentityData.StudentPolicyName, p =>
     p.RequireClaim(IdentityData.TypeRole, IdentityData.StudentClaimName));
     #endregion 
+
+
 });
 //*******************End User Config*********************//
 
