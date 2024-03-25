@@ -15,6 +15,7 @@ namespace Lib_Models.Models_Table_Entity
         public int id_MonHoc { get; set; }
         public DateTime thoiGianBatDau { get; set; }
         public DateTime thoiGianKetThuc { get; set; }
+        public string? phonghoc { get; set; }
 
         [ForeignKey("id_MonHoc")]
         public virtual tbMonHoc? tbMonHoc { get; set; }
