@@ -58,6 +58,16 @@ namespace Lib_Repository.V1.LichHoc_Repository
                                {
                                    Date = lichhoc.thoiGianBatDau.Date, // Lấy ra ngày tháng năm của thời gian bắt đầu,
                                    MonHoc = monhoc.name_MonHoc,
+                                   Teacher = (from mh_tc in _db.tbMonHocClass_Student
+                                              where mh_tc.id_MonHoc == monhoc.id_MonHoc
+                                              join menber in _db.tbMenberSchool
+                                              on mh_tc.id_MenberSchool equals menber.id_MenberSchool
+                                              join role in _db.tbRoleSchool
+                                              on menber.id_RoleSchool equals role.id_RoleSchool
+                                              where role.name_Role == "teacher"
+                                              join ac in _db.tbAccount
+                                              on menber.id_Account equals ac.id_Account
+                                              select ac.user_Name).FirstOrDefault(),
                                    IdLichHoc = lichhoc.id_LichHoc,
                                    ThoiGianBatDau = lichhoc.thoiGianBatDau.TimeOfDay, // Lấy giờ, phút, giây của thời gian bắt đầu
                                    ThoiGianKetThuc = lichhoc.thoiGianKetThuc.TimeOfDay // Lấy giờ, phút, giây của thời gian kết thúc
@@ -69,6 +79,7 @@ namespace Lib_Repository.V1.LichHoc_Repository
                                                 date = g.Key.ToString("yyyy-MM-dd"),
                                                 lichmon = g.Select(item => new LichHoc_Select
                                                 {
+                                                    teacher = item.Teacher,
                                                     MonHoc = item.MonHoc,
                                                     id_LichHoc = item.IdLichHoc,
                                                     thoiGianBatDau = item.ThoiGianBatDau.ToString(),
