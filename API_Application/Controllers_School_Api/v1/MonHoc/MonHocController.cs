@@ -32,7 +32,7 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
             _pROC_MonHoc = pROC_MonHoc;
         }
 
-        //[Authorize(Policy = IdentityData.QuanLySchoolManager)]
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

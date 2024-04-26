@@ -7,6 +7,7 @@ using System.Text;
 using Lib_Helpers.AutoMapper;
 using Lib_Middlewares.Jwt_Token;
 using TrendyT_Data.Identity;
+using Lib_Config.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,131 +21,28 @@ builder.Services.AddSwaggerGen();
 //*******************Start User Config Builder*********************//
 
 //Connect database sqlsever
-builder.Services.AddDbContext<Trendyt_DbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase_Trendyt_School"), sqlServerOptions =>
-    {
-        sqlServerOptions.EnableRetryOnFailure();
-    });
-});
+builder.Services.RegisterDbContext(builder.Configuration);
 
 // Cấu hình JWT
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(option =>
-{
-    option.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        LifetimeValidator = (notBefore, expires, token, param) =>
-        {
-            return expires > DateTime.UtcNow; // Kiểm tra thời gian hết hạn
-        },
-        ValidateIssuerSigningKey = true
-    };
-});
+builder.Services.RegisterJwt(builder.Configuration);
+
 //Add Cors
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:3000")
-               .AllowAnyMethod()
-               .AllowAnyHeader()
-               .AllowCredentials()
-               .WithExposedHeaders("*");
-        });
-});
+builder.Services.RegisterAddCors();
+
+// Check role Authorition
+builder.Services.RegisterRoleAuthorition();
 
 //Add scoped middlewares
 builder.Services.MyServiceScopedV1();
 builder.Services.MyRepositoryScopedV1();
 builder.Services.MyStoredProceduresScoped();
+
 //Add AutoMapper middlewares
 builder.Services.AddAutoMapper(typeof(AutoMapperV1));
 
 // AddHttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
-// Check role Authorition
-builder.Services.AddAuthorization(options =>
-{
-    #region AdminServer
-        options.AddPolicy(IdentityData.AdminServerPolicyName, p =>
-        p.RequireClaim(IdentityData.TypeRole, IdentityData.AdminServerClaimName));
-    #endregion
-
-    #region AdminSchool
-        options.AddPolicy(IdentityData.AdminSchoolPolicyName , p =>
-        p.RequireClaim(IdentityData.TypeRole, IdentityData.AdminSchoolClaimName));
-    #endregion
-
-    #region QuanLySchoolManager
-    options.AddPolicy(IdentityData.QuanLySchoolManager, policy =>
-    {
-        policy.RequireAssertion(context =>
-        {
-            return context.User.HasClaim(c =>
-                c.Type == IdentityData.TypeRole &&
-                (c.Value == IdentityData.AdminSchoolClaimName ||
-                    c.Value == IdentityData.IndustryClaimName ||
-                    c.Value == IdentityData.SecretaryClaimName));
-        });
-    });
-    #endregion
-
-    #region QuanLyKhoaManager
-    options.AddPolicy(IdentityData.QuanLyKhoaManager, policy =>
-    {
-        policy.RequireAssertion(context =>
-        {
-            return context.User.HasClaim(c =>
-                c.Type == IdentityData.TypeRole &&
-                (c.Value == IdentityData.IndustryClaimName ||
-                 c.Value == IdentityData.SecretaryClaimName));
-        });
-    });
-    #endregion
-
-    #region Industry
-    options.AddPolicy(IdentityData.IndustryPolicyName, p =>
-    p.RequireClaim(IdentityData.TypeRole, IdentityData.IndustryClaimName));
-    #endregion
-
-    #region TeacherAndStudent
-    options.AddPolicy(IdentityData.TeacherAndStudent, policy =>
-    {
-        policy.RequireAssertion(context =>
-        {
-            return context.User.HasClaim(c =>
-                c.Type == IdentityData.TypeRole &&
-                (c.Value == IdentityData.TeacherClaimName ||
-                 c.Value == IdentityData.StudentClaimName));
-        });
-    });
-    #endregion
-
-    #region Teacher
-    options.AddPolicy(IdentityData.TeacherPolicyName, p =>
-    p.RequireClaim(IdentityData.TypeRole, IdentityData.TeacherClaimName));
-    #endregion
-
-    #region Student
-    options.AddPolicy(IdentityData.StudentPolicyName, p =>
-    p.RequireClaim(IdentityData.TypeRole, IdentityData.StudentClaimName));
-    #endregion 
-
-
-});
 //*******************End User Config*********************//
 
 var app = builder.Build();

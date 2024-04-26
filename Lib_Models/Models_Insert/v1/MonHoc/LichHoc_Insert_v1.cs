@@ -11,5 +11,6 @@ namespace Lib_Models.Models_Insert.v1.MonHoc
         public int id_MonHoc { get; set; }
         public DateTime thoiGianBatDau { get; set; }
         public DateTime thoiGianKetThuc { get; set; }
+        public string? phonghoc { get; set; }
     }
 }

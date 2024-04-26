@@ -13,5 +13,6 @@ namespace Lib_Models.Models_Select.LichHoc
         public int id_LichHoc { get; set; }
         public string? thoiGianBatDau { get; set; }
         public string? thoiGianKetThuc { get; set; }
+        public string? phonghoc { get; set; }
     }
 }
