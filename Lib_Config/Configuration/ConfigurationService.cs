@@ -27,7 +27,7 @@ namespace Lib_Config.Configuration
         public static void RegisterDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<Trendyt_DbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("OnionArchitecture"),
+            options.UseSqlServer(configuration.GetConnectionString("DataBase_Trendyt_School"),
             options => options.MigrationsAssembly(typeof(Trendyt_DbContext).Assembly.FullName)));
         }
 
