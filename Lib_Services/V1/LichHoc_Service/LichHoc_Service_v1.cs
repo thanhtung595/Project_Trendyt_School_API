@@ -5,6 +5,7 @@ using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
 using Lib_Repository.V1.LichHoc_Repository;
 using Lib_Services.Token_Service;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,18 @@ namespace Lib_Services.V1.LichHoc_Service
             if (islichhoc == null)
             {
                 return new Status_Application { StatusBool = false, StatusType = "Môn học không tồn tại" };
+            }
+
+            if (string.IsNullOrEmpty(lichHoc.phonghoc))
+            {
+                return new Status_Application { StatusBool = false, StatusType = "Chưa nhập phòng học" };
+            }
+
+            var checkTrungBuoiHoc = await _db.tbLichHoc.FirstOrDefaultAsync(x =>x.id_MonHoc == islichhoc.id_MonHoc &&
+                x.thoiGianKetThuc == lichHoc.thoiGianKetThuc && x.thoiGianBatDau == lichHoc.thoiGianBatDau);
+            if (checkTrungBuoiHoc != null)
+            {
+                return new Status_Application { StatusBool = false, StatusType = $"Buổi học thời thời gian băt đầu:{lichHoc.thoiGianBatDau} và kết thúc: {lichHoc.thoiGianKetThuc} bị trùng" }; 
             }
             return await _lichHoc_Repository_V1.Insert(lichHoc);
         }

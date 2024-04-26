@@ -28,7 +28,8 @@ namespace Lib_Repository.V1.LichHoc_Repository
                 {
                     id_MonHoc = lichHoc.id_MonHoc,
                     thoiGianBatDau = lichHoc.thoiGianBatDau,
-                    thoiGianKetThuc = lichHoc.thoiGianKetThuc
+                    thoiGianKetThuc = lichHoc.thoiGianKetThuc,
+                    phonghoc = lichHoc.phonghoc,
                 };
                 await _db.tbLichHoc.AddAsync(tbLichHoc);
                 await _db.SaveChangesAsync();
@@ -70,7 +71,8 @@ namespace Lib_Repository.V1.LichHoc_Repository
                                               select ac.user_Name).FirstOrDefault(),
                                    IdLichHoc = lichhoc.id_LichHoc,
                                    ThoiGianBatDau = lichhoc.thoiGianBatDau.TimeOfDay, // Lấy giờ, phút, giây của thời gian bắt đầu
-                                   ThoiGianKetThuc = lichhoc.thoiGianKetThuc.TimeOfDay // Lấy giờ, phút, giây của thời gian kết thúc
+                                   ThoiGianKetThuc = lichhoc.thoiGianKetThuc.TimeOfDay, // Lấy giờ, phút, giây của thời gian kết thúc
+                                   PhongHoc = lichhoc.phonghoc
                                }).ToListAsync();
 
             var groupByNgayThoiGian = query.GroupBy(x => x.Date)
@@ -83,7 +85,8 @@ namespace Lib_Repository.V1.LichHoc_Repository
                                                     MonHoc = item.MonHoc,
                                                     id_LichHoc = item.IdLichHoc,
                                                     thoiGianBatDau = item.ThoiGianBatDau.ToString(),
-                                                    thoiGianKetThuc = item.ThoiGianKetThuc.ToString()
+                                                    thoiGianKetThuc = item.ThoiGianKetThuc.ToString(),
+                                                    phonghoc = item.PhongHoc
                                                 }).ToList()
                                             })
                                             .ToList();
