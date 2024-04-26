@@ -32,6 +32,15 @@ namespace API_Application.Controllers_Api.v1
             }
             else if (status_Login.StatusBool)
             {
+                // Set Cokie
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true, // chỉ có thể truy cập qua HTTP, không thể truy cập qua JavaScript
+                    Secure = false, // chỉ gửi cookie qua HTTPS nếu kích hoạt
+                    SameSite = SameSiteMode.Strict // bảo mật ngăn chặn CSRF
+                };
+                Response.Cookies.Append("accessToken", status_Login.access_Token!, cookieOptions);
+
                 return StatusCode(200, status_Login);
             }
             else
