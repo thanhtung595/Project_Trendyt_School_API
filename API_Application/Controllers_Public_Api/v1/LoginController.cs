@@ -37,7 +37,9 @@ namespace API_Application.Controllers_Api.v1
                 {
                     HttpOnly = true, // chỉ có thể truy cập qua HTTP, không thể truy cập qua JavaScript
                     Secure = false, // chỉ gửi cookie qua HTTPS nếu kích hoạt
-                    SameSite = SameSiteMode.Strict // bảo mật ngăn chặn CSRF
+                    SameSite = SameSiteMode.Strict, // bảo mật ngăn chặn CSRF,
+                    Domain = "localhost:3000",
+                    Path= "/"
                 };
                 Response.Cookies.Append("accessToken", status_Login.access_Token!, cookieOptions);
 
