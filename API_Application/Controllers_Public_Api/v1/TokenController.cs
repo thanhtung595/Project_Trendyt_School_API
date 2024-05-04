@@ -33,9 +33,9 @@ namespace API_Application.Controllers_Public_Api.v1
             - Nhận {refesh_Token}
          */
         [HttpPut("refesh-token"),Authorize]
-        public async Task<IActionResult> RefshToken([FromBody] string hostName)
+        public async Task<IActionResult> RefshToken()
         {
-            Token_Refesh_Model token_Refesh = await _tokenService_V2.RefeshToken(hostName);
+            Token_Refesh_Model token_Refesh = await _tokenService_V2.RefeshToken();
             if (token_Refesh == null)
             {
                 return StatusCode(400, new { error = "Hết phiên làm việc, vui lòng đăng nhập lại" });

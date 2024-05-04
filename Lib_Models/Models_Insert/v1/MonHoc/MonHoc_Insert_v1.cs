@@ -13,6 +13,7 @@ namespace Lib_Models.Models_Insert.v1.MonHoc
         public DateTime ngayKetThuc { get; set; }
         public DateTime ngayBatDau { get; set; }
         public int _SoBuoiNghi { get; set; }
+        public int _SoBuoiHoc { get; set; }
         public int id_Teacher { get; set; }
 
         public List<Class_Member_Insert_v1>? student { get; set; }

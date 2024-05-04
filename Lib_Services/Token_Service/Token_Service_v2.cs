@@ -88,10 +88,10 @@ namespace Lib_Services.Token_Service
                     {
                         id_Token = id_Token,
                         id_Account = id_Account,
-                        access_Token = await CreateTokenString(id_Token, id_Account, name_Role, 12), // 12H
-                        refresh_Token = await CreateTokenString(id_Token, id_Account, name_Role, 720), // 30 Day
-                        access_Expire_Token = DateTime.UtcNow.AddHours(12),
-                        refresh_Expire_Token = DateTime.UtcNow.AddHours(720),
+                        access_Token = await CreateTokenString(id_Token, id_Account, name_Role, 5), // 5 P
+                        refresh_Token = await CreateTokenString(id_Token, id_Account, name_Role, 10080), // 7 Day
+                        access_Expire_Token = DateTime.UtcNow.AddMinutes(5),
+                        refresh_Expire_Token = DateTime.UtcNow.AddDays(7),
                         is_Active = true,
                         ipv4 = ipv4Addres,
                         ipv6 = ipv6Address,
@@ -111,10 +111,10 @@ namespace Lib_Services.Token_Service
                 }
                 else
                 {
-                    tokenCheck.access_Token = await CreateTokenString(tokenCheck.id_Token, id_Account, name_Role, 12); // 12H
-                    tokenCheck.refresh_Token = await CreateTokenString(tokenCheck.id_Token, id_Account, name_Role, 720); // 30 Day
-                    tokenCheck.access_Expire_Token = DateTime.UtcNow.AddHours(12);
-                    tokenCheck.refresh_Expire_Token = DateTime.UtcNow.AddHours(720);
+                    tokenCheck.access_Token = await CreateTokenString(tokenCheck.id_Token, id_Account, name_Role, 5); // 5 P
+                    tokenCheck.refresh_Token = await CreateTokenString(tokenCheck.id_Token, id_Account, name_Role, 10080); // 7 Day
+                    tokenCheck.access_Expire_Token = DateTime.UtcNow.AddMinutes(5);
+                    tokenCheck.refresh_Expire_Token = DateTime.UtcNow.AddDays(7);
                     tokenCheck.is_Active = true;
                     await _db.SaveChangesAsync();
                     return new TokenModel
@@ -134,7 +134,7 @@ namespace Lib_Services.Token_Service
         #endregion
 
         #region RefeshToken
-        public async Task<Token_Refesh_Model> RefeshToken(string hostName)
+        public async Task<Token_Refesh_Model> RefeshToken()
         {
             try
             {
@@ -169,10 +169,10 @@ namespace Lib_Services.Token_Service
 
                 var role = await _db.tbRole.FindAsync(account!.tbAccount!.id_Role);
 
-                account!.access_Token = await CreateTokenString(account.id_Token, account.id_Account, role!.name_Role!, 12); // 12H
-                account.refresh_Token = await CreateTokenString(account.id_Token, account.id_Account, role.name_Role!, 720); // 30 Day
-                account.access_Expire_Token = DateTime.UtcNow.AddHours(12);
-                account.refresh_Expire_Token = DateTime.UtcNow.AddHours(720);
+                account!.access_Token = await CreateTokenString(account.id_Token, account.id_Account, role!.name_Role!, 5); // 5 P
+                account.refresh_Token = await CreateTokenString(account.id_Token, account.id_Account, role.name_Role!, 10080); // 7 Day
+                account.access_Expire_Token = DateTime.UtcNow.AddMinutes(5);
+                account.refresh_Expire_Token = DateTime.UtcNow.AddDays(7);
                 account.is_Active = true;
                 await _db.SaveChangesAsync();
 
@@ -247,7 +247,7 @@ namespace Lib_Services.Token_Service
                         new Claim("id", id_TokenString),
                         new Claim("typeRole", name_Role!),
                     }),
-                Expires = DateTime.UtcNow.AddHours(day_Expires), // Thời gian sống của JWT
+                Expires = DateTime.UtcNow.AddMinutes(day_Expires), // Thời gian sống của JWT
                 Issuer = issuer,
                 Audience = audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)

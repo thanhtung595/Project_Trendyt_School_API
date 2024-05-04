@@ -35,6 +35,7 @@ namespace Lib_Repository.V1.MonHoc
                                   danhGiaTrungBinh = mh._danhGiaTrungBinh,
                                   tag = mh.tags,
                                   soBuoiNghi = mh._SoBuoiNghi,
+                                  soBuoiHoc = mh._SoBuoiHoc,
                                   ngayBatDau = mh.ngayBatDau,
                                   ngayKetThuc = mh.ngayKetThuc,
                                   giangvien = (from st in _db.tbMonHocClass_Student
