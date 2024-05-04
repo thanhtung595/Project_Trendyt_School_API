@@ -20,6 +20,7 @@ namespace Lib_Models.Models_Table_Entity
         public DateTime ngayKetThuc { get; set; }
         public DateTime ngayBatDau { get; set; }
         public int _SoBuoiNghi { get; set; }
+        public int _SoBuoiHoc { get; set; }
 
         [ForeignKey("id_School")]
         public virtual tbSchool? tbSchool { get; set; }

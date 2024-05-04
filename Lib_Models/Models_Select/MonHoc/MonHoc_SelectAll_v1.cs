@@ -16,6 +16,7 @@ namespace Lib_Models.Models_Select.MonHoc
         public float danhGiaTrungBinh { get; set; }
         public string? tag { get; set; }
         public int soBuoiNghi { get; set; }
+        public int soBuoiHoc { get; set; }
         public DateTime ngayBatDau { get; set; }
         public DateTime ngayKetThuc { get; set; }
         public Select_One_Teacher_v1? giangvien { get; set; }

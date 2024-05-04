@@ -33,6 +33,8 @@ builder.Services.RegisterAddCors();
 builder.Services.RegisterRoleAuthorition();
 
 //Add scoped middlewares
+builder.Services.RegisterRepositoryScoped();
+builder.Services.RegisterServiceScoped();
 builder.Services.MyServiceScopedV1();
 builder.Services.MyRepositoryScopedV1();
 builder.Services.MyStoredProceduresScoped();

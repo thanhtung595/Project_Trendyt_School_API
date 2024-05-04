@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lib_Models.Models_Select.Account;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -32,5 +33,10 @@ namespace App_Models.Models_Table_CSDL
 
         [ForeignKey("id_TypeAccount")]
         public virtual tbTypeAccount? tbTypeAccount { get; set; }
+
+        public IEnumerable<Account_Login_Select_v1> Select(Func<tbAccount, Account_Login_Select_v1> mapToAccountLogin)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
