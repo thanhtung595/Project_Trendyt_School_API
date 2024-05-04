@@ -1,7 +1,10 @@
 ﻿using Lib_Models.Models_Select.Account;
 using Lib_Models.Models_Select.Login;
 using Lib_Services.V1.Login_Service;
+using Lib_Services.V2.Login_Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TrendyT_Data.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +15,11 @@ namespace API_Application.Controllers_Api.v1
     public class LoginController : ControllerBase
     {
         private readonly ILogin_Service_v1 _loginService_v1;
-        public LoginController(ILogin_Service_v1 login_Service_V1)
+        private readonly ILogin_Service_v2 _login_Service_V2;
+        public LoginController(ILogin_Service_v1 login_Service_V1, ILogin_Service_v2 login_Service_V2)
         {
             _loginService_v1 = login_Service_V1;
+            _login_Service_V2 = login_Service_V2;
         }
 
         #region Login Account User Name
@@ -25,7 +30,7 @@ namespace API_Application.Controllers_Api.v1
         [HttpPost]
         public async Task<IActionResult> Login(Login_Select_v1 request)
         {
-            Account_Login_Select_v1 status_Login = await _loginService_v1.LoginAsync(request);
+            Account_Login_Select_v1 status_Login = await _login_Service_V2.LoginAsync(request);
             if (!status_Login.StatusBool)
             {
                 return StatusCode(400, status_Login.StatusType);
@@ -39,7 +44,7 @@ namespace API_Application.Controllers_Api.v1
                     Secure = false, // chỉ gửi cookie qua HTTPS nếu kích hoạt
                     SameSite = SameSiteMode.Strict, // bảo mật ngăn chặn CSRF,
                     Domain = "localhost:3000",
-                    Path= "/"
+                    Path = "/"
                 };
                 Response.Cookies.Append("accessToken", status_Login.access_Token!, cookieOptions);
 
@@ -51,5 +56,11 @@ namespace API_Application.Controllers_Api.v1
             }
         }
         #endregion
+        [HttpGet]
+        public async Task<IActionResult> GetLichHoc()
+        {
+            var accessToken = Request.Cookies["accessToken"];
+            return Ok(accessToken);
+        }
     }
 }

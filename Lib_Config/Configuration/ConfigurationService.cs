@@ -1,4 +1,8 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
+using Lib_Repository.Abstract;
+using Lib_Repository.Abstract_DapperHelper;
+using Lib_Repository.Repository_Class;
+using Lib_Services.V2.Login_Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -145,6 +149,17 @@ namespace Lib_Config.Configuration
                            .WithExposedHeaders("*");
                     });
             });
+        }
+
+        public static void RegisterRepositoryScoped(this IServiceCollection services)
+        {
+            services.AddScoped<IDapperHelper, DapperHelper>();
+            services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
+        }
+
+        public static void RegisterServiceScoped(this IServiceCollection services)
+        {
+            services.AddScoped<ILogin_Service_v2, Login_Service_v2>();
         }
     }
 }

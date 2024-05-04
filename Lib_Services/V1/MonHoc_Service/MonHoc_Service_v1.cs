@@ -142,6 +142,7 @@ namespace Lib_Services.V1.MonHoc
                 _danhGiaTrungBinh = 5,
                 tags = "active",
                 _SoBuoiNghi = monHoc._SoBuoiNghi,
+                _SoBuoiHoc = monHoc._SoBuoiHoc,
                 ngayBatDau = monHoc.ngayBatDau,
                 ngayKetThuc = monHoc.ngayKetThuc
             };
