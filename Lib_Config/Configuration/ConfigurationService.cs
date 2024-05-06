@@ -2,7 +2,10 @@
 using Lib_Repository.Abstract;
 using Lib_Repository.Abstract_DapperHelper;
 using Lib_Repository.Repository_Class;
+using Lib_Services.PublicServices.CookieService;
+using Lib_Services.PublicServices.TokentJwt_Service;
 using Lib_Services.V2.Login_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -140,9 +143,11 @@ namespace Lib_Config.Configuration
                     builder =>
                     {
                         builder.WithOrigins(
-                            "http://localhost:3000",
-                            "http://127.0.0.1:5500",
-                            "https://trendyt.netlify.app")
+                            StringUrl.UrlClient1 + StringUrl.PortClient1,
+                            StringUrl.UrlClient2 + StringUrl.PortClient2,
+                            StringUrl.UrlClientProduction1,
+                            StringUrl.UrlClientProduction2
+                            )
                            .AllowAnyMethod()
                            .AllowAnyHeader()
                            .AllowCredentials()
@@ -159,7 +164,9 @@ namespace Lib_Config.Configuration
 
         public static void RegisterServiceScoped(this IServiceCollection services)
         {
+            services.AddScoped<ITokentJwt_Service, TokentJwt_Service>();
             services.AddScoped<ILogin_Service_v2, Login_Service_v2>();
+            services.AddScoped<ICustomCookieService, CustomCookieService>();
         }
     }
 }
