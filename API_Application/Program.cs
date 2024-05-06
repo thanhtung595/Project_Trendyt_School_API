@@ -61,7 +61,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseMiddleware<JwtCheckMiddleware_v2>();
+app.UseMiddleware<AddAccessTokenInHeaderMiddleware>();
+//app.UseMiddleware<JwtCheckMiddleware_v2>();
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -10,6 +10,6 @@ namespace Lib_Models.Models_Select.Login
     {
         public string? user_Name { get; set; }
         public string? user_Password { get; set; }
-        public string? hostName { get; set; }
+        //public string? hostName { get; set; }
     }
 }

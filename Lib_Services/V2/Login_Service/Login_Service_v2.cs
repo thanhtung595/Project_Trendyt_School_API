@@ -5,6 +5,7 @@ using Lib_Models.Models_Select.Login;
 using Lib_Repository.Abstract;
 using Lib_Repository.Abstract_DapperHelper;
 using Lib_Repository.Repository_Class;
+using Lib_Services.PublicServices.TokentJwt_Service;
 using Lib_Services.Token_Service;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -21,13 +22,16 @@ namespace Lib_Services.V2.Login_Service
         private readonly IRepository<tbRole> _roleRepository;
         private readonly IRepository<tbMenberSchool> _menberSchooRepository;
         private readonly IToken_Service_v2 _token_Service_V2;
+        private readonly ITokentJwt_Service _tokentJwt_Service;
         public Login_Service_v2(IRepository<tbAccount> accountRepository, IRepository<tbRole> roleRepository,
-            IRepository<tbMenberSchool> menberSchooRepository, IToken_Service_v2 token_Service_V2)
+            IRepository<tbMenberSchool> menberSchooRepository, IToken_Service_v2 token_Service_V2,
+            ITokentJwt_Service tokentJwt_Service)
         {
             _accountRepository = accountRepository;
             _menberSchooRepository = menberSchooRepository;
             _roleRepository = roleRepository;
             _token_Service_V2 = token_Service_V2;
+            _tokentJwt_Service = tokentJwt_Service;
         }
         
         public async Task<Account_Login_Select_v1> LoginAsync(Login_Select_v1 login)
@@ -85,9 +89,10 @@ namespace Lib_Services.V2.Login_Service
         private async Task<Account_Login_Select_v1> SendReponse(tbAccount account)
         {
             string roleSchool = "";
+            string roleJwt = "";
             // Lấy role của account với idRole từ account
             var role = await _roleRepository.GetById(account.id_Role);
-
+            roleJwt = role.name_Role!;
             // Lấy Member và roleSchool của account với idAccount từ account
             var member = await _menberSchooRepository.GetAllIncluding(m => m.id_Account == account.id_Account, roleSchool => roleSchool.tbRoleSchool!);
 
@@ -95,19 +100,22 @@ namespace Lib_Services.V2.Login_Service
             {
                 var memberOne = member.First();
                 roleSchool = memberOne.tbRoleSchool!.name_Role!;
+                roleJwt = roleSchool;
             }
 
+
             // Cấp bộ Token mới
-            var rfToken_v2 = await _token_Service_V2.CreateToken(account.id_Account, account.tbRole!.name_Role!, "");
+            var capTokenMoi = await _tokentJwt_Service.CreateToken(account.id_Account, roleJwt);
 
             return new Account_Login_Select_v1
             {
                 StatusBool = true,
                 StatusType = "Success",
-                access_Token = rfToken_v2.access_Token,
-                refesh_Token = rfToken_v2.refresh_Token,
-                access_Expire_Token = rfToken_v2.access_Expire_Token,
-                refresh_Expire_Token = rfToken_v2.refresh_Expire_Token,
+                access_Token = capTokenMoi.access_Token,
+                refesh_Token = capTokenMoi.refresh_Token,
+                access_Expire_Token = capTokenMoi.access_Expire_Token,
+                refresh_Expire_Token = capTokenMoi.refresh_Expire_Token,
+                key_refresh_Token = capTokenMoi.key_refresh_Token,
                 info = new Account_Info_Select_v1
                 {
                     user_Name = account.user_Name,
