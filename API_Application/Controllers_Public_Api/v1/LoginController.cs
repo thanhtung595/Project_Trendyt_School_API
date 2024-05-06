@@ -1,10 +1,9 @@
 ﻿using Lib_Models.Models_Select.Account;
 using Lib_Models.Models_Select.Login;
-using Lib_Services.V1.Login_Service;
+using Lib_Services.PublicServices.CookieService;
 using Lib_Services.V2.Login_Service;
-using Microsoft.AspNetCore.Authorization;
+using Lib_Settings;
 using Microsoft.AspNetCore.Mvc;
-using TrendyT_Data.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,19 +13,15 @@ namespace API_Application.Controllers_Api.v1
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly ILogin_Service_v1 _loginService_v1;
         private readonly ILogin_Service_v2 _login_Service_V2;
-        public LoginController(ILogin_Service_v1 login_Service_V1, ILogin_Service_v2 login_Service_V2)
+        private readonly ICustomCookieService _customCookieService;
+        public LoginController(ILogin_Service_v2 login_Service_V2, ICustomCookieService customCookieService)
         {
-            _loginService_v1 = login_Service_V1;
             _login_Service_V2 = login_Service_V2;
+            _customCookieService = customCookieService;
         }
 
         #region Login Account User Name
-        /*
-            - Truy cập access_Token - All Role
-            - Gửi {user_Name , user_Password}
-         */
         [HttpPost]
         public async Task<IActionResult> Login(Login_Select_v1 request)
         {
@@ -38,17 +33,11 @@ namespace API_Application.Controllers_Api.v1
             else if (status_Login.StatusBool)
             {
                 // Set Cokie
-                var cookieOptions = new CookieOptions
-                {
-                    HttpOnly = true, // chỉ có thể truy cập qua HTTP, không thể truy cập qua JavaScript
-                    Secure = false, // chỉ gửi cookie qua HTTPS nếu kích hoạt
-                    SameSite = SameSiteMode.Strict, // bảo mật ngăn chặn CSRF,
-                    Domain = "localhost:3000",
-                    Path = "/"
-                };
-                Response.Cookies.Append("accessToken", status_Login.access_Token!, cookieOptions);
+                //_customCookieService.SetCookie(StringUrl.DomainCookieServer, "access_token", status_Login.access_Token!, BaseSettingProject.EXPIRES_ACCESSTOKEN);
+                _customCookieService.SetCookie(StringUrl.DomainCookieClient2, BaseSettingProject.ACCESSTOKEN, status_Login.access_Token!, 1); // BaseSettingProject.EXPIRES_ACCESSTOKEN
+                _customCookieService.SetCookieAllTime(StringUrl.DomainCookieClient2, BaseSettingProject.KEYSCRFT, status_Login.key_refresh_Token!);
 
-                return StatusCode(200, status_Login);
+                return StatusCode(200, status_Login.info);
             }
             else
             {
@@ -56,11 +45,5 @@ namespace API_Application.Controllers_Api.v1
             }
         }
         #endregion
-        [HttpGet]
-        public async Task<IActionResult> GetLichHoc()
-        {
-            var accessToken = Request.Cookies["accessToken"];
-            return Ok(accessToken);
-        }
     }
 }

@@ -268,14 +268,13 @@ namespace Lib_Services.Token_Service
             var tokenHeaders = authorizationHeader!.ToString().Split(' ').Last();
             var handler = new JwtSecurityTokenHandler();
             var token = handler.ReadJwtToken(tokenHeaders);
-            var userIdClaim = token.Claims.FirstOrDefault(claim => claim.Type == "id");
-            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var idTokenGuidParse))
+            var userIdClaim = token.Claims.FirstOrDefault(claim => claim.Type == "idAccount");
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var idTokenGuidParse))
             {
                 return 0;
             }
 
-            var tokenDb = await _db.tbToken.FindAsync(idTokenGuidParse);
-            return tokenDb!.id_Account;
+            return await Task.FromResult(idTokenGuidParse);
         }
         #endregion
 
@@ -289,14 +288,12 @@ namespace Lib_Services.Token_Service
             var tokenHeaders = authorizationHeader!.ToString().Split(' ').Last();
             var handler = new JwtSecurityTokenHandler();
             var token = handler.ReadJwtToken(tokenHeaders);
-            var userIdClaim = token.Claims.FirstOrDefault(claim => claim.Type == "id");
-            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var idTokenGuidParse))
+            var userIdClaim = token.Claims.FirstOrDefault(claim => claim.Type == "idAccount");
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var idTokenGuidParse))
             {
                 return null!;
             }
-
-            var tokenDb = await _db.tbToken.FindAsync(idTokenGuidParse);
-            var member = await _db.tbMenberSchool.Include(x => x.tbRoleSchool).FirstOrDefaultAsync(x => x.id_Account == tokenDb!.id_Account);
+            var member = await _db.tbMenberSchool.Include(x => x.tbRoleSchool).FirstOrDefaultAsync(x => x.id_Account == idTokenGuidParse);
             return member ?? null!;
         }
         #endregion
