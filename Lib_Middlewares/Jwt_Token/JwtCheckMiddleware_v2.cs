@@ -19,17 +19,22 @@ namespace Lib_Middlewares.Jwt_Token
         private readonly RequestDelegate _next;
         private readonly IConfiguration _configuration;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public JwtCheckMiddleware_v2(RequestDelegate next, IConfiguration configuration, IServiceProvider serviceProvider)
+        public JwtCheckMiddleware_v2(RequestDelegate next, IConfiguration configuration, IServiceProvider serviceProvider, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _next = next;
             _configuration = configuration;
             _serviceProvider = serviceProvider;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task Invoke(HttpContext context)
         {
             try
             {
+                var accessToken = _httpContextAccessor.HttpContext!.Request.Cookies["accessToken"];
+
                 // Kiểm tra xem endpoint có yêu cầu xác thực hay không
                 var endpoint = context.GetEndpoint();
                 var authorizeAttribute = endpoint?.Metadata.GetMetadata<Microsoft.AspNetCore.Authorization.AuthorizeAttribute>();
