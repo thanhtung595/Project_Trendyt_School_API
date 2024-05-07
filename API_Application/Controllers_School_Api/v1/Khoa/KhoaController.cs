@@ -2,6 +2,7 @@
 using Lib_Models.Models_Insert.v1;
 using Lib_Models.Status_Model;
 using Lib_Services.V1.KhoaSchool_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TrendyT_Data.Identity;
@@ -10,7 +11,7 @@ using TrendyT_Data.Identity;
 
 namespace API_Application.Controllers_School_Api.v1.Khoa
 {
-    [Route("api/v1/khoa")]
+    [Route(RouterName.RouterControllerName.Khoa)]
     [ApiController]
     public class KhoaController : ControllerBase
     {

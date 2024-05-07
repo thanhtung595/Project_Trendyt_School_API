@@ -1,4 +1,5 @@
 ﻿using Lib_Services.V1.Teacher_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TrendyT_Data.Identity;
@@ -7,7 +8,7 @@ using TrendyT_Data.Identity;
 
 namespace API_Application.Controllers_School_Api.v1.Teacher
 {
-    [Route("api/v1/teacher")]
+    [Route(RouterName.RouterControllerName.Teacher)]
     [ApiController]
     public class TeacherController : ControllerBase
     {
