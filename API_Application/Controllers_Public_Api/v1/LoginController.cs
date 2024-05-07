@@ -43,10 +43,10 @@ namespace API_Application.Controllers_Api.v1
                     HttpOnly = true, // chỉ có thể truy cập qua HTTP, không thể truy cập qua JavaScript
                     Secure = false, // chỉ gửi cookie qua HTTPS nếu kích hoạt
                     SameSite = SameSiteMode.Strict, // bảo mật ngăn chặn CSRF,
-                    Domain = "localhost:3000",
+                    Domain = "localhost",
                     Path = "/"
                 };
-                Response.Cookies.Append("accessToken", status_Login.access_Token!, cookieOptions);
+                Response.Cookies.Append("acccessToken", status_Login.access_Token!, cookieOptions);
 
                 return StatusCode(200, status_Login);
             }
