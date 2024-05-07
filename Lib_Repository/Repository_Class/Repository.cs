@@ -87,6 +87,11 @@ namespace Lib_Repository.Repository_Class
         public void Delete(T entity)
         {
             EntityEntry entityEntry = _db.Entry<T>(entity);
+            if (entityEntry.State == EntityState.Detached)
+            {
+                _db.Attach(entity); // Đính kèm đối tượng nếu nó không được theo dõi
+            }
+            _db.Set<T>().Remove(entity); // Xóa đối tượng
         }
 
         public void Delete(Expression<Func<T, bool>> expression)

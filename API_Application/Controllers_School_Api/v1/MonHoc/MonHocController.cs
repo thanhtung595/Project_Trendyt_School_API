@@ -5,6 +5,7 @@ using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
 using Lib_Services.V1.MonHoc;
 using Lib_Services.V1.MonHoc_Student_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ using TrendyT_Data.Identity;
 
 namespace API_Application.Controllers_School_Api.v1.MonHoc
 {
-    [Route("api/v1/mon-hoc")]
+    [Route(RouterName.RouterControllerName.MonHoc)]
     [ApiController]
     public class MonHocController : ControllerBase
     {
@@ -32,7 +33,7 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
             _pROC_MonHoc = pROC_MonHoc;
         }
 
-        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
+        [Authorize(Policy = IdentityData.ScuritySchool)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

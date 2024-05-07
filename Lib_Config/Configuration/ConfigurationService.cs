@@ -132,6 +132,24 @@ namespace Lib_Config.Configuration
                 options.AddPolicy(IdentityData.StudentPolicyName, p =>
                 p.RequireClaim(IdentityData.TypeRole, IdentityData.StudentClaimName));
                 #endregion
+
+                #region Student
+                options.AddPolicy(IdentityData.ScuritySchool, policy =>
+                {
+                    policy.RequireAssertion(context =>
+                    {
+                        return context.User.HasClaim(c =>
+                            c.Type == IdentityData.TypeRole &&
+                            (c.Value == IdentityData.AdminSchoolClaimName ||
+                            c.Value == IdentityData.SecretaryClaimName ||
+                            c.Value == IdentityData.IndustryClaimName ||
+                            c.Value == IdentityData.TeacherClaimName ||
+                             c.Value == IdentityData.StudentClaimName));
+                    });
+                });
+                #endregion
+
+
             });
         }
 

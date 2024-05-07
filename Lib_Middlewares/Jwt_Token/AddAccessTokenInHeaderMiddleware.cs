@@ -64,7 +64,7 @@ namespace Lib_Middlewares.Jwt_Token
                                 }
                                 // Thêm AccessToken vào header Authorization
                                 var customCookieService = scope.ServiceProvider.GetRequiredService<ICustomCookieService>();
-                                customCookieService.SetCookie(StringUrl.DomainCookieClient2, BaseSettingProject.ACCESSTOKEN, tokenModel.access_Token!, 1);
+                                customCookieService.SetCookie(StringUrl.DomainCookieClient2, BaseSettingProject.ACCESSTOKEN, tokenModel.access_Token!, BaseSettingProject.EXPIRES_ACCESSTOKEN);
                                 customCookieService.SetCookieAllTime(StringUrl.DomainCookieClient2, BaseSettingProject.KEYSCRFT, tokenModel.key_refresh_Token!);
                                 context.Request.Headers["Authorization"] = "Bearer " + tokenModel.refresh_Token;
                             }
@@ -72,7 +72,8 @@ namespace Lib_Middlewares.Jwt_Token
                         catch (Exception ex)
                         {
                             await Console.Out.WriteLineAsync(ex.Message);
-                            throw;
+                            SetUnauthorizedResponse(context, 500, ex.Message);
+                            return;
                         }
                     }
                     else
@@ -89,6 +90,11 @@ namespace Lib_Middlewares.Jwt_Token
                                 idTokenParse = idToken;
                             }
                             var tokenDb = await tokenRepository.GetById(idTokenParse);
+                            if (tokenDb == null)
+                            {
+                                SetUnauthorizedResponse(context, 401, "Null Access Token");
+                                return;
+                            }
                             // Thêm AccessToken vào header Authorization
                             context.Request.Headers["Authorization"] = "Bearer " + tokenDb.refresh_Token;
                         }

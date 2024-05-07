@@ -12,7 +12,7 @@ namespace Lib_Repository.V1.MonHoc_Repository
 {
     public interface IMonHoc_Repository_v1
     {
-        Task<List<MonHoc_SelectAll_v1>> GetAll(int idSchool);
+        Task<List<MonHoc_SelectAll_v1>> GetAll(tbMenberSchool menberManager);
         Task<Status_Application> Insert(tbMonHoc monHoc);
         Task<MonHocSelectById_v1> GetById(int idSchool, int id_MonHoc);
     }

@@ -3,6 +3,7 @@ using Lib_Models.Models_Insert.v1.Class_School;
 using Lib_Models.Models_Insert.v1.MonHoc;
 using Lib_Models.Status_Model;
 using Lib_Services.V1.MonHoc_Student_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using TrendyT_Data.Identity;
 
 namespace API_Application.Controllers_School_Api.v1.MonHoc
 {
-    [Route("api/v1/mon-hoc/student")]
+    [Route(RouterName.RouterControllerName.MonHocSudent)]
     [ApiController]
     public class MonHocSudentController : ControllerBase
     {

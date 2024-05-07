@@ -5,6 +5,7 @@ using Lib_Models.Models_Select.LichHoc;
 using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
 using Lib_Services.V1.LichHoc_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ using TrendyT_Data.Identity;
 
 namespace API_Application.Controllers_School_Api.v1.LichHoc
 {
-    [Route("api/v1/lichhoc")]
+    [Route(RouterName.RouterControllerName.LichHoc)]
     [ApiController]
     public class LichHocController : ControllerBase
     {
@@ -26,9 +27,9 @@ namespace API_Application.Controllers_School_Api.v1.LichHoc
             _lichHoc_Service_V1 = lichHoc_Service_V1;
         }
 
-        [Authorize(Policy = IdentityData.TeacherAndStudent)]
+        [Authorize(Policy = IdentityData.ScuritySchool)]
         [HttpGet]
-        public async Task<IActionResult> GetLichHoc()
+        public async Task<IActionResult> GetAll()
         {
            
             return Ok(await _lichHoc_Service_V1.SelectAll());
