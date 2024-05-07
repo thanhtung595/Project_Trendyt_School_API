@@ -107,7 +107,7 @@ namespace Lib_Services.V1.MonHoc
         public async Task<List<MonHoc_SelectAll_v1>> GetAll()
         {
             tbMenberSchool menberManager = await _tokenService_V2.Get_Menber_Token();
-            return await _monHoc_Repository_V1.GetAll(menberManager.id_School);
+            return await _monHoc_Repository_V1.GetAll(menberManager);
             //return await _monHoc_Repository_V1.GetAll(5);
         }
 

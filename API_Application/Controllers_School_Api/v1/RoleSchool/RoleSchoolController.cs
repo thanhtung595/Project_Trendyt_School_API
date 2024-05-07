@@ -1,11 +1,12 @@
 ﻿using Lib_Services.V1.RoleSchool_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TrendyT_Data.Identity;
 
 namespace API_Application.Controllers_School_Api.v1.RoleSchool
 {
-    [Route("api/v1/role-school")]
+    [Route(RouterName.RouterControllerName.RoleSchool)]
     [ApiController]
     public class RoleSchoolController : ControllerBase
     {

@@ -2,6 +2,7 @@
 using Lib_Models.Models_Insert.v1.Class_School;
 using Lib_Models.Status_Model;
 using Lib_Services.V1.Class_Member_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using TrendyT_Data.Identity;
 
 namespace API_Application.Controllers_School_Api.v1.Class_School
 {
-    [Route("api/v1/class/menber")]
+    [Route(RouterName.RouterControllerName.ClassSchool_Menber)]
     [ApiController]
     public class ClassSchool_MenberController : ControllerBase
     {

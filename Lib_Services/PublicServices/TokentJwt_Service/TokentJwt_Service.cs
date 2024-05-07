@@ -32,8 +32,7 @@ namespace Lib_Services.PublicServices.TokentJwt_Service
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly int EXPIRES_ACCESSTOKEN = 1;
-        //private readonly int EXPIRES_ACCESSTOKEN = BaseSettingProject.EXPIRES_ACCESSTOKEN;
+        private readonly int EXPIRES_ACCESSTOKEN = BaseSettingProject.EXPIRES_ACCESSTOKEN;
         private readonly int EXPIRES_REFESHTOKEN = BaseSettingProject.EXPIRES_REFESHTOKEN;
         public TokentJwt_Service(IRepository<tbToken> tokenRepository, IConfiguration configuration,
             IMapper mapper, IHttpContextAccessor httpContextAccessor, IRepository<tbAccount> accountRepository,
@@ -127,45 +126,44 @@ namespace Lib_Services.PublicServices.TokentJwt_Service
         {
             try
             {
-                var accessToken = _httpContextAccessor.HttpContext!.Request.Cookies[BaseSettingProject.KEYSCRFT];
-                var tokenDb = await _tokenRepository.GetAll(t => t.key_refresh_Token == accessToken);
-                if (tokenDb != null)
+                var KEYSCRFT = _httpContextAccessor.HttpContext!.Request.Cookies[BaseSettingProject.KEYSCRFT];
+                var tokenDb = await _tokenRepository.GetAll(t => t.key_refresh_Token == KEYSCRFT);
+                if (tokenDb == null)
                 {
-                    var tokenRefesh = tokenDb.First();
-                    string roleSchool = "";
-                    string roleJwt = "";
-
-                    var account = await _accountRepository.GetAllIncluding(a => a.id_Account == tokenRefesh.id_Account, r => r.tbRole!);
-                    // Lấy role của account với idRole từ account
-                    roleJwt = account.First().tbRole!.name_Role!;
-                    // Lấy Member và roleSchool của account với idAccount từ account
-                    var member = await _menberSchooRepository.GetAllIncluding(m => m.id_Account == account.First().id_Account, roleSchool => roleSchool.tbRoleSchool!);
-
-                    if (member.Any())
-                    {
-                        var memberOne = member.First();
-                        roleSchool = memberOne.tbRoleSchool!.name_Role!;
-                        roleJwt = roleSchool;
-                    }
-
-                    CusstomBrowser browserInfo = GetInfoBrowser();
-                    // cấp lại token
-                    tokenRefesh.access_Token = await CreateAcesssTokenString(tokenRefesh.id_Token, EXPIRES_ACCESSTOKEN); // 5 P
-                    tokenRefesh.refresh_Token = await CreateRefeshTokenString(tokenRefesh.id_Token, tokenRefesh.id_Account, roleJwt, EXPIRES_REFESHTOKEN); // 7 Day
-                    tokenRefesh.access_Expire_Token = DateTime.UtcNow.AddMinutes(EXPIRES_ACCESSTOKEN);
-                    tokenRefesh.refresh_Expire_Token = DateTime.UtcNow.AddMinutes(EXPIRES_REFESHTOKEN);
-                    tokenRefesh.is_Active = true;
-                    tokenRefesh.ipv4 = browserInfo.ipv4Addres;
-                    tokenRefesh.ipv6 = browserInfo.ipv6Address;
-                    tokenRefesh.hostName = browserInfo.hostName;
-                    tokenRefesh.browserName = browserInfo.browserName;
-                    tokenRefesh.key_refresh_Token = HashExample.ComputeHash(account.First().id_Account + tokenRefesh.id_Token.ToString());
-                    _tokenRepository.Update(tokenRefesh);
-                    await _tokenRepository.Commit();
-                    return _mapper.Map<TokenModel>(tokenRefesh);
+                    return null!;
                 }
-                return null!;
+                var tokenRefesh = tokenDb.First();
+                string roleSchool = "";
+                string roleJwt = "";
 
+                var account = await _accountRepository.GetAllIncluding(a => a.id_Account == tokenRefesh.id_Account, r => r.tbRole!);
+                // Lấy role của account với idRole từ account
+                roleJwt = account.First().tbRole!.name_Role!;
+                // Lấy Member và roleSchool của account với idAccount từ account
+                var member = await _menberSchooRepository.GetAllIncluding(m => m.id_Account == account.First().id_Account, roleSchool => roleSchool.tbRoleSchool!);
+
+                if (member.Any())
+                {
+                    var memberOne = member.First();
+                    roleSchool = memberOne.tbRoleSchool!.name_Role!;
+                    roleJwt = roleSchool;
+                }
+
+                CusstomBrowser browserInfo = GetInfoBrowser();
+                // cấp lại token
+                tokenRefesh.access_Token = await CreateAcesssTokenString(tokenRefesh.id_Token, EXPIRES_ACCESSTOKEN); // 5 P
+                tokenRefesh.refresh_Token = await CreateRefeshTokenString(tokenRefesh.id_Token, tokenRefesh.id_Account, roleJwt, EXPIRES_REFESHTOKEN); // 7 Day
+                tokenRefesh.access_Expire_Token = DateTime.UtcNow.AddMinutes(EXPIRES_ACCESSTOKEN);
+                tokenRefesh.refresh_Expire_Token = DateTime.UtcNow.AddMinutes(EXPIRES_REFESHTOKEN);
+                tokenRefesh.is_Active = true;
+                tokenRefesh.ipv4 = browserInfo.ipv4Addres;
+                tokenRefesh.ipv6 = browserInfo.ipv6Address;
+                tokenRefesh.hostName = browserInfo.hostName;
+                tokenRefesh.browserName = browserInfo.browserName;
+                tokenRefesh.key_refresh_Token = HashExample.ComputeHash(account.First().id_Account + tokenRefesh.id_Token.ToString());
+                _tokenRepository.Update(tokenRefesh);
+                await _tokenRepository.Commit();
+                return _mapper.Map<TokenModel>(tokenRefesh);
             }
             catch (Exception ex)
             {
@@ -175,6 +173,38 @@ namespace Lib_Services.PublicServices.TokentJwt_Service
         }
         #endregion
 
+        #region Delete
+        public async Task LogoutToken()
+        {
+            try
+            {
+                if (!_httpContextAccessor.HttpContext!.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
+                {
+                    return;
+                }
+                var tokenHeaders = authorizationHeader!.ToString().Split(' ').Last();
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(tokenHeaders);
+                var userIdClaim = token.Claims.FirstOrDefault(claim => claim.Type == "idToken");
+                if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var idTokenGuidParse))
+                {
+                    return;
+                }
+
+                tbToken tokenDb = await _tokenRepository.GetById(idTokenGuidParse);
+                _tokenRepository.Delete(tokenDb);
+                await _tokenRepository.Commit();
+                return;
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region GetInfoBrowser
         private CusstomBrowser GetInfoBrowser()
         {
             var httpContext = _httpContextAccessor.HttpContext;
@@ -213,6 +243,7 @@ namespace Lib_Services.PublicServices.TokentJwt_Service
                 hostName = clientHostName
             };
         }
+        #endregion
 
         #region Private CreateAcesssTokenString
         private async Task<string> CreateAcesssTokenString(Guid id_Token, int day_Expires)
@@ -271,6 +302,7 @@ namespace Lib_Services.PublicServices.TokentJwt_Service
         }
         #endregion
 
+        #region CusstomBrowser
         private class CusstomBrowser
         {
             public string? ipv4Addres { get; set; }
@@ -278,7 +310,9 @@ namespace Lib_Services.PublicServices.TokentJwt_Service
             public string? hostName { get; set; }
             public string? browserName { get; set; }
         }
+        #endregion
 
+        #region HashExample
         private static class HashExample
         {
             public static string ComputeHash(string input)
@@ -295,5 +329,6 @@ namespace Lib_Services.PublicServices.TokentJwt_Service
                 }
             }
         }
-    } 
+        #endregion
+    }
 }

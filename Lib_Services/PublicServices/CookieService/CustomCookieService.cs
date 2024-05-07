@@ -2,6 +2,7 @@
 using Lib_Settings;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Net.Http;
 
 namespace Lib_Services.PublicServices.CookieService
 {
@@ -42,6 +43,12 @@ namespace Lib_Services.PublicServices.CookieService
             };
 
             httpContext!.Response.Cookies.Append(key, value, cookieOptions);
+        }
+
+        public void DeleteCokie(string key)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            httpContext!.Response.Cookies.Delete(key);
         }
     }
 }

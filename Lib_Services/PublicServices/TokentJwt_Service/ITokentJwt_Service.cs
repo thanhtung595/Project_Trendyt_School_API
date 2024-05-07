@@ -10,6 +10,7 @@ namespace Lib_Services.PublicServices.TokentJwt_Service
     public interface ITokentJwt_Service
     {
         Task<TokenModel> CreateToken(int id_Account, string name_Role);
+        Task LogoutToken();
         Task<TokenModel> RefeshToken();
     }
 }

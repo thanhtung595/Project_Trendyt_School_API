@@ -7,6 +7,7 @@ using Lib_Services.V1.KhoaSchool_Service;
 using Lib_Services.V1.Menber_Service;
 using Lib_Services.V1.RoleSchool_Service;
 using Lib_Services.V1.School_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ using TrendyT_Data.Identity;
 
 namespace API_Application.Controllers_School_Api.v1.School
 {
-    [Route("api/v1/school")]
+    [Route(RouterName.RouterControllerName.School)]
     [ApiController]
     public class SchoolController : ControllerBase
     {
