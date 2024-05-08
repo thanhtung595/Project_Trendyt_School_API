@@ -16,7 +16,7 @@ namespace Lib_Models.Models_Table_Entity
         public int id_School { get; set; }
         public string? name_MonHoc { get; set; }
         public float _danhGiaTrungBinh { get; set; }
-        public string? tags { get; set; }
+        public int id_Tag { get; set; }
         public DateTime ngayKetThuc { get; set; }
         public DateTime ngayBatDau { get; set; }
         public int _SoBuoiNghi { get; set; }
@@ -24,5 +24,8 @@ namespace Lib_Models.Models_Table_Entity
 
         [ForeignKey("id_School")]
         public virtual tbSchool? tbSchool { get; set; }
+
+        [ForeignKey("id_Tag")]
+        public virtual tbTag? tbTag { get; set; }
     }
 }

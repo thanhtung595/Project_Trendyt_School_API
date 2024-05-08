@@ -1,4 +1,5 @@
 ﻿using App_Models.Models_Table_CSDL;
+using Lib_DataEntity.ContextSeed;
 using Lib_Models.Models_Table_Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,20 +21,37 @@ namespace App_DataBaseEntity.DbContextEntity_SQL_Sever
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            //modelBuilder.Entity<tbRole>().HasData(SeedData.tbRoles);
+            //modelBuilder.Entity<tbRoleSchool>().HasData(SeedData.tbRoleSchool);
+            //modelBuilder.Entity<tbTypeAccount>().HasData(SeedData.tbTypeAccount);
+            //modelBuilder.Entity<tbTag>().HasData(SeedData.tbTag);
+            //modelBuilder.Entity<tbStyleBuoiHoc>().HasData(SeedData.tbStyleBuoiHoc);
+
+            //modelBuilder.Entity<tbAccount>(entity =>
+            //{
+            //    entity.HasIndex(ac => ac.user_Name).IsUnique(true);
+            //});
+            //modelBuilder.Entity<tbToken>(entity =>
+            //{
+            //    entity.HasIndex(t => t.key_refresh_Token).IsUnique(true);
+            //});
         }
 
         public DbSet<tbRole> tbRole { get; set; }
         public DbSet<tbRoleSchool> tbRoleSchool { get; set; }
+        public DbSet<tbTag> tbTag { get; set; }
         public DbSet<tbTypeAccount> tbTypeAccount { get; set; }
+        public DbSet<tbStyleBuoiHoc> tbStyleBuoiHoc { get; set; }
         public DbSet<tbAccount> tbAccount { get; set; }
         public DbSet<tbToken> tbToken { get; set; }
         public DbSet<tbSchool> tbSchool { get; set; }
         public DbSet<tbKhoaSchool> tbKhoaSchool { get; set; }
         public DbSet<tbClassSchool> tbClassSchool { get; set; }
         public DbSet<tbMenberSchool> tbMenberSchool { get; set; }
-        public DbSet<tbClassSchool_Menber> tbClassSchool_Menber { get; set; }
         public DbSet<tbMonHoc> tbMonHoc { get; set; }
+        public DbSet<tbClassSchool_Menber> tbClassSchool_Menber { get; set; }
         public DbSet<tbMonHocClass_Student> tbMonHocClass_Student { get; set; }
         public DbSet<tbLichHoc> tbLichHoc { get; set; }
+
     }
 }

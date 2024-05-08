@@ -16,8 +16,13 @@ namespace Lib_Models.Models_Table_Entity
         public DateTime thoiGianBatDau { get; set; }
         public DateTime thoiGianKetThuc { get; set; }
         public string? phonghoc { get; set; }
+        public string? style { get; set; }
+        public int id_StyleBuoiHoc { get; set; }
 
         [ForeignKey("id_MonHoc")]
         public virtual tbMonHoc? tbMonHoc { get; set; }
+
+        [ForeignKey("id_StyleBuoiHoc")]
+        public virtual tbStyleBuoiHoc? tbStyleBuoiHoc { get; set; }
     }
 }
