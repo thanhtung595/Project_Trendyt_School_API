@@ -2,9 +2,9 @@
 using Lib_Repository.Abstract;
 using Lib_Repository.Abstract_DapperHelper;
 using Lib_Repository.Repository_Class;
+using Lib_Services.PublicServices.Auth_Service;
 using Lib_Services.PublicServices.CookieService;
 using Lib_Services.PublicServices.TokentJwt_Service;
-using Lib_Services.V2.Login_Service;
 using Lib_Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -183,8 +183,8 @@ namespace Lib_Config.Configuration
         public static void RegisterServiceScoped(this IServiceCollection services)
         {
             services.AddScoped<ITokentJwt_Service, TokentJwt_Service>();
-            services.AddScoped<ILogin_Service_v2, Login_Service_v2>();
             services.AddScoped<ICustomCookieService, CustomCookieService>();
+            services.AddScoped<IAtuh_Service, Atuh_Service>();
         }
     }
 }

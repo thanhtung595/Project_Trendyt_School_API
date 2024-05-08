@@ -37,13 +37,13 @@ namespace API_Application.Controllers_School_Api.v1.Teacher
         }
         #endregion
 
-        #region Edit Teacher
-        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
-        [HttpPut]
-        public async Task<IActionResult> EditTeacher()
-        {
-            return Ok();
-        }
-        #endregion
+        //#region Edit Teacher
+        //[Authorize(Policy = IdentityData.QuanLySchoolManager)]
+        //[HttpPut]
+        //public async Task<IActionResult> EditTeacher()
+        //{
+        //    return Ok();
+        //}
+        //#endregion
     }
 }

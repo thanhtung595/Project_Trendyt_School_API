@@ -38,11 +38,22 @@ namespace Lib_Repository.Repository_Class
 
         public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> expression = null!)
         {
-            if (expression == null)
+            try
             {
-                return await _db.Set<T>().ToListAsync();
+                IQueryable<T> query = _db.Set<T>();
+
+                if (expression != null)
+                {
+                    query = query.Where(expression);
+                }
+
+                return await query.ToListAsync();
             }
-            return await _db.Set<T>().Where(expression).ToListAsync();
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<T>> GetAllIncluding(Expression<Func<T, bool>> expression = null!, params Expression<Func<T, object>>[] includeProperties)

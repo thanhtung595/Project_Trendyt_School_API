@@ -39,15 +39,15 @@ namespace API_Application.Controllers_School_Api.v1.Class_School
         }
         #endregion
 
-        #region Show one
-        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
-        [HttpGet]
-        [Route("show")]
-        public async Task<IActionResult> ShowOne([FromQuery(Name = "id_ClassSchool")] int id_ClassSchool)
-        {
-            return Ok();
-        }
-        #endregion
+        //#region Show one
+        //[Authorize(Policy = IdentityData.QuanLySchoolManager)]
+        //[HttpGet]
+        //[Route("show")]
+        //public async Task<IActionResult> ShowOne([FromQuery(Name = "id_ClassSchool")] int id_ClassSchool)
+        //{
+        //    return Ok();
+        //}
+        //#endregion
 
         #region Add class
         [Authorize(Policy = IdentityData.QuanLyKhoaManager)]

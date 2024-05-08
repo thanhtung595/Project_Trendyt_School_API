@@ -65,7 +65,7 @@ namespace Lib_Middlewares.Jwt_Token
                                 // Thêm AccessToken vào header Authorization
                                 var customCookieService = scope.ServiceProvider.GetRequiredService<ICustomCookieService>();
                                 customCookieService.SetCookie(StringUrl.DomainCookieClient2, BaseSettingProject.ACCESSTOKEN, tokenModel.access_Token!, BaseSettingProject.EXPIRES_ACCESSTOKEN);
-                                customCookieService.SetCookieAllTime(StringUrl.DomainCookieClient2, BaseSettingProject.KEYSCRFT, tokenModel.key_refresh_Token!);
+                                customCookieService.SetCookie(StringUrl.DomainCookieClient2, BaseSettingProject.KEYSCRFT, tokenModel.key_refresh_Token!, BaseSettingProject.EXPIRES_REFESHTOKEN);
                                 context.Request.Headers["Authorization"] = "Bearer " + tokenModel.refresh_Token;
                             }
                         }
@@ -108,9 +108,7 @@ namespace Lib_Middlewares.Jwt_Token
                 return;
             }
             await _next(context);
-
         }
-
 
         // Hàm để thiết lập phản hồi cho trạng thái Unauthorized
         private void SetUnauthorizedResponse(HttpContext context, int statusCode , string errorMessage)

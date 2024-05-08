@@ -13,6 +13,7 @@ namespace TrendyT_Data.Identity
         public const string QuanLySchoolManager = "QuanLySchoolManager";
         public const string ScuritySchool = "QuanLySchoolManager";
         public const string TeacherAndStudent = "TeacherStudent";
+
         public const string AdminServerPolicyName = "admin";
         public const string AdminServerClaimName = "admin";
 

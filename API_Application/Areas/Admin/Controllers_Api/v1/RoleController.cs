@@ -19,14 +19,14 @@ namespace API_Application.Areas.Admin.Controllers_Api.v1
             _proc_tbRole = proc_tbRole;
         }
 
-        #region SelectAll Role
-        [HttpGet]
-        public async Task<IActionResult> SelectAll()
-        {
-            //return Ok(await _roleService_v1.SelectAllAsync());
-            return Ok(_proc_tbRole.Proc_GetAllRole());
-        }
-        #endregion
+        //#region SelectAll Role
+        //[HttpGet]
+        //public async Task<IActionResult> SelectAll()
+        //{
+        //    //return Ok(await _roleService_v1.SelectAllAsync());
+        //    return Ok(_proc_tbRole.Proc_GetAllRole());
+        //}
+        //#endregion
 
         #region Insert Role
         [HttpPost]
