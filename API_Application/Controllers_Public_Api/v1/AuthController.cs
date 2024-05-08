@@ -2,10 +2,10 @@
 using Lib_Models.Models_Select.Account;
 using Lib_Models.Models_Select.Login;
 using Lib_Models.Status_Model;
+using Lib_Services.PublicServices.Auth_Service;
 using Lib_Services.PublicServices.CookieService;
 using Lib_Services.PublicServices.TokentJwt_Service;
 using Lib_Services.V1.Register_Service;
-using Lib_Services.V2.Login_Service;
 using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +19,14 @@ namespace API_Application.Controllers_Api.v1
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly ILogin_Service_v2 _login_Service_V2;
+        private readonly IAtuh_Service _authService;
         private readonly ICustomCookieService _customCookieService;
         private readonly ITokentJwt_Service _tokentJwt_Service;
         private readonly IRegister_Service_v1 _register_Service_v1;
-        public AuthController(ILogin_Service_v2 login_Service_V2, ICustomCookieService customCookieService,
+        public AuthController(IAtuh_Service authService, ICustomCookieService customCookieService,
             ITokentJwt_Service tokentJwt_Service, IRegister_Service_v1 register_Service_v1)
         {
-            _login_Service_V2 = login_Service_V2;
+            _authService = authService;
             _customCookieService = customCookieService;
             _tokentJwt_Service = tokentJwt_Service;
             _register_Service_v1 = register_Service_v1;
@@ -36,7 +36,7 @@ namespace API_Application.Controllers_Api.v1
         [HttpPost("login")]
         public async Task<IActionResult> Login(Login_Select_v1 request)
         {
-            Account_Login_Select_v1 status_Login = await _login_Service_V2.LoginAsync(request);
+            Account_Login_Select_v1 status_Login = await _authService.LoginAsync(request);
             if (!status_Login.StatusBool)
             {
                 return StatusCode(400, status_Login.StatusType);
@@ -45,8 +45,8 @@ namespace API_Application.Controllers_Api.v1
             {
                 // Set Cokie
                 //_customCookieService.SetCookie(StringUrl.DomainCookieServer, "access_token", status_Login.access_Token!, BaseSettingProject.EXPIRES_ACCESSTOKEN);
-                _customCookieService.SetCookie(StringUrl.DomainCookieClient2, BaseSettingProject.ACCESSTOKEN, status_Login.access_Token!, BaseSettingProject.EXPIRES_ACCESSTOKEN); // 
-                _customCookieService.SetCookieAllTime(StringUrl.DomainCookieClient2, BaseSettingProject.KEYSCRFT, status_Login.key_refresh_Token!);
+                _customCookieService.SetCookie(StringUrl.DomainCookieClient2, BaseSettingProject.ACCESSTOKEN, status_Login.access_Token!, BaseSettingProject.EXPIRES_ACCESSTOKEN);
+                _customCookieService.SetCookie(StringUrl.DomainCookieClient2, BaseSettingProject.KEYSCRFT, status_Login.key_refresh_Token!, BaseSettingProject.EXPIRES_REFESHTOKEN);
 
                 return StatusCode(200, status_Login.info);
             }
@@ -71,7 +71,7 @@ namespace API_Application.Controllers_Api.v1
             {
                 return StatusCode(400, "Không thể đăng ký tài khoản với edu.vn.");
             }
-            Status_Application status = await _register_Service_v1.RegisterUserName(register);
+            Status_Application status = await _authService.RegisterUserName(register);
             if (!status.StatusBool)
             {
                 return StatusCode(400, status.StatusType);

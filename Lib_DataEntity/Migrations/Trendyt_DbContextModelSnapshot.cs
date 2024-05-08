@@ -92,15 +92,17 @@ namespace Lib_DataEntity.Migrations
                     b.Property<int>("id_KhoaSchool")
                         .HasColumnType("int");
 
-                    b.Property<string>("name_ClassSchool")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("id_Tag")
+                        .HasColumnType("int");
 
-                    b.Property<string>("tags")
+                    b.Property<string>("name_ClassSchool")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id_ClassSchool");
 
                     b.HasIndex("id_KhoaSchool");
+
+                    b.HasIndex("id_Tag");
 
                     b.ToTable("tbClassSchool");
                 });
@@ -175,8 +177,8 @@ namespace Lib_DataEntity.Migrations
                     b.Property<int>("id_School")
                         .HasColumnType("int");
 
-                    b.Property<string>("tags")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("id_Tag")
+                        .HasColumnType("int");
 
                     b.HasKey("id_MenberSchool");
 
@@ -185,6 +187,8 @@ namespace Lib_DataEntity.Migrations
                     b.HasIndex("id_RoleSchool");
 
                     b.HasIndex("id_School");
+
+                    b.HasIndex("id_Tag");
 
                     b.ToTable("tbMenberSchool");
                 });
@@ -321,7 +325,13 @@ namespace Lib_DataEntity.Migrations
                     b.Property<int>("id_MonHoc")
                         .HasColumnType("int");
 
+                    b.Property<int>("id_StyleBuoiHoc")
+                        .HasColumnType("int");
+
                     b.Property<string>("phonghoc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("style")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("thoiGianBatDau")
@@ -333,6 +343,8 @@ namespace Lib_DataEntity.Migrations
                     b.HasKey("id_LichHoc");
 
                     b.HasIndex("id_MonHoc");
+
+                    b.HasIndex("id_StyleBuoiHoc");
 
                     b.ToTable("tbLichHoc");
                 });
@@ -357,6 +369,9 @@ namespace Lib_DataEntity.Migrations
                     b.Property<int>("id_School")
                         .HasColumnType("int");
 
+                    b.Property<int>("id_Tag")
+                        .HasColumnType("int");
+
                     b.Property<string>("name_MonHoc")
                         .HasColumnType("nvarchar(max)");
 
@@ -366,12 +381,11 @@ namespace Lib_DataEntity.Migrations
                     b.Property<DateTime>("ngayKetThuc")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("tags")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("id_MonHoc");
 
                     b.HasIndex("id_School");
+
+                    b.HasIndex("id_Tag");
 
                     b.ToTable("tbMonHoc");
                 });
@@ -397,6 +411,38 @@ namespace Lib_DataEntity.Migrations
                     b.HasIndex("id_MonHoc");
 
                     b.ToTable("tbMonHocClass_Student");
+                });
+
+            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbStyleBuoiHoc", b =>
+                {
+                    b.Property<int>("id_StyleBuoiHoc")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_StyleBuoiHoc"));
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id_StyleBuoiHoc");
+
+                    b.ToTable("tbStyleBuoiHoc");
+                });
+
+            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbTag", b =>
+                {
+                    b.Property<int>("id_Tag")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_Tag"));
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id_Tag");
+
+                    b.ToTable("tbTag");
                 });
 
             modelBuilder.Entity("App_Models.Models_Table_CSDL.tbAccount", b =>
@@ -426,7 +472,15 @@ namespace Lib_DataEntity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Lib_Models.Models_Table_Entity.tbTag", "tbTag")
+                        .WithMany()
+                        .HasForeignKey("id_Tag")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("tbKhoaSchool");
+
+                    b.Navigation("tbTag");
                 });
 
             modelBuilder.Entity("App_Models.Models_Table_CSDL.tbClassSchool_Menber", b =>
@@ -479,11 +533,19 @@ namespace Lib_DataEntity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Lib_Models.Models_Table_Entity.tbTag", "tbTag")
+                        .WithMany()
+                        .HasForeignKey("id_Tag")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("tbAccount");
 
                     b.Navigation("tbRoleSchool");
 
                     b.Navigation("tbSchool");
+
+                    b.Navigation("tbTag");
                 });
 
             modelBuilder.Entity("App_Models.Models_Table_CSDL.tbSchool", b =>
@@ -516,7 +578,15 @@ namespace Lib_DataEntity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Lib_Models.Models_Table_Entity.tbStyleBuoiHoc", "tbStyleBuoiHoc")
+                        .WithMany()
+                        .HasForeignKey("id_StyleBuoiHoc")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("tbMonHoc");
+
+                    b.Navigation("tbStyleBuoiHoc");
                 });
 
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMonHoc", b =>
@@ -527,7 +597,15 @@ namespace Lib_DataEntity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Lib_Models.Models_Table_Entity.tbTag", "tbTag")
+                        .WithMany()
+                        .HasForeignKey("id_Tag")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("tbSchool");
+
+                    b.Navigation("tbTag");
                 });
 
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMonHocClass_Student", b =>
