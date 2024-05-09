@@ -1,13 +1,14 @@
 ﻿using Lib_Models.Models_Insert.v1;
 using Lib_Models.Status_Model;
 using Lib_Services.V1.School_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TrendyT_Data.Identity;
 
 namespace API_Application.Areas.Admin.Controllers_Api.v1
 {
-    [Route("api/admin/v1/school")]
+    [Route(RouterName.RouterAdminControllerName.School)]
     [ApiController]
     public class SchoolController : ControllerBase
     {

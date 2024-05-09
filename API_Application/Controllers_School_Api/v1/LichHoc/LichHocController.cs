@@ -41,6 +41,24 @@ namespace API_Application.Controllers_School_Api.v1.LichHoc
         [HttpPost]
         public async Task<IActionResult> Insert(List<LichHoc_Insert_v1> lichHocs)
         {
+            int count_lichHocs = lichHocs.Count();
+            int count_SoBuoiHoc;
+            var monHocDb = await _db.tbMonHoc.FindAsync(lichHocs[0].id_MonHoc);
+            if (monHocDb == null)
+            {
+                return StatusCode(400, "Môn học không tồn tại");
+            }
+            count_SoBuoiHoc = monHocDb!._SoBuoiHoc;
+            var lichHocDb = await _db.tbLichHoc.FirstOrDefaultAsync(x => x.id_MonHoc == monHocDb.id_MonHoc);
+            if (lichHocDb != null)
+            {
+                return StatusCode(400, "Môn học này đã đủ lịch học");
+            }
+            if (count_lichHocs != count_SoBuoiHoc)
+            {
+                return StatusCode(400, $"Số buổi học của môn này là: {count_SoBuoiHoc} hiện tại đang thêm có: {count_lichHocs}");
+            }
+
             var executionStrategy = _db.Database.CreateExecutionStrategy();
 
             IActionResult result = null!;
