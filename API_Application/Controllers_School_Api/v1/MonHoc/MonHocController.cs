@@ -60,7 +60,8 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
                             name_MonHoc = request.name_MonHoc,
                             ngayBatDau = request.ngayBatDau,
                             ngayKetThuc = request.ngayKetThuc,
-                            _SoBuoiNghi = request._SoBuoiNghi
+                            _SoBuoiNghi = request._SoBuoiNghi,
+                            _SoBuoiHoc = request._SoBuoiHoc,
                         };
                         Status_Application statusAddMonHoc = await _monHoc_Service_V1.Insert(monHocAdd);
                         if (!statusAddMonHoc.StatusBool)

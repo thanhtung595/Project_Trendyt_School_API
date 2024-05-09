@@ -1,5 +1,6 @@
 ﻿using App_Models.Models_Table_CSDL;
 using Lib_DataEntity.ContextSeed;
+using Lib_DataEntity.IndexEntity;
 using Lib_Models.Models_Table_Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,15 +27,8 @@ namespace App_DataBaseEntity.DbContextEntity_SQL_Sever
             //modelBuilder.Entity<tbTypeAccount>().HasData(SeedData.tbTypeAccount);
             //modelBuilder.Entity<tbTag>().HasData(SeedData.tbTag);
             //modelBuilder.Entity<tbStyleBuoiHoc>().HasData(SeedData.tbStyleBuoiHoc);
-
-            //modelBuilder.Entity<tbAccount>(entity =>
-            //{
-            //    entity.HasIndex(ac => ac.user_Name).IsUnique(true);
-            //});
-            //modelBuilder.Entity<tbToken>(entity =>
-            //{
-            //    entity.HasIndex(t => t.key_refresh_Token).IsUnique(true);
-            //});
+            modelBuilder.Entity<tbAccount>(IndexCongiguration.IndexAccount());
+            modelBuilder.Entity<tbToken>(IndexCongiguration.IndexToken());
         }
 
         public DbSet<tbRole> tbRole { get; set; }

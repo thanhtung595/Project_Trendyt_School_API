@@ -4,6 +4,7 @@ using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lib_DataEntity.Migrations
 {
     [DbContext(typeof(Trendyt_DbContext))]
-    partial class Trendyt_DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240509112734_IndexAccount")]
+    partial class IndexAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -286,7 +289,7 @@ namespace Lib_DataEntity.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("key_refresh_Token")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("refresh_Expire_Token")
                         .HasColumnType("datetime2");
@@ -300,10 +303,6 @@ namespace Lib_DataEntity.Migrations
                     b.HasKey("id_Token");
 
                     b.HasIndex("id_Account");
-
-                    b.HasIndex("key_refresh_Token")
-                        .IsUnique()
-                        .HasFilter("[key_refresh_Token] IS NOT NULL");
 
                     b.ToTable("tbToken");
                 });
