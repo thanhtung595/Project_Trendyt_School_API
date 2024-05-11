@@ -142,15 +142,7 @@ namespace API_Application.Controllers_School_Api.v1.Menber
         }
         #endregion
 
-        #region Profile menber
-        [Authorize]
-        [HttpGet]
-        [Route("profile")]
-        public async Task<IActionResult> Profile()
-        {
-            return Ok(await _menber_Service_V1.Profile());
-        }
-        #endregion
+        
 
         #region Delete Menber
         [Authorize(Policy = IdentityData.QuanLySchoolManager)]

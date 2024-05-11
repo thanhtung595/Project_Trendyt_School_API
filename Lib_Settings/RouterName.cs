@@ -31,6 +31,7 @@ namespace Lib_Settings
             public const string Khoa = API.APIV1 + "/khoa";
             public const string LichHoc = API.APIV1 + "/lichhoc";
             public const string Member = API.APIV1 + "/member";
+            public const string Member_Profile = API.APIV1 + "/member-profile";
             public const string MonHoc = API.APIV1 + "/monhoc";
             public const string MonHocSudent = API.APIV1 + "/monhoc-student";
             public const string RoleSchool = API.APIV1 + "/role-school";

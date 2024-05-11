@@ -8,6 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="File\baitap\image_default.png" />
+    <None Remove="File\image_default.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="File\baitap\image_default.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
@@ -31,6 +43,9 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Syncfusion.DocIO.Net.Core" Version="25.2.3" />
+    <PackageReference Include="Syncfusion.DocIORenderer.Net.Core" Version="25.2.3" />
+    <PackageReference Include="Syncfusion.Pdf.Net.Core" Version="25.2.3" />
     <PackageReference Include="System.Text.Json" Version="8.0.3" />
     <PackageReference Include="UAParser" Version="3.1.47" />
   </ItemGroup>
