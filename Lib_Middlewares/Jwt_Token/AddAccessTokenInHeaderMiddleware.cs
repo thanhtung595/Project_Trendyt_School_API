@@ -115,11 +115,11 @@ namespace Lib_Middlewares.Jwt_Token
         {
             context.Response.StatusCode = statusCode; // Unauthorized
 
-            var errorResponse = new { error = errorMessage };
-            var json = JsonSerializer.Serialize(errorResponse);
+            //var errorResponse = new { error = errorMessage };
+            //var json = JsonSerializer.Serialize(errorResponse);
 
-            context.Response.ContentType = "application/json";
-            context.Response.WriteAsync(json, Encoding.UTF8);
+            //context.Response.ContentType = "application/json";
+            //context.Response.WriteAsync(json, Encoding.UTF8);
         }
     }
 }
