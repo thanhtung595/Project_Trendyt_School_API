@@ -1,6 +1,8 @@
 ﻿using Lib_Models.Models_Insert.v1;
 using Lib_Models.Status_Model;
+using Lib_Services.PublicServices.Auth_Service;
 using Lib_Services.V1.Register_Service;
+using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TrendyT_Data.Identity;
@@ -9,26 +11,22 @@ using TrendyT_Data.Identity;
 
 namespace API_Application.Areas.Admin.Controllers_Api.v1
 {
-    [Route("api/admin/v1/register")]
+    [Route(RouterName.RouterAdminControllerName.Authentication)]
     [ApiController]
-    public class RegisterController : ControllerBase
+    public class AuthController : ControllerBase
     {
-        private readonly IRegister_Service_v1 _register_Service_v1;
-        public RegisterController(IRegister_Service_v1 register_Service_v1)
+        private readonly IAtuh_Service _atuh_Service;
+        public AuthController(IAtuh_Service atuh_Service)
         {
-            _register_Service_v1 = register_Service_v1;
+            _atuh_Service = atuh_Service;
         }
 
         #region Admin tạo tài khoản người dùng (không bị hạn chế)
-        /*
-            - Truy cập access_Token - All Role
-            - Gửi {user_Name , user_Password}
-         */
         [Authorize(Policy = IdentityData.AdminServerPolicyName)]
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> RegisterUserName(Register_Insert_v1 register)
         {
-            Status_Application status = await _register_Service_v1.RegisterUserName(register);
+            Status_Application status = await _atuh_Service.RegisterUserName(register);
             if (!status.StatusBool)
             {
                 return StatusCode(400, status.StatusType);

@@ -77,6 +77,56 @@ namespace API_Application.Controllers_School_Api.v1.Menber
             return result!;
         }
         #endregion
+        //#region Add Menber
+        //[Authorize(Policy = IdentityData.AdminSchoolPolicyName)]
+        //[HttpPost]
+        //public async Task<IActionResult> AddMenberSchool(List<MenberSchool_Insert_v1> listRequest)
+        //{
+        //    var executionStrategy = _db.Database.CreateExecutionStrategy();
+
+        //    IActionResult result = null!;
+
+        //    await executionStrategy.ExecuteAsync(async () =>
+        //    {
+        //        using (var dbContextTransaction = _db.Database.BeginTransaction())
+        //        {
+        //            try
+        //            {
+
+        //                for (int i = 1; i <= 100; i++)
+        //                {
+        //                    MenberSchool_Insert_v1 menberSchool_Insert_V1 = new MenberSchool_Insert_v1();
+        //                    menberSchool_Insert_V1.user_Name = "svtkdh" + i + "@ntu.edu.vn";
+        //                    menberSchool_Insert_V1.email_User = "svtkdh" + i + "@ntu.edu.vn";
+        //                    menberSchool_Insert_V1.fullName = "svtkdh" + i;
+        //                    menberSchool_Insert_V1.user_Password = "svtkdh" + i;
+        //                    menberSchool_Insert_V1.id_KhoaSchool = 2;
+        //                    menberSchool_Insert_V1.name_Role = "student";
+        //                    Status_Application status_add = await _menber_Service_V1.InsertAsync(menberSchool_Insert_V1);
+        //                    if (!status_add.StatusBool)
+        //                    {
+        //                        // Nếu có lỗi, rollback giao dịch và trả về lỗi
+        //                        dbContextTransaction.Rollback();
+        //                        result = StatusCode(400, status_add.StatusType);
+        //                        return;
+        //                    }
+        //                }
+        //                // Nếu mọi thứ thành công, commit giao dịch
+        //                dbContextTransaction.Commit();
+        //                result = StatusCode(201);
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                // Nếu có lỗi, rollback giao dịch và trả về lỗi
+        //                dbContextTransaction.Rollback();
+        //                result = StatusCode(500, $"Error: {ex.Message}");
+        //            }
+        //        }
+        //    });
+
+        //    return result!;
+        //}
+        //#endregion
 
         #region Edit Menber
         [Authorize(Policy = IdentityData.QuanLySchoolManager)]
@@ -92,15 +142,7 @@ namespace API_Application.Controllers_School_Api.v1.Menber
         }
         #endregion
 
-        #region Profile menber
-        [Authorize]
-        [HttpGet]
-        [Route("profile")]
-        public async Task<IActionResult> Profile()
-        {
-            return Ok(await _menber_Service_V1.Profile());
-        }
-        #endregion
+        
 
         #region Delete Menber
         [Authorize(Policy = IdentityData.QuanLySchoolManager)]

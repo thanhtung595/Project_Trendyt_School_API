@@ -133,7 +133,7 @@ namespace Lib_Config.Configuration
                 p.RequireClaim(IdentityData.TypeRole, IdentityData.StudentClaimName));
                 #endregion
 
-                #region Student
+                #region FullRoleSchool
                 options.AddPolicy(IdentityData.ScuritySchool, policy =>
                 {
                     policy.RequireAssertion(context =>
@@ -148,8 +148,6 @@ namespace Lib_Config.Configuration
                     });
                 });
                 #endregion
-
-
             });
         }
 

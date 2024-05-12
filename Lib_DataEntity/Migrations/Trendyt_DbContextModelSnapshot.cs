@@ -67,7 +67,7 @@ namespace Lib_DataEntity.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("user_Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("user_Password")
                         .HasColumnType("nvarchar(max)");
@@ -77,6 +77,10 @@ namespace Lib_DataEntity.Migrations
                     b.HasIndex("id_Role");
 
                     b.HasIndex("id_TypeAccount");
+
+                    b.HasIndex("user_Name")
+                        .IsUnique()
+                        .HasFilter("[user_Name] IS NOT NULL");
 
                     b.ToTable("tbAccount");
                 });
@@ -282,7 +286,7 @@ namespace Lib_DataEntity.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("key_refresh_Token")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("refresh_Expire_Token")
                         .HasColumnType("datetime2");
@@ -296,6 +300,10 @@ namespace Lib_DataEntity.Migrations
                     b.HasKey("id_Token");
 
                     b.HasIndex("id_Account");
+
+                    b.HasIndex("key_refresh_Token")
+                        .IsUnique()
+                        .HasFilter("[key_refresh_Token] IS NOT NULL");
 
                     b.ToTable("tbToken");
                 });

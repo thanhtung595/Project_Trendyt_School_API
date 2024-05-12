@@ -8,6 +8,7 @@ using Lib_Helpers.AutoMapper;
 using Lib_Middlewares.Jwt_Token;
 using TrendyT_Data.Identity;
 using Lib_Config.Configuration;
+using Lib_Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,9 +60,11 @@ if (app.Environment.IsDevelopment())
 //*******************Start User Config Use*********************//
 
 app.UseCors("AllowAll");
+
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 app.UseMiddleware<AddAccessTokenInHeaderMiddleware>();
+//app.UseMiddleware<UseFileScurity>();
+app.UseStaticFiles();
 //app.UseMiddleware<JwtCheckMiddleware_v2>();
 app.UseAuthentication();
 app.UseAuthorization();
