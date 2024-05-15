@@ -88,7 +88,7 @@ namespace Lib_Repository.Repository_Class
         {
             await _db.Set<T>().AddRangeAsync(entities);
         }
-        
+
         public void Update(T entity)
         {
             EntityEntry entityEntry = _db.Entry<T>(entity);
