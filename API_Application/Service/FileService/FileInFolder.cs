@@ -98,6 +98,8 @@ namespace API_Application.Service.FileService
                     return "image/jpeg";
                 case "png":
                     return "image/png";
+                case "zip":
+                    return "application/zip";
                 case "pdf":
                     return "application/pdf";
                 case "xlsx":

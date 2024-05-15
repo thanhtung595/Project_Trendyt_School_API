@@ -11,6 +11,7 @@ namespace Lib_Models.Status_Model
         public bool StatusBool { get; set; }
         public string? StatusType { get; set; }
         public int Id_Int { get; set; }
+        public List<int>? List_Id_Int { get; set; }
         public Guid Id_Guid { get; set; }
         public string? Id_String { get; set; }
         public string? TypeImageString { get; set; }

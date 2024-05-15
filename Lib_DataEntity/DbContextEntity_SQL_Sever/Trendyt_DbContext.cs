@@ -46,6 +46,7 @@ namespace App_DataBaseEntity.DbContextEntity_SQL_Sever
         public DbSet<tbClassSchool_Menber> tbClassSchool_Menber { get; set; }
         public DbSet<tbMonHocClass_Student> tbMonHocClass_Student { get; set; }
         public DbSet<tbLichHoc> tbLichHoc { get; set; }
+        public DbSet<tbDiemDanh> tbDiemDanh { get; set; }
 
     }
 }

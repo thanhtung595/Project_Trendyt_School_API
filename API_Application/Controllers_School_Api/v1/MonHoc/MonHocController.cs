@@ -1,10 +1,13 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using Lib_Models.Model_Update.MonHoc;
 using Lib_Models.Models_Insert.v1.MonHoc;
+using Lib_Models.Models_Insert.v2.MonHoc;
 using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
 using Lib_Services.V1.MonHoc;
 using Lib_Services.V1.MonHoc_Student_Service;
+using Lib_Services.V2.MonHoc_Service;
+using Lib_Services.V2.MonHocClass_Student;
 using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,13 +27,17 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
         private readonly IPROC_MonHoc _pROC_MonHoc;
         private readonly IMonHoc_Service_v1 _monHoc_Service_V1;
         private readonly IMonHoc_Student_Service_v1 _monHoc_Student_Service_V1;
+        private readonly IMonHoc_Service_v2 _monHoc_ServiceV2;
+        private readonly IMonHocClass_Student_v2 _monHocClass_Student_V2;
         public MonHocController(Trendyt_DbContext db, IMonHoc_Service_v1 monHoc_Service_V1, IMonHoc_Student_Service_v1 monHoc_Student_Service_V1,
-            IPROC_MonHoc pROC_MonHoc)
+                                IPROC_MonHoc pROC_MonHoc, IMonHoc_Service_v2 monHoc_ServiceV2, IMonHocClass_Student_v2 monHocClass_Student_V2)
         {
             _db = db;
             _monHoc_Service_V1 = monHoc_Service_V1;
             _monHoc_Student_Service_V1 = monHoc_Student_Service_V1;
             _pROC_MonHoc = pROC_MonHoc;
+            _monHoc_ServiceV2 = monHoc_ServiceV2;
+            _monHocClass_Student_V2 = monHocClass_Student_V2;
         }
 
         [Authorize(Policy = IdentityData.ScuritySchool)]
@@ -43,79 +50,14 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
 
         [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpPost]
-        public async Task<IActionResult> Add(MonHoc_Insert_v1 request)
+        public async Task<IActionResult> Add(MonHoc_Insert_Request_v2 request)
         {
-            var executionStrategy = _db.Database.CreateExecutionStrategy();
-            IActionResult result = null!;
-
-            await executionStrategy.ExecuteAsync(async () =>
+            Status_Application statusMonHoc = await _monHoc_ServiceV2.InsertAsync(request);
+            if (!statusMonHoc.StatusBool)
             {
-                using(var dbContextTransaction = _db.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        // Add mon hoc
-                        tbMonHoc monHocAdd = new tbMonHoc
-                        {
-                            name_MonHoc = request.name_MonHoc,
-                            ngayBatDau = request.ngayBatDau,
-                            ngayKetThuc = request.ngayKetThuc,
-                            _SoBuoiNghi = request._SoBuoiNghi,
-                            _SoBuoiHoc = request._SoBuoiHoc,
-                        };
-                        Status_Application statusAddMonHoc = await _monHoc_Service_V1.Insert(monHocAdd);
-                        if (!statusAddMonHoc.StatusBool)
-                        {
-                            dbContextTransaction.Rollback();
-                            result = StatusCode(400, statusAddMonHoc.StatusType);
-                            return;
-                        }
-                        // Add teacher
-
-                        MonHocClass_Student_Insert_v1 addTeacher = new MonHocClass_Student_Insert_v1
-                        {
-                            id_MonHoc = statusAddMonHoc.Id_Int,
-                            id_Student = request.id_Teacher
-                        };
-                        Status_Application statusAddTeacher = await _monHoc_Student_Service_V1.Insert(addTeacher);
-                        if (!statusAddTeacher.StatusBool)
-                        {
-                            dbContextTransaction.Rollback();
-                            result = StatusCode(400, statusAddTeacher.StatusType);
-                            return;
-                        }
-                        if (request.student!.Count() != 0)
-                        {
-                            MonHocClass_Student_Insert_v1 addStudent = new MonHocClass_Student_Insert_v1
-                            {
-                                id_MonHoc = statusAddMonHoc.Id_Int,
-                                
-                            };
-                            // Add student
-                            foreach (var st in request.student!)
-                            {
-                                addStudent.id_Student = st.id_Student;
-                                Status_Application statusAddStudent = await _monHoc_Student_Service_V1.Insert(addStudent);
-                                if (!statusAddStudent.StatusBool)
-                                {
-                                    dbContextTransaction.Rollback();
-                                    result = StatusCode(400, statusAddStudent.StatusType);
-                                    return;
-                                }
-                            }
-                        }
-                        dbContextTransaction.Commit();
-                        result = StatusCode(201);
-                    }
-                    catch (Exception ex)
-                    {
-                        // Nếu có lỗi, rollback giao dịch và trả về lỗi
-                        dbContextTransaction.Rollback();
-                        result = StatusCode(500, $"Error: {ex.Message}");
-                    }
-                }
-            });
-            return result;
+                return BadRequest(statusMonHoc.StatusType);
+            }
+            return StatusCode(201, statusMonHoc.StatusType);
         }
 
         [Authorize(Policy = IdentityData.QuanLySchoolManager)]
