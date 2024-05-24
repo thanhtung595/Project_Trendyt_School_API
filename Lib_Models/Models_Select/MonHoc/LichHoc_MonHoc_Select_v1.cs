@@ -11,5 +11,8 @@ namespace Lib_Models.Models_Select.MonHoc
         public int id_LichHoc { get; set; }
         public DateTime thoiGianBatDau { get; set; }
         public DateTime thoiGianKetThuc { get; set; }
+        public string? phonghoc { get; set; }
+        public string? phuongPhapHoc { get; set; }
+        public string? tinhTrangBuoiHoc { get; set; }
     }
 }
