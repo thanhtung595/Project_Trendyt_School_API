@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lib_Models.Models_Select.MonHoc
+namespace Lib_Models.Models_Insert.v2.MonHoc
 {
-    public class LichHoc_MonHoc_Select_v1
+    public class LichHoc_MonHoc_Insert_v2
     {
-        public int id_LichHoc { get; set; }
         public DateTime thoiGianBatDau { get; set; }
         public DateTime thoiGianKetThuc { get; set; }
         public string? phonghoc { get; set; }

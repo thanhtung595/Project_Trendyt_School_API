@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lib_Services.V2.MonHoc_Service
+namespace Lib_Services.V2.LịchHoc
 {
-    public interface IMonHoc_Service_v2
+    public interface ILichHoc_Service_v2
     {
-        Task<Status_Application> InsertAsync(MonHoc_Insert_Request_v2 request);
+        Task<Status_Application> InsertAsync(List<LichHoc_MonHoc_Insert_v2>? lichHocs, int soBuoiHoc, int idMonHoc);
     }
 }

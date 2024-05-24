@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\img\avatar\Project_Trendyt_School_Fontend.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="File\baitap\image_default.png" />
     <None Remove="File\image_default.png" />
   </ItemGroup>
@@ -20,10 +24,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\img\avatar\Project_Trendyt_School_Fontend.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="DocX" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />

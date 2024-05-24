@@ -38,6 +38,7 @@ namespace Lib_Settings
             public const string School = API.APIV1 + "/school";
             public const string Student = API.APIV1 + "/student";
             public const string Teacher = API.APIV1 + "/teacher";
+            public const string DiemDanh = API.APIV1 + "/diemdanh";
         } // RouterName.RouterControllerName.
     }
 }

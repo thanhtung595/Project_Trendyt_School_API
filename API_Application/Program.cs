@@ -9,6 +9,7 @@ using Lib_Middlewares.Jwt_Token;
 using TrendyT_Data.Identity;
 using Lib_Config.Configuration;
 using Lib_Middlewares;
+using Xceed.Document.NET;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +40,6 @@ builder.Services.RegisterServiceScoped();
 builder.Services.MyServiceScopedV1();
 builder.Services.MyRepositoryScopedV1();
 builder.Services.MyStoredProceduresScoped();
-
 //Add AutoMapper middlewares
 builder.Services.AddAutoMapper(typeof(AutoMapperV1));
 
