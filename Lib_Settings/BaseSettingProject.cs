@@ -13,5 +13,6 @@ namespace Lib_Settings
 
         public static readonly string ACCESSTOKEN = "access_token";
         public static readonly string KEYSCRFT = "KEYSCRFT";
+        public static readonly string INFO = "info";
     }
 }

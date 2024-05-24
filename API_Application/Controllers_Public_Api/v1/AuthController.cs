@@ -47,7 +47,6 @@ namespace API_Application.Controllers_Api.v1
                 //_customCookieService.SetCookie(StringUrl.DomainCookieServer, "access_token", status_Login.access_Token!, BaseSettingProject.EXPIRES_ACCESSTOKEN);
                 _customCookieService.SetCookie(StringUrl.DomainCookieClient2, BaseSettingProject.ACCESSTOKEN, status_Login.access_Token!, BaseSettingProject.EXPIRES_ACCESSTOKEN);
                 _customCookieService.SetCookie(StringUrl.DomainCookieClient2, BaseSettingProject.KEYSCRFT, status_Login.key_refresh_Token!, BaseSettingProject.EXPIRES_REFESHTOKEN);
-
                 return StatusCode(200, status_Login.info);
             }
             else

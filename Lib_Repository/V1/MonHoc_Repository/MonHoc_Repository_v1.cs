@@ -206,7 +206,12 @@ namespace Lib_Repository.V1.MonHoc
                                              {
                                                  id_LichHoc = lh.id_LichHoc,
                                                  thoiGianBatDau = lh.thoiGianBatDau,
-                                                 thoiGianKetThuc = lh.thoiGianKetThuc
+                                                 thoiGianKetThuc = lh.thoiGianKetThuc,
+                                                 phonghoc = lh.phonghoc,
+                                                 phuongPhapHoc = lh.style,
+                                                 tinhTrangBuoiHoc = (from loai in _db.tbStyleBuoiHoc
+                                                                     where loai.id_StyleBuoiHoc == lh.id_StyleBuoiHoc
+                                                                     select loai.name).FirstOrDefault()
                                              }).ToList()
                               }).ToListAsync();
             return list;
@@ -286,6 +291,19 @@ namespace Lib_Repository.V1.MonHoc
                                                  phone_User = ac.phone_User,
                                                  sex_User = ac.sex_User
                                              }).ToList(),
+                                  lichhoc = (from lh in _db.tbLichHoc
+                                             where lh.id_MonHoc == mh.id_MonHoc
+                                             select new LichHoc_MonHoc_Select_v1
+                                             {
+                                                 id_LichHoc = lh.id_LichHoc,
+                                                 thoiGianBatDau = lh.thoiGianBatDau,
+                                                 thoiGianKetThuc = lh.thoiGianKetThuc,
+                                                 phonghoc = lh.phonghoc,
+                                                 phuongPhapHoc = lh.style,
+                                                 tinhTrangBuoiHoc = (from loai in _db.tbStyleBuoiHoc
+                                                                     where loai.id_StyleBuoiHoc == lh.id_StyleBuoiHoc
+                                                                     select loai.name).FirstOrDefault()
+                                             }).ToList()
                               }).ToListAsync();
             return list!;
         }
