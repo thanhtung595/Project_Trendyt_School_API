@@ -165,6 +165,7 @@ namespace Lib_Config.Configuration
                         builder.WithOrigins(
                             StringUrl.UrlClient1 + StringUrl.PortClient1,
                             StringUrl.UrlClient2 + StringUrl.PortClient2,
+                            StringUrl.UrlClient3 + StringUrl.PortClient1,
                             StringUrl.UrlClientProduction1,
                             StringUrl.UrlClientProduction2
                             )
@@ -180,7 +181,6 @@ namespace Lib_Config.Configuration
         {
             services.AddScoped<IDapperHelper, DapperHelper>();
             services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
-            
         }
 
         public static void RegisterServiceScoped(this IServiceCollection services)

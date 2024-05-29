@@ -10,6 +10,10 @@ using TrendyT_Data.Identity;
 using Lib_Config.Configuration;
 using Lib_Middlewares;
 using Xceed.Document.NET;
+using Lib_Services.PublicServices.NotificationService;
+using Lib_Services.PublicServices.SignalRService;
+using Microsoft.AspNetCore.SignalR;
+using Lib_Services.PublicServices.SignalRService.NotificationHub;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,8 +44,15 @@ builder.Services.RegisterServiceScoped();
 builder.Services.MyServiceScopedV1();
 builder.Services.MyRepositoryScopedV1();
 builder.Services.MyStoredProceduresScoped();
+
 //Add AutoMapper middlewares
 builder.Services.AddAutoMapper(typeof(AutoMapperV1));
+
+// Add AddHostedService NotificationBackgroundService
+builder.Services.AddHostedService<NotificationBackgroundService>();
+
+//
+builder.Services.AddSignalR();
 
 // AddHttpContextAccessor
 builder.Services.AddHttpContextAccessor();
@@ -68,6 +79,9 @@ app.UseStaticFiles();
 //app.UseMiddleware<JwtCheckMiddleware_v2>();
 app.UseAuthentication();
 app.UseAuthorization();
+
+// SignalR
+app.MapHub<NotificationHub>("/notificationHub");
 
 //*******************End User Config Use*********************//
 app.MapControllers();
