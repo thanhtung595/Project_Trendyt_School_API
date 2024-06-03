@@ -4,6 +4,7 @@ using Lib_Models.Models_Insert.v1.MonHoc;
 using Lib_Models.Models_Insert.v2.MonHoc;
 using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
+using Lib_Services.PublicServices.SignalRService.NotificationHub;
 using Lib_Services.V1.MonHoc;
 using Lib_Services.V1.MonHoc_Student_Service;
 using Lib_Services.V2.MonHoc_Service;
@@ -11,6 +12,7 @@ using Lib_Services.V2.MonHocClass_Student;
 using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Stored_Procedures.PROC.MonHoc;
 using TrendyT_Data.Identity;
@@ -29,8 +31,10 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
         private readonly IMonHoc_Student_Service_v1 _monHoc_Student_Service_V1;
         private readonly IMonHoc_Service_v2 _monHoc_ServiceV2;
         private readonly IMonHocClass_Student_v2 _monHocClass_Student_V2;
+        private readonly IHubContext<NotificationHub> _hubContext;
         public MonHocController(Trendyt_DbContext db, IMonHoc_Service_v1 monHoc_Service_V1, IMonHoc_Student_Service_v1 monHoc_Student_Service_V1,
-                                IPROC_MonHoc pROC_MonHoc, IMonHoc_Service_v2 monHoc_ServiceV2, IMonHocClass_Student_v2 monHocClass_Student_V2)
+                                IPROC_MonHoc pROC_MonHoc, IMonHoc_Service_v2 monHoc_ServiceV2, IMonHocClass_Student_v2 monHocClass_Student_V2,
+                                IHubContext<NotificationHub> hubContext)
         {
             _db = db;
             _monHoc_Service_V1 = monHoc_Service_V1;
@@ -38,6 +42,7 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
             _pROC_MonHoc = pROC_MonHoc;
             _monHoc_ServiceV2 = monHoc_ServiceV2;
             _monHocClass_Student_V2 = monHocClass_Student_V2;
+            _hubContext = hubContext;
         }
 
         [Authorize(Policy = IdentityData.ScuritySchool)]
@@ -57,7 +62,30 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
             {
                 return BadRequest(statusMonHoc.StatusType);
             }
-            // Sss
+            try
+            {
+                List<string> userIdNotifications = new List<string>();
+                foreach (var student in request.students!)
+                {
+                    userIdNotifications.Add(student.id_Student.ToString());
+                }
+                userIdNotifications.Add(request.monHoc!.id_Teacher.ToString());
+                // Sử dụng Parallel.ForEach để gửi thông báo đồng thời
+                var tasks = new List<Task>();
+                Parallel.ForEach(userIdNotifications, userId =>
+                {
+                    var connectionIds = NotificationHub.GetConnectionIds(userId);
+                    foreach (var connectionId in connectionIds)
+                    {
+                        tasks.Add(_hubContext.Clients.Client(connectionId).SendAsync("ReceiveNotification", request));
+                    }
+                });
+                await Task.WhenAll(tasks);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return StatusCode(201, statusMonHoc.StatusType);
         }
 

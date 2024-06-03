@@ -14,6 +14,7 @@ using Lib_Services.PublicServices.NotificationService;
 using Lib_Services.PublicServices.SignalRService;
 using Microsoft.AspNetCore.SignalR;
 using Lib_Services.PublicServices.SignalRService.NotificationHub;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,11 @@ builder.Services.RegisterDbContext(builder.Configuration);
 
 // Cấu hình JWT
 builder.Services.RegisterJwt(builder.Configuration);
-
+builder.Services.AddSignalR()
+    .AddNewtonsoftJsonProtocol(options =>
+    {
+        options.PayloadSerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    });
 //Add Cors
 builder.Services.RegisterAddCors();
 
