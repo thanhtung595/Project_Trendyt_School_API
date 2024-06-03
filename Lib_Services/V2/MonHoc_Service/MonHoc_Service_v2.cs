@@ -101,7 +101,7 @@ namespace Lib_Services.V2.MonHoc_Service
                         }
 
                         dbContextTransaction.Commit();
-                        return new Status_Application { StatusBool = true , StatusType = "success"};
+                        return new Status_Application { StatusBool = true , StatusType = "success", List_Id_Int = status_addLichHoc.List_Id_Int };
                     }
                     catch (Exception ex)
                     {
