@@ -15,6 +15,7 @@ namespace Lib_Settings
         public static readonly string UrlServer = "http://thanhtung.com";
         public static readonly string UrlClient1 = "http://thanhtung.com";
         public static readonly string UrlClient2 = "http://localhost";
+        public static readonly string UrlClient3 = "http://127.0.0.1";
         public static readonly string UrlClientProduction1 = "https://trendyt.netlify.app";
         public static readonly string UrlClientProduction2 = "https://trendyt.online";
 
