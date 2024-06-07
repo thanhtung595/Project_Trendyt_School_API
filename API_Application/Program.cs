@@ -86,7 +86,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // SignalR
-app.MapHub<NotificationHub>("/notificationHub");
+app.MapHub<NotificationHub>("/notificationHub-monhoc");
 
 //*******************End User Config Use*********************//
 app.MapControllers();
