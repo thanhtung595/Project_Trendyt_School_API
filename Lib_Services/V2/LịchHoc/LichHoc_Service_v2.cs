@@ -36,7 +36,8 @@ namespace Lib_Services.V2.LịchHoc
                 List<tbLichHoc> addLichHocs = new List<tbLichHoc>();
                 foreach (var item in lichHocs!)
                 {
-                    var tag = await _repositoryStyleBuoiHoc.GetAll(x => x.name == item.tinhTrangBuoiHoc);
+                    item.tinhTrangBuoiHoc = item.tinhTrangBuoiHoc!.Trim();
+                    var tag = await _repositoryStyleBuoiHoc.GetAll(x => x.name!.ToLower() == item.tinhTrangBuoiHoc.ToLower());
                     if (tag.Any() && tag == null)
                     {
                         return new Status_Application { StatusBool = false, StatusType = $"Tình trang buổi học {item.tinhTrangBuoiHoc} không hợp lệ" };
