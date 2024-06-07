@@ -42,6 +42,10 @@ namespace Lib_Services.V2.MonHocClass_Student
                     List<int> memberRequests = new List<int>();
                     foreach (var item in member)
                     {
+                        if (item.id_Student < 0)
+                        {
+                            return new Status_Application { StatusBool = false, StatusType = $"MSV: {item.id_Student} không phải là student mà là: student" };
+                        }
                         memberRequests.Add(item.id_Student);
                     }
                     var checkListRequest = CheckForDuplicates(memberRequests);
@@ -51,11 +55,15 @@ namespace Lib_Services.V2.MonHocClass_Student
                     }
 
                     // Check môn học có tồn tại
-                    var monHocdb = await _repositoryMonHoc.GetById(idMonHoc);
-                    if (monHocdb == null)
+                    if (idMonHoc != 0)
                     {
-                        return new Status_Application { StatusBool = false, StatusType = "Môn học không tồn tại" };
+                        var monHocdb = await _repositoryMonHoc.GetById(idMonHoc);
+                        if (monHocdb == null)
+                        {
+                            return new Status_Application { StatusBool = false, StatusType = "Môn học không tồn tại" };
+                        }
                     }
+                    
                     // Check sinh viên đã tồn tại trong lớp
                     var listStudentMonHoc = await _repositoryMonHocClassStudent.GetAll(x => x.id_MonHoc == idMonHoc);
                     HashSet<int> listIntIdStudent = new HashSet<int>();
@@ -121,10 +129,6 @@ namespace Lib_Services.V2.MonHocClass_Student
                     List<int> memberRequests = new List<int>();
                     foreach (var item in member)
                     {
-                        if (item.id_Student < 0)
-                        {
-                            return new Status_Application { StatusBool = false, StatusType = $"MSV: {item.id_Student} không phải là student mà là: student" };
-                        }
                         memberRequests.Add(item.id_Student);
                     }
                     var checkListRequest = CheckForDuplicates(memberRequests);

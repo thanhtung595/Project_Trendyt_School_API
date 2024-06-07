@@ -77,7 +77,7 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
                     var connectionIds = NotificationHub.GetConnectionIds(userId);
                     foreach (var connectionId in connectionIds)
                     {
-                        tasks.Add(_hubContext.Clients.Client(connectionId).SendAsync("ReceiveNotification", request));
+                        tasks.Add(_hubContext.Clients.Client(connectionId).SendAsync("ReceiveNotificationMonHoc", request));
                     }
                 });
                 await Task.WhenAll(tasks);
