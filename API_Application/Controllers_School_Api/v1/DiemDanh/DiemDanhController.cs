@@ -19,6 +19,8 @@ namespace API_Application.Controllers_School_Api.v1.DiemDanh
             _diemDanh_Service_v2 = diemDanh_Service_v2;
         }
 
+
+
         [Authorize(Policy = IdentityData.ScuritySchool)]
         [HttpPost]
         public async Task<IActionResult> Update(LopDiemDanh_Update_v1 request)

@@ -8,7 +8,7 @@ namespace Lib_Settings
 {
     public static class BaseSettingProject
     {
-        public static readonly int EXPIRES_ACCESSTOKEN = 5;
+        public static readonly int EXPIRES_ACCESSTOKEN = 60;
         public static readonly int EXPIRES_REFESHTOKEN = 10080;
 
         public static readonly string ACCESSTOKEN = "access_token";

@@ -9,7 +9,9 @@ using Lib_Services.V2.DiemDanh;
 using Lib_Services.V2.LịchHoc;
 using Lib_Services.V2.MonHoc_Service;
 using Lib_Services.V2.MonHocClass_Student;
+using Lib_Services.V2.Student_Service;
 using Lib_Services.V2.StyleBuoiHoc;
+using Lib_Services.V2.Teacher_Service;
 using Lib_Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -194,6 +196,8 @@ namespace Lib_Config.Configuration
             services.AddScoped<ILichHoc_Service_v2, LichHoc_Service_v2>();
             services.AddScoped<IDiemDanh_Service_v2, DiemDanh_Service_v2>();
             services.AddScoped<IStyleBuoiHoc_Service_v2, StyleBuoiHoc_Service_v2>();
+            services.AddScoped<ITeacher_Service_v2, Teacher_Service_v2>();
+            services.AddScoped<IStudent_Service_v2, Student_Service_v2>();
         }
     }
 }
