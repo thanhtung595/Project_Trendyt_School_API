@@ -1,4 +1,5 @@
 ﻿using Lib_Services.V1.Teacher_Service;
+using Lib_Services.V2.Teacher_Service;
 using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,11 @@ namespace API_Application.Controllers_School_Api.v1.Teacher
     public class TeacherController : ControllerBase
     {
         private readonly ITeacher_Service_v1 _teacher_Service_V1;
-        public TeacherController(ITeacher_Service_v1 teacher_Service_V1)
+        private readonly ITeacher_Service_v2 _teacher_Service_V2;
+        public TeacherController(ITeacher_Service_v1 teacher_Service_V1, ITeacher_Service_v2 teacher_Service_V2)
         {
             _teacher_Service_V1 = teacher_Service_V1;
+            _teacher_Service_V2 = teacher_Service_V2;
         }
 
         #region Get All Teacher
@@ -24,6 +27,16 @@ namespace API_Application.Controllers_School_Api.v1.Teacher
         public async Task<IActionResult> GetAllTeacher()
         {
             return Ok(await _teacher_Service_V1.Select_All_Teacher());
+        }
+        #endregion
+
+        #region Get All Teacher Not Join Class
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
+        [HttpGet]
+        [Route("not-join-class")]
+        public async Task<IActionResult> GetAllTeacherNotJoinClass()
+        {
+            return Ok(await _teacher_Service_V2.GetAllTeacherNotJoinClass());
         }
         #endregion
 

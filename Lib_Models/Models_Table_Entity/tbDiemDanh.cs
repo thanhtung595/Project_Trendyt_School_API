@@ -17,6 +17,7 @@ namespace Lib_Models.Models_Table_Entity
         public bool _DauGio { get; set; }
         public bool _CuoiGio { get; set; }
         public bool _DiMuon { get; set; }
+        public DateTime editLastTime { get; set; }
 
         [ForeignKey("id_LichHoc")]
         public virtual tbLichHoc? tbLichHoc {  set; get; }
