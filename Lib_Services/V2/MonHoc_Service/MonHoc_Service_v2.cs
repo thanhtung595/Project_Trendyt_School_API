@@ -2,6 +2,9 @@
 using App_Models.Models_Table_CSDL;
 using AutoMapper.Execution;
 using Lib_Models.Models_Insert.v2.MonHoc;
+using Lib_Models.Models_Select.MonHoc;
+using Lib_Models.Models_Select.Student;
+using Lib_Models.Models_Select.Teacher;
 using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
 using Lib_Repository.Abstract;
@@ -24,6 +27,7 @@ namespace Lib_Services.V2.MonHoc_Service
     {
         private readonly Trendyt_DbContext _db;
         private readonly IRepository<tbMonHoc> _repositoryMonHoc;
+        private readonly IRepository<tbMenberSchool> _repositoryMenberSchool;
         private readonly IMonHocClass_Student_v2 _monHocClass_Student_V2;
         private readonly IRepository<tbTag> _repositoryTag;
         private readonly IToken_Service_v2 _token_Service_V2;
@@ -32,7 +36,8 @@ namespace Lib_Services.V2.MonHoc_Service
         public MonHoc_Service_v2(IMonHocClass_Student_v2 monHocClass_Student_V2,
                                  IRepository<tbMonHoc> repositoryMonHoc, Trendyt_DbContext db,
                                  IToken_Service_v2 token_Service_V2, IRepository<tbTag> repositoryTag,
-                                 ILichHoc_Service_v2 lichHoc_Service_V2, IDiemDanh_Service_v2 diemDanh_Service_V2)
+                                 ILichHoc_Service_v2 lichHoc_Service_V2, IDiemDanh_Service_v2 diemDanh_Service_V2,
+                                 IRepository<tbMenberSchool> repositoryMenberSchool)
         {
             _db = db;
             _monHocClass_Student_V2 = monHocClass_Student_V2;
@@ -41,6 +46,7 @@ namespace Lib_Services.V2.MonHoc_Service
             _repositoryTag = repositoryTag;
             _lichHoc_Service_V2 = lichHoc_Service_V2;
             _diemDanh_Service_V2 = diemDanh_Service_V2;
+            _repositoryMenberSchool = repositoryMenberSchool;
         }
 
         public async Task<Status_Application> InsertAsync(MonHoc_Insert_Request_v2 request)
@@ -100,8 +106,30 @@ namespace Lib_Services.V2.MonHoc_Service
                             return status_addDiemDanh;
                         }
 
+                        var teacherResult = await _repositoryMenberSchool.GetAllIncluding(m => m.id_MenberSchool == request.monHoc.id_Teacher, ac => ac.tbAccount!);
+                        MonHoc_SelectAll_v1 monHoc_SelectAll_V1 = new MonHoc_SelectAll_v1
+                        {
+                            id_MonHoc = _idMonHoc,
+                            name_MonHoc = monHoc.name_MonHoc,
+                            danhGiaTrungBinh = monHoc._danhGiaTrungBinh,
+                            tag = tagDb.First().name,
+                            soBuoiHoc = monHoc._SoBuoiHoc,
+                            soBuoiNghi = monHoc._SoBuoiNghi,
+                            ngayBatDau = monHoc.ngayBatDau,
+                            ngayKetThuc = monHoc.ngayKetThuc,
+                            coutnStudent = request.students!.Count(),
+                            giangvien = new Select_One_Teacher_v1
+                            {
+                                id_Teacher = teacherResult.First().id_MenberSchool,
+                                user_Name = teacherResult.First().tbAccount!.user_Name,
+                                fullName = teacherResult.First().tbAccount!.fullName,
+                                image_User = teacherResult.First().tbAccount!.image_User,
+                            },
+                            student = status_addStudent.myListObj!.Cast<Student_Select_v1>().ToList(),
+                            //lichhoc = status_addLichHoc.myListObj!.Cast<LichHoc_MonHoc_Select_v1>().ToList(),
+                        };
                         dbContextTransaction.Commit();
-                        return new Status_Application { StatusBool = true , StatusType = "success", List_Id_Int = status_addLichHoc.List_Id_Int };
+                        return new Status_Application { StatusBool = true , StatusType = "success",myObj = monHoc_SelectAll_V1, Id_Int = _idMonHoc, List_Id_Int = status_addLichHoc.List_Id_Int };
                     }
                     catch (Exception ex)
                     {

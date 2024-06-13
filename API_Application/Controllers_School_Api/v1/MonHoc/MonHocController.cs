@@ -2,6 +2,7 @@
 using Lib_Models.Model_Update.MonHoc;
 using Lib_Models.Models_Insert.v1.MonHoc;
 using Lib_Models.Models_Insert.v2.MonHoc;
+using Lib_Models.Models_Select.MonHoc;
 using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
 using Lib_Services.PublicServices.SignalRService.NotificationHub;
@@ -72,12 +73,13 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
                 userIdNotifications.Add(request.monHoc!.id_Teacher.ToString());
                 // Sử dụng Parallel.ForEach để gửi thông báo đồng thời
                 var tasks = new List<Task>();
+
                 Parallel.ForEach(userIdNotifications, userId =>
                 {
                     var connectionIds = NotificationHub.GetConnectionIds(userId);
                     foreach (var connectionId in connectionIds)
                     {
-                        tasks.Add(_hubContext.Clients.Client(connectionId).SendAsync("ReceiveNotificationMonHoc", request));
+                        tasks.Add(_hubContext.Clients.Client(connectionId).SendAsync("ReceiveNotificationMonHoc", statusMonHoc.myObj));
                     }
                 });
                 await Task.WhenAll(tasks);

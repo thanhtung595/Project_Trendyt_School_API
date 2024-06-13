@@ -13,6 +13,8 @@ namespace Lib_Models.Status_Model
         public int Id_Int { get; set; }
         public List<int>? List_Id_Int { get; set; }
         public Guid Id_Guid { get; set; }
+        public object? myObj { get; set; }
+        public List<object>? myListObj { get; set; }
         public string? Id_String { get; set; }
         public string? TypeImageString { get; set; }
         public string? TypeVideoString { get; set; }

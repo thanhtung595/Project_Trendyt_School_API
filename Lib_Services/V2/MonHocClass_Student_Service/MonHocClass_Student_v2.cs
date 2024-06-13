@@ -3,6 +3,7 @@ using App_Models.Models_Table_CSDL;
 using AutoMapper.Execution;
 using Azure.Core;
 using Lib_Models.Models_Insert.v2.MonHoc;
+using Lib_Models.Models_Select.Student;
 using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
 using Lib_Repository.Abstract;
@@ -123,6 +124,7 @@ namespace Lib_Services.V2.MonHocClass_Student
             try
             {
                 List<tbMonHocClass_Student> add_Student_MonHocs = new List<tbMonHocClass_Student>();
+                List<Student_Select_v1> listStudientReuslt = new List<Student_Select_v1>();
                 if (member.Count() > 0)
                 {
                     // Check list add request có trùng
@@ -140,7 +142,7 @@ namespace Lib_Services.V2.MonHocClass_Student
 
                     foreach (var item in memberRequests)
                     {
-                        var memberDb = await _repositoryMenberSchool.GetAllIncluding(x => x.id_MenberSchool == item, r => r.tbRoleSchool!);
+                        var memberDb = await _repositoryMenberSchool.GetAllIncluding(x => x.id_MenberSchool == item, r => r.tbRoleSchool! , ac => ac.tbAccount!);
                         if (memberDb == null)
                         {
                             return new Status_Application { StatusBool = false, StatusType = $"MSV: {item} không tồn tại" };
@@ -155,6 +157,17 @@ namespace Lib_Services.V2.MonHocClass_Student
                             id_MonHoc = idMonHoc
                         };
                         add_Student_MonHocs.Add(add_Student_MonHoc);
+                        Student_Select_v1 studientReuslt = new Student_Select_v1
+                        {
+                            id_Student = memberDb.First().id_MenberSchool,
+                            user_Name = memberDb.First().tbAccount!.user_Name,
+                            fullName = memberDb.First().tbAccount!.fullName,
+                            sex_User = memberDb.First().tbAccount!.sex_User,
+                            email_User = memberDb.First().tbAccount!.email_User,
+                            phone_User = memberDb.First().tbAccount!.phone_User,
+                            image_User = memberDb.First().tbAccount!.image_User,
+                        };
+                        listStudientReuslt.Add(studientReuslt);
                     }
                     await _repositoryMonHocClassStudent.Insert(add_Student_MonHocs);
                 }
@@ -183,7 +196,7 @@ namespace Lib_Services.V2.MonHocClass_Student
                 {
                     idMemberClases.Add(item.id_MonHocClass_Student);
                 }
-                return new Status_Application { StatusBool = true, StatusType = "success" , List_Id_Int = idMemberClases };
+                return new Status_Application { StatusBool = true, StatusType = "success" , List_Id_Int = idMemberClases , myListObj = listStudientReuslt.Cast<object>().ToList() };
             }
             catch (Exception ex)
             {
