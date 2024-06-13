@@ -1,4 +1,5 @@
 ﻿using Lib_Models.Models_Insert.v2.MonHoc;
+using Lib_Models.Models_Select.MonHoc;
 using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
 using Lib_Repository.Abstract;
@@ -34,6 +35,7 @@ namespace Lib_Services.V2.LịchHoc
                 }
 
                 List<tbLichHoc> addLichHocs = new List<tbLichHoc>();
+                List<LichHoc_MonHoc_Select_v1> listLichHocReuslt = new List<LichHoc_MonHoc_Select_v1>();
                 foreach (var item in lichHocs!)
                 {
                     item.tinhTrangBuoiHoc = item.tinhTrangBuoiHoc!.Trim();
@@ -54,6 +56,16 @@ namespace Lib_Services.V2.LịchHoc
                         id_StyleBuoiHoc = idTag
                     };
                     addLichHocs.Add(addLichHoc);
+                    //LichHoc_MonHoc_Select_v1 lichHocReuslt = new LichHoc_MonHoc_Select_v1
+                    //{
+                    //    id_LichHoc = addLichHoc.id_LichHoc,
+                    //    thoiGianBatDau = addLichHoc.thoiGianBatDau,
+                    //    thoiGianKetThuc = addLichHoc.thoiGianKetThuc,
+                    //    phonghoc = addLichHoc.phonghoc,
+                    //    phuongPhapHoc = addLichHoc.style,
+                    //    tinhTrangBuoiHoc = tag.First().name
+                    //};
+                    //listLichHocReuslt.Add(lichHocReuslt);
                 }
 
                 await _repositoryLichHoc.Insert(addLichHocs);

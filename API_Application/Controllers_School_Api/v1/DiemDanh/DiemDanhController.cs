@@ -1,4 +1,5 @@
 ﻿using Lib_Models.Model_Update.DiemDanh;
+using Lib_Models.Status_Model;
 using Lib_Services.V2.DiemDanh;
 using Lib_Settings;
 using Microsoft.AspNetCore.Authorization;
@@ -19,13 +20,23 @@ namespace API_Application.Controllers_School_Api.v1.DiemDanh
             _diemDanh_Service_v2 = diemDanh_Service_v2;
         }
 
-
-
-        [Authorize(Policy = IdentityData.ScuritySchool)]
-        [HttpPost]
-        public async Task<IActionResult> Update(LopDiemDanh_Update_v1 request)
+        [Authorize(Policy = IdentityData.QuanLySchoolManager)]
+        [HttpGet]
+        public async Task<IActionResult> GetAllDiemDanhMonHoc(int idMonHoc)
         {
-            return StatusCode(201);
+            return Ok(await _diemDanh_Service_v2.GetDiemDanhMonHocAsync(idMonHoc));
+        }
+
+        [Authorize(Policy = IdentityData.TeacherPolicyName)]
+        [HttpPost]
+        public async Task<IActionResult> Update(List<LopDiemDanh_Update_v1> request)
+        {
+            Status_Application status = await _diemDanh_Service_v2.UpdateAsync(request);
+            if (!status.StatusBool)
+            {
+                return StatusCode(400, status.StatusType);
+            }
+            return StatusCode(201 , status.StatusType);
         }
     }
 }
