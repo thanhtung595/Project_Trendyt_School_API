@@ -1,6 +1,8 @@
 ﻿using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using App_Models.Models_Table_CSDL;
+using Azure.Core;
 using Lib_Models.Model_Update.DiemDanh;
+using Lib_Models.Models_Select.DiemDanh;
 using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
 using Lib_Repository.Abstract;
@@ -17,12 +19,36 @@ namespace Lib_Services.V2.DiemDanh
     {
         private readonly Trendyt_DbContext _db;
         private readonly IRepository<tbDiemDanh> _repositoryDiemDanh;
-        private readonly IRepository<tbMenberSchool> _repositoryMenberSchool;
-        private readonly IRepository<tbMonHocClass_Student> _repositoryMonHocClass_Student;
         private readonly IRepository<tbMonHoc> _repositoryMonHoc;
-        public DiemDanh_Service_v2(IRepository<tbDiemDanh> repositoryDiemDanh)
+        public DiemDanh_Service_v2(IRepository<tbDiemDanh> repositoryDiemDanh, IRepository<tbMonHoc> repositoryMonHoc, Trendyt_DbContext db)
         {
             _repositoryDiemDanh = repositoryDiemDanh;
+            _repositoryMonHoc = repositoryMonHoc;
+            _db = db;
+        }
+
+        public async Task<List<IGrouping<int, DiemDanh_Select_v1>>> GetDiemDanhMonHocAsync(int idMonHoc)
+        {
+            var query = await _repositoryDiemDanh.GetAllIncluding(dd => dd.tbLichHoc!.id_MonHoc == idMonHoc, ms => ms.tbMonHocClass_Student!.tbMenberSchool!.tbAccount!);
+            if (!query.Any())
+            {
+                return null!;
+            }
+
+            var result = query.Select(d => new DiemDanh_Select_v1
+            {
+                id_DiemDanh = d.id_DiemDanh,
+                msv = d.tbMonHocClass_Student!.id_MenberSchool,
+                fullName = d.tbMonHocClass_Student!.tbMenberSchool!.tbAccount!.fullName,
+                _CuoiGio = d._CuoiGio,
+                _DauGio = d._DauGio,
+                _DiMuon = d._DiMuon,
+                id_LichHoc = d.id_LichHoc,
+            }).ToList();
+
+            //Nhóm các result với id_LichHoc
+            var groupResult = result.GroupBy(d => d.id_LichHoc).ToList();
+            return groupResult;
         }
 
         public async Task<Status_Application> InsertAsync(List<int> idLichHoc, List<int> idStudent)
@@ -58,40 +84,43 @@ namespace Lib_Services.V2.DiemDanh
             }
         }
 
-        public async Task<Status_Application> UpdateAsync(LopDiemDanh_Update_v1 request)
+        public async Task<Status_Application> UpdateAsync(List<LopDiemDanh_Update_v1> request)
         {
             try
             {
-                // Kiểm tra môn học có tồn tại
-                var monHocDb = await _repositoryMonHoc.GetById(request.id_MonHoc);
-                if (monHocDb == null)
+                foreach (var item in request)
                 {
-                    return new Status_Application { StatusBool = false, StatusType = "Môn học không tồn tại" };
-                }
-
-                // Kiểm tra student có tồn tại trong danh sách
-                foreach (var student in request.students!)
-                {
-                    var isStudent = await _db.tbMonHocClass_Student.FirstOrDefaultAsync(x => x.id_MonHoc == request.id_MonHoc
-                                                                                        && x.id_MonHocClass_Student == student.msv);
-                    if (isStudent == null)
+                    var diemDanh = await _repositoryDiemDanh.GetById(item.id_DiemDanh);
+                    if (diemDanh == null!)
                     {
-                        return new Status_Application { StatusBool = false, StatusType = $"msv {student.msv} không trong lớp này." };
+                        return new Status_Application
+                        {
+                            StatusBool = false,
+                            StatusType = "error id điểm danh"
+                        };
                     }
+
+                    diemDanh._DauGio = item._DauGio;
+                    diemDanh._CuoiGio = item._CuoiGio;
+                    diemDanh._DiMuon = item._DiMuon;
+                    diemDanh.editLastTime = DateTime.Now;
+                    
+                    _repositoryDiemDanh.Update(diemDanh);
                 }
-                List<tbDiemDanh> updateDiemDanhs = new List<tbDiemDanh>();
-                foreach (var student in request.students!)
+                await _repositoryDiemDanh.Commit();
+                return new Status_Application
                 {
-                    tbDiemDanh updateDiemDanh = new tbDiemDanh
-                    {
-                        
-                    };
-                }
-                return null!;
+                    StatusBool = true,
+                    StatusType = "success"
+                };
             }
             catch (Exception ex)
             {
-                return new Status_Application { StatusBool = false, StatusType = ex.Message };
+                return new Status_Application
+                {
+                    StatusBool = false,
+                    StatusType = ex.Message
+                };
             }
         }
     }
