@@ -27,6 +27,7 @@ namespace App_DataBaseEntity.DbContextEntity_SQL_Sever
             //modelBuilder.Entity<tbTypeAccount>().HasData(SeedData.tbTypeAccount);
             //modelBuilder.Entity<tbTag>().HasData(SeedData.tbTag);
             //modelBuilder.Entity<tbStyleBuoiHoc>().HasData(SeedData.tbStyleBuoiHoc);
+            modelBuilder.Entity<tbTypeThongBao>().HasData(SeedData.tbTypeThongBaos);
             modelBuilder.Entity<tbAccount>(IndexCongiguration.IndexAccount());
             modelBuilder.Entity<tbToken>(IndexCongiguration.IndexToken());
         }
@@ -47,6 +48,10 @@ namespace App_DataBaseEntity.DbContextEntity_SQL_Sever
         public DbSet<tbMonHocClass_Student> tbMonHocClass_Student { get; set; }
         public DbSet<tbLichHoc> tbLichHoc { get; set; }
         public DbSet<tbDiemDanh> tbDiemDanh { get; set; }
+        public DbSet<tbTypeThongBao> tbTypeThongBao { get; set; }
+        public DbSet<tbThongBao> tbThongBao { get; set; }
+        public DbSet<tbMiddlewareThongBao> tbMiddlewareThongBao { get; set; }
+        public DbSet<tbFileThongBao> tbFileThongBao { get; set; }
 
     }
 }
