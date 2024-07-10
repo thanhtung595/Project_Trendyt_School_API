@@ -4,6 +4,7 @@ using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lib_DataEntity.Migrations
 {
     [DbContext(typeof(Trendyt_DbContext))]
-    partial class Trendyt_DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240710153535_send_data_tbTypeThongBao")]
+    partial class send_data_tbTypeThongBao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -357,27 +360,6 @@ namespace Lib_DataEntity.Migrations
                     b.ToTable("tbDiemDanh");
                 });
 
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbFileThongBao", b =>
-                {
-                    b.Property<int>("idFileThongBao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idFileThongBao"));
-
-                    b.Property<string>("file")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("idThongBao")
-                        .HasColumnType("int");
-
-                    b.HasKey("idFileThongBao");
-
-                    b.HasIndex("idThongBao");
-
-                    b.ToTable("tbFileThongBao");
-                });
-
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbLichHoc", b =>
                 {
                     b.Property<int>("id_LichHoc")
@@ -411,27 +393,6 @@ namespace Lib_DataEntity.Migrations
                     b.HasIndex("id_StyleBuoiHoc");
 
                     b.ToTable("tbLichHoc");
-                });
-
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMiddlewareThongBao", b =>
-                {
-                    b.Property<int>("MiddlewareThongBao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MiddlewareThongBao"));
-
-                    b.Property<int>("idMiddleware")
-                        .HasColumnType("int");
-
-                    b.Property<int>("idThongBao")
-                        .HasColumnType("int");
-
-                    b.HasKey("MiddlewareThongBao");
-
-                    b.HasIndex("idThongBao");
-
-                    b.ToTable("tbMiddlewareThongBao");
                 });
 
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMonHoc", b =>
@@ -528,33 +489,6 @@ namespace Lib_DataEntity.Migrations
                     b.HasKey("id_Tag");
 
                     b.ToTable("tbTag");
-                });
-
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbThongBao", b =>
-                {
-                    b.Property<int>("idThongBao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idThongBao"));
-
-                    b.Property<string>("body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("idTypeThongBao")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("timeThongBao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("idThongBao");
-
-                    b.HasIndex("idTypeThongBao");
-
-                    b.ToTable("tbThongBao");
                 });
 
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbTypeThongBao", b =>
@@ -754,17 +688,6 @@ namespace Lib_DataEntity.Migrations
                     b.Navigation("tbMonHocClass_Student");
                 });
 
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbFileThongBao", b =>
-                {
-                    b.HasOne("Lib_Models.Models_Table_Entity.tbThongBao", "tbThongBao")
-                        .WithMany()
-                        .HasForeignKey("idThongBao")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("tbThongBao");
-                });
-
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbLichHoc", b =>
                 {
                     b.HasOne("Lib_Models.Models_Table_Entity.tbMonHoc", "tbMonHoc")
@@ -782,17 +705,6 @@ namespace Lib_DataEntity.Migrations
                     b.Navigation("tbMonHoc");
 
                     b.Navigation("tbStyleBuoiHoc");
-                });
-
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMiddlewareThongBao", b =>
-                {
-                    b.HasOne("Lib_Models.Models_Table_Entity.tbThongBao", "tbThongBao")
-                        .WithMany()
-                        .HasForeignKey("idThongBao")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("tbThongBao");
                 });
 
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbMonHoc", b =>
@@ -831,17 +743,6 @@ namespace Lib_DataEntity.Migrations
                     b.Navigation("tbMenberSchool");
 
                     b.Navigation("tbMonHoc");
-                });
-
-            modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbThongBao", b =>
-                {
-                    b.HasOne("Lib_Models.Models_Table_Entity.tbTypeThongBao", "tbTypeThongBao")
-                        .WithMany()
-                        .HasForeignKey("idTypeThongBao")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("tbTypeThongBao");
                 });
 #pragma warning restore 612, 618
         }

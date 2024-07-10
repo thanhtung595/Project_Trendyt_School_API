@@ -45,5 +45,16 @@ namespace Lib_DataEntity.ContextSeed
             new tbRoleSchool{id_RoleSchool = Guid.NewGuid(), name_Role = IdentityData.TeacherClaimName},
             new tbRoleSchool{id_RoleSchool = Guid.NewGuid(), name_Role = IdentityData.StudentClaimName},
         };
+
+        public static readonly tbTypeThongBao[] tbTypeThongBaos =
+        {
+            new tbTypeThongBao{idTypeThongBao = 1 , type ="Toàn quản trị viên"},
+            new tbTypeThongBao{idTypeThongBao = 2 , type ="Toàn quản giáo viên"},
+            new tbTypeThongBao{idTypeThongBao = 3 , type ="Toàn sinh viên"},
+            new tbTypeThongBao{idTypeThongBao = 4 , type ="Tham gia lớp mới"},
+            new tbTypeThongBao{idTypeThongBao = 5 , type ="Bài tập mới"},
+            new tbTypeThongBao{idTypeThongBao = 6 , type ="Chấm điểm bài tập"},
+            new tbTypeThongBao{idTypeThongBao = 7 , type ="Sinh viên cụ thể"},
+        };
     }
 }
