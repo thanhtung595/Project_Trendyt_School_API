@@ -12,6 +12,6 @@ namespace Lib_Services.V2.BaiTap_Service
     public interface IBaiTap_Service_v2
     {
         Task<Status_Application> Add(BaiTap_Insert_v2 baiTap);
-        Task<List<BaiTapModelSelecAll>> GetAll();
+        Task<List<BaiTapModelSelecAll>> GetAll(int idMonHoc);
     }
 }

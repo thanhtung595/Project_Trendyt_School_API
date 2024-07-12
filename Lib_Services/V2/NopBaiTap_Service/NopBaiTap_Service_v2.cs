@@ -50,6 +50,10 @@ namespace Lib_Services.V2.NopBaiTap_Service
                     return new Status_Application { StatusBool = false, StatusType = "Không tìm thấy id bài tập" };
                 }
                 var baiTapFist = baiTapDb.First();
+                if (baiTapFist.hanNopBai > DateTime.Now)
+                {
+                    return new Status_Application { StatusBool = false, StatusType = "Đã quá hạn nộp bài" };
+                }
                 var monHoc_Students = await _repositoryMonHocClass_Student.GetAll(x => x.id_MonHoc == baiTapFist.id_MonHoc 
                     && x.id_MenberSchool == memberManager.id_MenberSchool);
                 if (!monHoc_Students.Any())
@@ -126,10 +130,11 @@ namespace Lib_Services.V2.NopBaiTap_Service
                            select ac.fullName).FirstOrDefault(),
                 file = (from f in _db.tbFileNopBaiTap
                         where f.idNopBaiTap == x.idNopBaiTap
-                        select new tbFileNopBaiTap
+                        select new FileBaiTapModel_Select
                         {
-                            file = f.file,
-                            idFileNopBaiTap = f.idNopBaiTap,
+                            urlFile = f.file,
+                            nameFile = f.file!.Substring(f.file.LastIndexOf('/') + 1),
+                            idFile = f.idNopBaiTap,
                         }).ToList()
             });
 
