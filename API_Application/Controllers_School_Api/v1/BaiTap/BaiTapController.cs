@@ -31,7 +31,7 @@ namespace API_Application.Controllers_School_Api.v1.BaiTap
 
         [Authorize(Policy = IdentityData.TeacherPolicyName)]
         [HttpPost]
-        public async Task<IActionResult> Add(BaiTap_Insert_v2 baiTap)
+        public async Task<IActionResult> Add([FromForm] BaiTap_Insert_v2 baiTap)
         {
             Status_Application status = await _baiTapService_v2.Add(baiTap);
             if (!status.StatusBool)
