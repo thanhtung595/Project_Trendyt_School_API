@@ -63,6 +63,11 @@ namespace Lib_Services.V2.MonHoc_Service
                         {
                             return new Status_Application { StatusBool = true, StatusType = "Chưa nhập tên môn học"};
                         }
+                        var checkNamnMonHoc = await _repositoryMonHoc.GetAll(x => x.name_MonHoc!.ToLower() == request.monHoc.name_MonHoc.ToLower());
+                        if (checkNamnMonHoc.Any())
+                        {
+                            return new Status_Application { StatusBool = true, StatusType = "Tên môn học đã tồn tại" };
+                        }
                         // Add môn học
                         var tagDb = await _repositoryTag.GetAll(t => t.name == "active");
 

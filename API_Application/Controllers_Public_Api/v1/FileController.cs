@@ -10,18 +10,18 @@ namespace API_Application.Controllers_Public_Api.v1
     [ApiController]
     public class FileController : ControllerBase
     {
-        [HttpGet("baitap/{router}"), Authorize] // ,Authorize
-        public IActionResult Get([FromRoute] string router)
-        {
-            var (fileBytes, mimeType) = FileInFolder.ReadFile(router, StringFilePath.File_BaiTap);
-            if (fileBytes != null)
-            {
-                return File(fileBytes, mimeType);
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
+        //[HttpGet("baitap/{router}"), Authorize] // ,Authorize
+        //public IActionResult Get([FromRoute] string router)
+        //{
+        //    var (fileBytes, mimeType) = FileInFolder.ReadFile(router, StringFilePath.File_BaiTap);
+        //    if (fileBytes != null)
+        //    {
+        //        return File(fileBytes, mimeType);
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
     }
 }

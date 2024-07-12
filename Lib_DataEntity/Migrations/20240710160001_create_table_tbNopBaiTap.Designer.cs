@@ -4,6 +4,7 @@ using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lib_DataEntity.Migrations
 {
     [DbContext(typeof(Trendyt_DbContext))]
-    partial class Trendyt_DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240710160001_create_table_tbNopBaiTap")]
+    partial class create_table_tbNopBaiTap
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -336,10 +339,7 @@ namespace Lib_DataEntity.Migrations
                     b.Property<DateTime>("hanNopBai")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("id_MenberSchool")
-                        .HasColumnType("int");
-
-                    b.Property<int>("id_MonHoc")
+                    b.Property<int>("id_LichHoc")
                         .HasColumnType("int");
 
                     b.Property<string>("moTa")
@@ -350,9 +350,7 @@ namespace Lib_DataEntity.Migrations
 
                     b.HasKey("idBaiTap");
 
-                    b.HasIndex("id_MenberSchool");
-
-                    b.HasIndex("id_MonHoc");
+                    b.HasIndex("id_LichHoc");
 
                     b.ToTable("tbBaiTap");
                 });
@@ -846,21 +844,13 @@ namespace Lib_DataEntity.Migrations
 
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbBaiTap", b =>
                 {
-                    b.HasOne("App_Models.Models_Table_CSDL.tbMenberSchool", "tbMenberSchool")
+                    b.HasOne("Lib_Models.Models_Table_Entity.tbLichHoc", "tbLichHoc")
                         .WithMany()
-                        .HasForeignKey("id_MenberSchool")
+                        .HasForeignKey("id_LichHoc")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Lib_Models.Models_Table_Entity.tbMonHoc", "tbMonHoc")
-                        .WithMany()
-                        .HasForeignKey("id_MonHoc")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("tbMenberSchool");
-
-                    b.Navigation("tbMonHoc");
+                    b.Navigation("tbLichHoc");
                 });
 
             modelBuilder.Entity("Lib_Models.Models_Table_Entity.tbDiemDanh", b =>
