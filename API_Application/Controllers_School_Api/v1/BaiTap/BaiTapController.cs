@@ -23,9 +23,10 @@ namespace API_Application.Controllers_School_Api.v1.BaiTap
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int idMonHoc = 0)
         {
-            return Ok(await _baiTapService_v2.GetAll());
+            return Ok(await _baiTapService_v2.GetAll(idMonHoc));
+            //return Ok("OK"+ idMonHoc);
         }
 
         [Authorize(Policy = IdentityData.TeacherPolicyName)]

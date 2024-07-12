@@ -12,7 +12,7 @@ namespace Lib_Models.Models_Insert.v2.BaiTap
         public int id_MonHoc { get; set; }
         public string? nameBaiTap { get; set; }
         public string? moTa { get; set; }
-        public DateTime hanNopBai { get; set; }
+        public DateTime hanNopBai { get; set; } = new DateTime(0000 - 00 - 00);
         public List<IFormFile>? files { get; set; }
     }
 }
