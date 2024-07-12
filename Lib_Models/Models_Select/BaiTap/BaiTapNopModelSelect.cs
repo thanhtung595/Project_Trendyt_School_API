@@ -16,6 +16,6 @@ namespace Lib_Models.Models_Select.BaiTap
         public float diem { get; set; }
         public string? danhGia { get; set; }
         public DateTime createTime { get; set; }
-        public List<tbFileNopBaiTap>? file { get; set; }
+        public List<FileBaiTapModel_Select>? file { get; set; }
     }
 }

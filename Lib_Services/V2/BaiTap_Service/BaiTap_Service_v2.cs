@@ -76,7 +76,7 @@ namespace Lib_Services.V2.BaiTap_Service
             }
         }
 
-        public async Task<List<BaiTapModelSelecAll>> GetAll()
+        public async Task<List<BaiTapModelSelecAll>> GetAll(int idMonHoc)
         {
             tbMenberSchool memberManager = await _token_Service_V2.Get_Menber_Token();
 
@@ -88,7 +88,11 @@ namespace Lib_Services.V2.BaiTap_Service
                 return null!;
             }
             var menber_MonHoc = menber_MonHocs.First();
-            var baiTaps = await _repositoryBaiTap.GetAll(x => x.id_MonHoc == menber_MonHoc.id_MonHoc);
+            var baiTaps = await _repositoryBaiTap.GetAll();
+            if (idMonHoc > 0)
+            {
+                baiTaps = baiTaps.Where(x => x.id_MonHoc == idMonHoc);
+            }
 
             var dataTasks = baiTaps.Select(x => new BaiTapModelSelecAll
             {
