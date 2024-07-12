@@ -5,10 +5,12 @@ using Lib_Repository.Repository_Class;
 using Lib_Services.PublicServices.Auth_Service;
 using Lib_Services.PublicServices.CookieService;
 using Lib_Services.PublicServices.TokentJwt_Service;
+using Lib_Services.V2.BaiTap_Service;
 using Lib_Services.V2.DiemDanh;
 using Lib_Services.V2.LịchHoc;
 using Lib_Services.V2.MonHoc_Service;
 using Lib_Services.V2.MonHocClass_Student;
+using Lib_Services.V2.NopBaiTap_Service;
 using Lib_Services.V2.Student_Service;
 using Lib_Services.V2.StyleBuoiHoc;
 using Lib_Services.V2.Teacher_Service;
@@ -198,6 +200,8 @@ namespace Lib_Config.Configuration
             services.AddScoped<IStyleBuoiHoc_Service_v2, StyleBuoiHoc_Service_v2>();
             services.AddScoped<ITeacher_Service_v2, Teacher_Service_v2>();
             services.AddScoped<IStudent_Service_v2, Student_Service_v2>();
+            services.AddScoped<IBaiTap_Service_v2, BaiTap_Service_v2>();
+            services.AddScoped<INopBaiTap_Service_v2, NopBaiTap_Service_v2>();
         }
     }
 }

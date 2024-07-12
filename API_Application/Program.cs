@@ -76,7 +76,6 @@ if (app.Environment.IsDevelopment())
 //*******************Start User Config Use*********************//
 
 app.UseCors("AllowAll");
-
 app.UseHttpsRedirection();
 app.UseMiddleware<AddAccessTokenInHeaderMiddleware>();
 //app.UseMiddleware<UseFileScurity>();

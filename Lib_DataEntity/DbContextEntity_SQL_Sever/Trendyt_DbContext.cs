@@ -52,6 +52,10 @@ namespace App_DataBaseEntity.DbContextEntity_SQL_Sever
         public DbSet<tbThongBao> tbThongBao { get; set; }
         public DbSet<tbMiddlewareThongBao> tbMiddlewareThongBao { get; set; }
         public DbSet<tbFileThongBao> tbFileThongBao { get; set; }
+        public DbSet<tbBaiTap> tbBaiTap { get; set; }
+        public DbSet<tbFileBaiTap> tbFileBaiTap { get; set; }
+        public DbSet<tbNopBaiTap> tbNopBaiTap { get; set; }
+        public DbSet<tbFileNopBaiTap> tbFileNopBaiTap { get; set; }
 
     }
 }
