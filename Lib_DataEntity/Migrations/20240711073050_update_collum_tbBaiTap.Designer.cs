@@ -4,6 +4,7 @@ using App_DataBaseEntity.DbContextEntity_SQL_Sever;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lib_DataEntity.Migrations
 {
     [DbContext(typeof(Trendyt_DbContext))]
-    partial class Trendyt_DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240711073050_update_collum_tbBaiTap")]
+    partial class update_collum_tbBaiTap
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
