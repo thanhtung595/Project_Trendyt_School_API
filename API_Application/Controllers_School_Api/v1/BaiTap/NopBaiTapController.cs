@@ -33,7 +33,7 @@ namespace API_Application.Controllers_School_Api.v1.BaiTap
         [Authorize(Policy = IdentityData.StudentPolicyName)]
         [HttpPost]
         [Route("nopbai")]
-        public async Task<IActionResult> Add(NopBaiTap_Insert_v2 baiTap)
+        public async Task<IActionResult> Add([FromForm] NopBaiTap_Insert_v2 baiTap)
         {
             Status_Application status = await _nopBaiTap_Service_V2.Add(baiTap);
             if (!status.StatusBool)
