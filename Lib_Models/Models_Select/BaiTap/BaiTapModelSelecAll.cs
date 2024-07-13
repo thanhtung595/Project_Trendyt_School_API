@@ -17,6 +17,6 @@ namespace Lib_Models.Models_Select.BaiTap
         public int id_MonHoc { get; set; }
         public string? giaoVienGiao { get; set; }
         public bool isDaNopBai { get; set; }
-        public List<tbFileBaiTap>? file { get; set; }
+        public List<FileBaiTapModel_Select>? file { get; set; }
     }
 }
