@@ -10,6 +10,6 @@ namespace Lib_Models.Models_Insert.v2.BaiTap
     public class NopBaiTap_Insert_v2
     {
         public int idBaiTap { get; set; }
-        public List<IFormFile>? files { get; set; }
+        public List<IFormFile>? files { get; set; } = new List<IFormFile> { };
     }
 }
