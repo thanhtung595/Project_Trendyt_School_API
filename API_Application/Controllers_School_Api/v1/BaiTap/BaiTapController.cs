@@ -41,7 +41,7 @@ namespace API_Application.Controllers_School_Api.v1.BaiTap
 
             if (baiTap.files!.Count() > 0)
             {
-                FileInFolder.AddFileBaiTapInFolder_FileSrc(baiTap.files!, status.List_String_Int!); 
+                FileInFolder.AddFileBaiTapInFolder_FileSrc(baiTap.files!, status.List_String_Int!);
             }
             return StatusCode(201);
         }

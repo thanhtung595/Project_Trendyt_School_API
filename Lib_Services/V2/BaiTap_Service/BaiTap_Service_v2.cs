@@ -42,12 +42,16 @@ namespace Lib_Services.V2.BaiTap_Service
         {
             try
             {
+                if (string.IsNullOrEmpty(baiTap.nameBaiTap))
+                {
+                    return new Status_Application { StatusBool = false, StatusType = "Chưa nhập tên bài tập"};
+                }
                 tbMenberSchool memberManager = await _token_Service_V2.Get_Menber_Token();
                 var baiTapAdd = new tbBaiTap
                 {
                     nameBaiTap = baiTap.nameBaiTap,
                     moTa = baiTap.moTa,
-                    hanNopBai = baiTap.hanNopBai,
+                    hanNopBai = baiTap.hanNopBai ?? DateTime.MinValue,
                     createTime = DateTime.Now,
                     id_MonHoc = baiTap.id_MonHoc,
                     id_MenberSchool = memberManager.id_MenberSchool,
@@ -104,11 +108,11 @@ namespace Lib_Services.V2.BaiTap_Service
                 id_MonHoc = x.id_MonHoc,
                 file = (from f in _db.tbFileBaiTap
                         where f.idBaiTap == x.idBaiTap
-                        select new tbFileBaiTap
+                        select new FileBaiTapModel_Select
                         {
-                            idBaiTap = f.idBaiTap,
-                            file = f.file,
-                            idFileBaiTap = f.idFileBaiTap,
+                            urlFile = f.file,
+                            nameFile = f.file!.Substring(f.file.LastIndexOf('/') + 1),
+                            idFile = f.idFileBaiTap,
                         }).ToList(),
                 giaoVienGiao = (from m in _db.tbMenberSchool
                                 join ac in _db.tbAccount

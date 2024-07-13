@@ -43,6 +43,7 @@ namespace Lib_Services.V2.NopBaiTap_Service
         {
             try
             {
+                var timeNopBai = DateTime.Now;
                 tbMenberSchool memberManager = await _token_Service_V2.Get_Menber_Token();
                 var baiTapDb = await _repositoryBaiTap.GetAll(x => x.idBaiTap == baiTap.idBaiTap);
                 if (!baiTapDb.Any())
@@ -50,17 +51,26 @@ namespace Lib_Services.V2.NopBaiTap_Service
                     return new Status_Application { StatusBool = false, StatusType = "Không tìm thấy id bài tập" };
                 }
                 var baiTapFist = baiTapDb.First();
-                if (baiTapFist.hanNopBai > DateTime.Now)
-                {
-                    return new Status_Application { StatusBool = false, StatusType = "Đã quá hạn nộp bài" };
-                }
-                var monHoc_Students = await _repositoryMonHocClass_Student.GetAll(x => x.id_MonHoc == baiTapFist.id_MonHoc 
+
+                var monHoc_Students = await _repositoryMonHocClass_Student.GetAll(x => x.id_MonHoc == baiTapFist.id_MonHoc
                     && x.id_MenberSchool == memberManager.id_MenberSchool);
                 if (!monHoc_Students.Any())
                 {
                     return new Status_Application { StatusBool = false, StatusType = "Sinh viên không thuộc môn này" };
                 }
+
                 var monHoc_Student = monHoc_Students.First();
+
+                var checkNullBaiTap = await _repositoryNopBaiTap.GetAll(x => x.id_MonHocClass_Student == monHoc_Student.id_MonHocClass_Student);
+                if (checkNullBaiTap.Any())
+                {
+                    return new Status_Application { StatusBool = false, StatusType = "Đã nộp bài" };
+                }
+                // Quá hạn nộp bài và hạn nộp bài khác ko nhập
+                if (baiTapFist.hanNopBai < timeNopBai && baiTapFist.hanNopBai != DateTime.MinValue)
+                {
+                    return new Status_Application { StatusBool = false, StatusType = "Đã quá hạn nộp bài" };
+                }
                 tbNopBaiTap nopBaiTap = new tbNopBaiTap
                 {
                     idBaiTap = baiTapFist.idBaiTap,
