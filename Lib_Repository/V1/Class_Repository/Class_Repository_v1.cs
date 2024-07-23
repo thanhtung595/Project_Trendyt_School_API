@@ -32,7 +32,8 @@ namespace Lib_Repository.V1.Class_Repository
             }
             if (menberSchoolManager.id_KhoaSchool != 0)
             {
-                query = query.Where(x => x.id_KhoaSchool == menberSchoolManager.id_KhoaSchool);
+                var membemInClass = await _db.tbClassSchool_Menber.FirstOrDefaultAsync(x => x.id_MenberSchool == menberSchoolManager.id_MenberSchool);
+                query = query.Where(x => x.id_KhoaSchool == menberSchoolManager.id_KhoaSchool && x.id_ClassSchool == membemInClass!.id_ClassSchool);
             }
             var list = await (from cl in query
                               join k in _db.tbKhoaSchool
@@ -71,33 +72,8 @@ namespace Lib_Repository.V1.Class_Repository
                                                }).FirstOrDefault(),
                                   count_student = (from member_class in _db.tbClassSchool_Menber
                                                    where member_class.id_ClassSchool == cl.id_ClassSchool
-                                                   join member in _db.tbMenberSchool
-                                                   on member_class.id_MenberSchool equals member.id_MenberSchool
-                                                   join r in _db.tbRoleSchool
-                                                   on member.id_RoleSchool equals r.id_RoleSchool
-                                                   where r.name_Role == "student"
-                                                   join ac in _db.tbAccount
-                                                   on member.id_Account equals ac.id_Account
-                                                   select member_class).Count(),
-                                  student = (from member_class in _db.tbClassSchool_Menber
-                                             where member_class.id_ClassSchool == cl.id_ClassSchool
-                                             join member in _db.tbMenberSchool
-                                             on member_class.id_MenberSchool equals member.id_MenberSchool
-                                             join r in _db.tbRoleSchool
-                                             on member.id_RoleSchool equals r.id_RoleSchool
-                                             where r.name_Role == "student"
-                                             join ac in _db.tbAccount
-                                             on member.id_Account equals ac.id_Account
-                                             select new Student_Select_v1
-                                             {
-                                                 id_Student = member.id_MenberSchool,
-                                                 fullName = ac.fullName,
-                                                 email_User = ac.email_User,
-                                                 phone_User = ac.phone_User,
-                                                 sex_User = ac.sex_User,
-                                                 user_Name = ac.user_Name,
-                                                 image_User = ac.image_User,
-                                             }).ToList(),
+                                                   select member_class).Count() - 1,
+                                  
                               }).ToListAsync();
             return list;
         }
@@ -153,34 +129,7 @@ namespace Lib_Repository.V1.Class_Repository
                                                    image_User = ac.image_User
                                                }).FirstOrDefault(),
                                   count_student = (from member_class in _db.tbClassSchool_Menber
-                                                   where member_class.id_ClassSchool == cl.id_ClassSchool
-                                                   join member in _db.tbMenberSchool
-                                                   on member_class.id_MenberSchool equals member.id_MenberSchool
-                                                   join r in _db.tbRoleSchool
-                                                   on member.id_RoleSchool equals r.id_RoleSchool
-                                                   where r.name_Role == "student"
-                                                   join ac in _db.tbAccount
-                                                   on member.id_Account equals ac.id_Account
-                                                   select member_class).Count(),
-                                  student = (from member_class in _db.tbClassSchool_Menber
-                                             where member_class.id_ClassSchool == cl.id_ClassSchool
-                                             join member in _db.tbMenberSchool
-                                             on member_class.id_MenberSchool equals member.id_MenberSchool
-                                             join r in _db.tbRoleSchool
-                                             on member.id_RoleSchool equals r.id_RoleSchool
-                                             where r.name_Role == "student"
-                                             join ac in _db.tbAccount
-                                             on member.id_Account equals ac.id_Account
-                                             select new Student_Select_v1
-                                             {
-                                                 id_Student = member.id_MenberSchool,
-                                                 fullName = ac.fullName,
-                                                 email_User = ac.email_User,
-                                                 phone_User = ac.phone_User,
-                                                 sex_User = ac.sex_User,
-                                                 user_Name = ac.user_Name,
-                                                 image_User = ac.image_User,
-                                             }).ToList(),
+                                                   select member_class).Count() -1 
                               }).FirstOrDefaultAsync();
             return list!;
         }

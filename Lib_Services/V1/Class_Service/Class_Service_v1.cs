@@ -3,7 +3,12 @@ using App_Models.Models_Table_CSDL;
 using Lib_Models.Model_Update.Class;
 using Lib_Models.Models_Insert.v1.Class_School;
 using Lib_Models.Models_Select.Class;
+using Lib_Models.Models_Select.MonHoc;
+using Lib_Models.Models_Select.Student;
+using Lib_Models.Models_Select.Teacher;
+using Lib_Models.Models_Table_Entity;
 using Lib_Models.Status_Model;
+using Lib_Repository.Abstract;
 using Lib_Repository.V1.Class_Repository;
 using Lib_Services.Token_Service;
 using Lib_Services.V1.Class_Member_Service;
@@ -23,15 +28,17 @@ namespace Lib_Services.V1.Class_Service
         private readonly IToken_Service_v1 _token_Service_V1;
         private readonly IToken_Service_v2 _token_Service_V2;
         private readonly IClass_Member_Service_v1 _class_Member_Service_V1;
+        private readonly IRepository<tbMonHocClass_Student> _repositoryMonHocClass_Student;
         public Class_Service_v1(Trendyt_DbContext db, IClass_Repository_v1 class_Repository_V1,
             IToken_Service_v1 token_Service_V1, IClass_Member_Service_v1 class_Member_Service_V1,
-            IToken_Service_v2 token_Service_V2)
+            IToken_Service_v2 token_Service_V2, IRepository<tbMonHocClass_Student> repositoryMonHocClass_Student)
         {
             _db = db;
             _class_Repository_V1 = class_Repository_V1;
             _token_Service_V1 = token_Service_V1;
             _class_Member_Service_V1 = class_Member_Service_V1;
             _token_Service_V2 = token_Service_V2;
+            _repositoryMonHocClass_Student = repositoryMonHocClass_Student;
         }
 
         #region SelectAll
@@ -147,5 +154,60 @@ namespace Lib_Services.V1.Class_Service
             return new Status_Application { StatusBool = true, StatusType = "success" };
         }
         #endregion
+
+
+        public async Task<MonHoc_Member_Select> GetMember(int idLopHoc)
+        {
+            var member_InMonHoc = await _db.tbClassSchool_Menber.Where(x => x.id_ClassSchool == idLopHoc)
+                                    .Include(x => x.tbMenberSchool).ThenInclude(m => m!.tbRoleSchool)
+                                    .Include(x => x.tbMenberSchool).ThenInclude(m => m!.tbAccount)
+                                    .ToListAsync();
+
+            if (member_InMonHoc == null || !member_InMonHoc.Any())
+            {
+                return null!;
+            }
+
+            Select_One_Teacher_v1 teacher = null!;
+            List<Student_Select_v1> students = new List<Student_Select_v1>();
+
+            foreach (var item in member_InMonHoc)
+            {
+                var member = item.tbMenberSchool;
+                if (member!.tbRoleSchool!.name_Role == "teacher")
+                {
+                    teacher = new Select_One_Teacher_v1
+                    {
+                        id_Teacher = member.id_MenberSchool,
+                        user_Name = member.tbAccount?.user_Name,
+                        fullName = member.tbAccount?.fullName,
+                        phone_User = member.tbAccount?.phone_User,
+                        sex_User = member.tbAccount?.sex_User,
+                        email_User = member.tbAccount?.email_User,
+                        image_User = member.tbAccount?.image_User
+                    };
+                }
+                else
+                {
+                    Student_Select_v1 student = new Student_Select_v1
+                    {
+                        id_Student = member.id_MenberSchool,
+                        email_User = member.tbAccount?.email_User,
+                        fullName = member.tbAccount?.fullName,
+                        image_User = member.tbAccount?.image_User,
+                        sex_User = member.tbAccount?.sex_User,
+                        phone_User = member.tbAccount?.phone_User,
+                        user_Name = member.tbAccount?.user_Name
+                    };
+                    students.Add(student);
+                }
+            }
+
+            return new MonHoc_Member_Select
+            {
+                giangvien = teacher,
+                student = students
+            };
+        }
     }
 }
