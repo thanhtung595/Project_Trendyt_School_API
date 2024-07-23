@@ -11,7 +11,8 @@ namespace Lib_Services.V2.DiemDanh
 {
     public interface IDiemDanh_Service_v2
     {
-        Task<List<IGrouping<int, DiemDanh_Select_v1>>> GetDiemDanhMonHocAsync(int idMonHoc);
+        Task<List<DiemDanh_Select_v1>> GetDiemDanhMonHocAsync(int idMonHoc);
+        //Task<List<IGrouping<DateTime, DiemDanh_Select_v1>>> GetDiemDanhMonHocAsync(int idMonHoc);
         Task<Status_Application> InsertAsync(List<int> idLichHoc, List<int> idStudent);
         Task<Status_Application> UpdateAsync(List<LopDiemDanh_Update_v1> request);
     }
