@@ -54,6 +54,14 @@ namespace API_Application.Controllers_School_Api.v1.MonHoc
             //return Ok(await _pROC_MonHoc.GetAllMonHocPROC(5));
         }
 
+        [Authorize(Policy = IdentityData.ScuritySchool)]
+        [HttpGet("member")]
+        public async Task<IActionResult> GetMemberMonHoc([FromQuery] int idMonHoc)
+        {
+            return Ok(await _monHoc_ServiceV2.GetMember(idMonHoc));
+            //return Ok(await _pROC_MonHoc.GetAllMonHocPROC(5));
+        }
+
         [Authorize(Policy = IdentityData.QuanLySchoolManager)]
         [HttpPost]
         public async Task<IActionResult> Add(MonHoc_Insert_Request_v2 request)
