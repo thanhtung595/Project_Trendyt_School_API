@@ -28,6 +28,7 @@ namespace Lib_Services.V2.MonHoc_Service
         private readonly Trendyt_DbContext _db;
         private readonly IRepository<tbMonHoc> _repositoryMonHoc;
         private readonly IRepository<tbMenberSchool> _repositoryMenberSchool;
+        private readonly IRepository<tbMonHocClass_Student> _repositoryMonHocClass_Student;
         private readonly IMonHocClass_Student_v2 _monHocClass_Student_V2;
         private readonly IRepository<tbTag> _repositoryTag;
         private readonly IToken_Service_v2 _token_Service_V2;
@@ -37,7 +38,7 @@ namespace Lib_Services.V2.MonHoc_Service
                                  IRepository<tbMonHoc> repositoryMonHoc, Trendyt_DbContext db,
                                  IToken_Service_v2 token_Service_V2, IRepository<tbTag> repositoryTag,
                                  ILichHoc_Service_v2 lichHoc_Service_V2, IDiemDanh_Service_v2 diemDanh_Service_V2,
-                                 IRepository<tbMenberSchool> repositoryMenberSchool)
+                                 IRepository<tbMenberSchool> repositoryMenberSchool, IRepository<tbMonHocClass_Student> repositoryMonHocClass_Student)
         {
             _db = db;
             _monHocClass_Student_V2 = monHocClass_Student_V2;
@@ -47,6 +48,61 @@ namespace Lib_Services.V2.MonHoc_Service
             _lichHoc_Service_V2 = lichHoc_Service_V2;
             _diemDanh_Service_V2 = diemDanh_Service_V2;
             _repositoryMenberSchool = repositoryMenberSchool;
+            _repositoryMonHocClass_Student = repositoryMonHocClass_Student;
+        }
+
+        public async Task<MonHoc_Member_Select> GetMember(int idMonHoc)
+        {
+            var member_InMonHoc = await _db.tbMonHocClass_Student.Where(x => x.id_MonHoc == idMonHoc)
+                                    .Include(x => x.tbMenberSchool).ThenInclude(m => m!.tbRoleSchool)
+                                    .Include(x => x.tbMenberSchool).ThenInclude(m => m!.tbAccount)
+                                    .ToListAsync();
+
+            if (member_InMonHoc == null || !member_InMonHoc.Any())
+            {
+                return null!;
+            }
+
+            Select_One_Teacher_v1 teacher = null!;
+            List<Student_Select_v1> students = new List<Student_Select_v1>();
+
+            foreach (var item in member_InMonHoc)
+            {
+                var member = item.tbMenberSchool;
+                if (member!.tbRoleSchool!.name_Role == "teacher")
+                {
+                    teacher = new Select_One_Teacher_v1
+                    {
+                        id_Teacher = member.id_MenberSchool,
+                        user_Name = member.tbAccount?.user_Name,
+                        fullName = member.tbAccount?.fullName,
+                        phone_User = member.tbAccount?.phone_User,
+                        sex_User = member.tbAccount?.sex_User,
+                        email_User = member.tbAccount?.email_User,
+                        image_User = member.tbAccount?.image_User
+                    };
+                }
+                else
+                {
+                    Student_Select_v1 student = new Student_Select_v1 
+                    { 
+                        id_Student = member.id_MenberSchool,
+                        email_User = member.tbAccount?.email_User,
+                        fullName = member.tbAccount?.fullName,
+                        image_User = member.tbAccount?.image_User,
+                        sex_User = member.tbAccount?.sex_User,
+                        phone_User = member.tbAccount?.phone_User,
+                        user_Name = member.tbAccount?.user_Name
+                    };
+                    students.Add(student);  
+                }
+            }
+
+            return new MonHoc_Member_Select
+            {
+                giangvien = teacher,
+                student = students
+            };
         }
 
         public async Task<Status_Application> InsertAsync(MonHoc_Insert_Request_v2 request)

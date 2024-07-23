@@ -143,5 +143,13 @@ namespace API_Application.Controllers_School_Api.v1.Class_School
             return Ok(await _class_Service_V1.SelectById(id));
         }
         #endregion
+
+        [Authorize(Policy = IdentityData.ScuritySchool)]
+        [HttpGet("member")]
+        public async Task<IActionResult> GetMemberMonHoc([FromQuery] int idClass)
+        {
+            return Ok(await _class_Service_V1.GetMember(idClass));
+            //return Ok(await _pROC_MonHoc.GetAllMonHocPROC(5));
+        }
     }
 }

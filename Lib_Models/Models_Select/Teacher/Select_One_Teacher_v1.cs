@@ -10,6 +10,9 @@ namespace Lib_Models.Models_Select.Teacher
     {
         public int id_Teacher { get; set; }
         public string? user_Name { get; set; }
+        public string? phone_User { get; set; }
+        public string? sex_User { get; set; }
+        public string? email_User { get; set; }
         public string? fullName { get; set; }
         public string? name_Khoa { get; set; }
         public string? ma_Khoa { get; set; }
