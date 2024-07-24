@@ -33,7 +33,11 @@ namespace Lib_Services.V2.LịchHoc
                 {
                     return new Status_Application { StatusBool = false, StatusType = "Lịch học phải bằng số buổi học" };
                 }
-
+                bool checkTimeBuoiHoc = HasDuplicateTime(lichHocs);
+                if (checkTimeBuoiHoc)
+                {
+                    return new Status_Application { StatusBool = false, StatusType = "Thời gian bắt đầu đang bị trùng" };
+                }
                 List<tbLichHoc> addLichHocs = new List<tbLichHoc>();
                 List<LichHoc_MonHoc_Select_v1> listLichHocReuslt = new List<LichHoc_MonHoc_Select_v1>();
                 foreach (var item in lichHocs!)
@@ -82,6 +86,20 @@ namespace Lib_Services.V2.LịchHoc
             {
                 return new Status_Application { StatusBool = false , StatusType = ex.Message};
             }
+        }
+        public static bool HasDuplicateTime (List<LichHoc_MonHoc_Insert_v2>? lichHocs)
+        {
+            HashSet<DateTime> times = new HashSet<DateTime>();
+
+            foreach (var item in lichHocs!)
+            {
+                if (!times.Add(item.thoiGianBatDau))
+                {
+                    return true; // Trả về true nếu phát hiện thời gian trùng lặp
+                }
+            }
+
+            return false; // Không có thời gian trùng lặp
         }
     }
 }
