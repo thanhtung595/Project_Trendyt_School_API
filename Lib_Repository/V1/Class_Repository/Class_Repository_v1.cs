@@ -32,8 +32,15 @@ namespace Lib_Repository.V1.Class_Repository
             }
             if (menberSchoolManager.id_KhoaSchool != 0)
             {
-                var membemInClass = await _db.tbClassSchool_Menber.FirstOrDefaultAsync(x => x.id_MenberSchool == menberSchoolManager.id_MenberSchool);
-                query = query.Where(x => x.id_KhoaSchool == menberSchoolManager.id_KhoaSchool && x.id_ClassSchool == membemInClass!.id_ClassSchool);
+                if (menberSchoolManager.tbRoleSchool!.name_Role != "student" && menberSchoolManager.tbRoleSchool!.name_Role != "teacher")
+                {
+                    query = query.Where(x => x.id_KhoaSchool == menberSchoolManager.id_KhoaSchool);
+                }
+                else
+                {
+                    var membemInClass = await _db.tbClassSchool_Menber.FirstOrDefaultAsync(x => x.id_MenberSchool == menberSchoolManager.id_MenberSchool);
+                    query = query.Where(x => x.id_KhoaSchool == menberSchoolManager.id_KhoaSchool && x.id_ClassSchool == membemInClass!.id_ClassSchool);
+                }
             }
             var list = await (from cl in query
                               join k in _db.tbKhoaSchool
