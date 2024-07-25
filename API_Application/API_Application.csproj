@@ -74,4 +74,8 @@
     <ProjectReference Include="..\Stored_Procedures\Stored_Procedures.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\baitap\" />
+  </ItemGroup>
+
 </Project>
